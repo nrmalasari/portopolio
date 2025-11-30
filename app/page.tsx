@@ -85,7 +85,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
   );
 };
 
-// Navbar Component - SIMPLIFIED VERSION
+// Navbar Component
 const Navbar = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -130,9 +130,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white hover:scale-110 transition-transform"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
+                <Linkedin className="w-5 h-5" />
               </a>
 
               <a
@@ -141,9 +139,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white hover:scale-110 transition-transform"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
+                <Instagram className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -153,90 +149,12 @@ const Navbar = () => {
   );
 };
 
-// Projects Component
-const ProjectsSection = () => {
-  const projectsData = [
-    {
-      id: 1,
-      title: "Satu Data Parepare – Government Data Integration Dashboard",
-      description: "Sistem manajemen dan integrasi data pemerintah Kota Parepare dengan fitur dashboard, visualisasi data, dan pengelolaan dataset terpusat menggunakan Laravel dan React.",
-      image: "/public/images/satu-data.png",
-      technologies: ["Laravel", "React", "MySQL", "Tailwind CSS", "Filament"],
-      category: "Web Application",
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-      pptUrl: "/ppt/ecommerce.pptx",
-      videoUrl: "https://youtube.com",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "Mobile Banking App",
-      description: "Aplikasi mobile banking dengan fitur transfer, pembayaran, dan investasi menggunakan React Native dan Laravel API.",
-      image: "/projects/banking.jpg",
-      technologies: ["React Native", "Laravel", "MySQL", "Firebase"],
-      category: "Mobile App",
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-      pptUrl: "/ppt/banking.pptx",
-      videoUrl: "https://youtube.com",
-      featured: true
-    },
-    {
-      id: 3,
-      title: "AI Chatbot Integration",
-      description: "Integrasi chatbot AI untuk customer service dengan natural language processing menggunakan OpenAI API.",
-      image: "/projects/chatbot.jpg",
-      technologies: ["Python", "OpenAI API", "React", "WebSocket"],
-      category: "AI Integration",
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-      pptUrl: "/ppt/chatbot.pptx",
-      videoUrl: "https://youtube.com",
-      featured: false
-    },
-    {
-      id: 4,
-      title: "Project Management Tool",
-      description: "Tools manajemen proyek dengan kanban board, time tracking, dan kolaborasi tim real-time.",
-      image: "/projects/management.jpg",
-      technologies: ["Next.js", "Node.js", "MongoDB", "Socket.io"],
-      category: "Web Application",
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-      pptUrl: "/ppt/management.pptx",
-      videoUrl: "https://youtube.com",
-      featured: false
-    },
-    {
-      id: 5,
-      title: "Health & Fitness App",
-      description: "Aplikasi kesehatan dan fitness dengan tracking workout, nutrition plan, dan progress monitoring.",
-      image: "/projects/fitness.jpg",
-      technologies: ["Flutter", "Laravel", "MySQL", "Chart.js"],
-      category: "Mobile App",
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-      pptUrl: "/ppt/fitness.pptx",
-      videoUrl: "https://youtube.com",
-      featured: true
-    },
-    {
-      id: 6,
-      title: "Real Estate Platform",
-      description: "Platform properti dengan virtual tour, property listing, dan sistem booking menggunakan 3D integration.",
-      image: "/projects/realestate.jpg",
-      technologies: ["React", "Three.js", "Laravel", "MySQL"],
-      category: "Web Application",
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-      pptUrl: "/ppt/realestate.pptx",
-      videoUrl: "https://youtube.com",
-      featured: false
-    }
-  ];
+// Project Card Component
+const ProjectCard = ({ project, index }: { project: any; index: number }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  const ProjectCard = ({ project, index }: { project: any; index: number }) => (
+  return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -248,40 +166,69 @@ const ProjectsSection = () => {
     >
       {/* Featured Badge */}
       {project.featured && (
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-4 left-4 z-20">
           <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-full">
             Featured
           </span>
         </div>
       )}
 
-      {/* Project Image */}
+      {/* Project Image - SIMPLIFIED VERSION */}
       <div className="relative h-48 overflow-hidden">
-        <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-          <div className="text-4xl">🚀</div>
-        </div>
+        {/* Gambar langsung ditampilkan tanpa transition */}
+        {project.image && (
+          <img 
+            src={project.image} 
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageError(true);
+              setImageLoaded(true);
+            }}
+          />
+        )}
         
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="flex space-x-4">
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.liveUrl}
-              className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
-            >
-              <ExternalLink className="w-5 h-5" />
-            </motion.a>
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.githubUrl}
-              className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
-            >
-              <Github className="w-5 h-5" />
-            </motion.a>
+        {/* Error state */}
+        {imageError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
+            <div className="text-center">
+              <div className="text-2xl">🚀</div>
+              <div className="text-white text-xs mt-1">Project Image</div>
+            </div>
           </div>
-        </div>
+        )}
+        
+        {/* Overlay - langsung aktif */}
+        {!imageError && (
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+            <div className="flex space-x-4">
+              <motion.a
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
+                title="Live Demo"
+              >
+                <ExternalLink className="w-5 h-5" />
+              </motion.a>
+              
+              <motion.a
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
+                title="View Code"
+              >
+                <Github className="w-5 h-5" />
+              </motion.a>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Project Content */}
@@ -289,22 +236,49 @@ const ProjectsSection = () => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-purple-400 text-sm font-medium">{project.category}</span>
           <div className="flex space-x-2">
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              href={project.pptUrl}
-              className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 hover:bg-purple-500/30 transition-all"
-              title="View Presentation"
-            >
-              <FileText className="w-4 h-4" />
-            </motion.a>
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              href={project.videoUrl}
-              className="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center text-pink-300 hover:bg-pink-500/30 transition-all"
-              title="Watch Demo"
-            >
-              <Play className="w-4 h-4" />
-            </motion.a>
+            {project.pptUrl ? (
+              <motion.a
+                whileHover={{ scale: 1.1 }}
+                href={project.pptUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 hover:bg-purple-500/30 transition-all cursor-pointer"
+                title="View Documentation"
+              >
+                <FileText className="w-4 h-4" />
+              </motion.a>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                className="w-8 h-8 bg-gray-500/20 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed"
+                title="Documentation not available"
+                disabled
+              >
+                <FileText className="w-4 h-4" />
+              </motion.button>
+            )}
+            
+            {project.videoUrl && project.videoUrl !== "https://youtube.com" ? (
+              <motion.a
+                whileHover={{ scale: 1.1 }}
+                href={project.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center text-pink-300 hover:bg-pink-500/30 transition-all cursor-pointer"
+                title="Watch Demo Video"
+              >
+                <Play className="w-4 h-4" />
+              </motion.a>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                className="w-8 h-8 bg-gray-500/20 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed"
+                title="Video not available"
+                disabled
+              >
+                <Play className="w-4 h-4" />
+              </motion.button>
+            )}
           </div>
         </div>
 
@@ -330,22 +304,49 @@ const ProjectsSection = () => {
 
         {/* Action Buttons */}
         <div className="flex space-x-3">
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href={project.liveUrl}
-            className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg text-center hover:from-purple-600 hover:to-pink-600 transition-all"
-          >
-            Live Demo
-          </motion.a>
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href={project.githubUrl}
-            className="flex-1 bg-gray-700 text-gray-300 text-sm font-semibold py-2 px-4 rounded-lg text-center hover:bg-gray-600 transition-all border border-gray-600"
-          >
-            Code
-          </motion.a>
+          {project.liveUrl && project.liveUrl !== "https://example.com" ? (
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg text-center hover:from-purple-600 hover:to-pink-600 transition-all cursor-pointer"
+            >
+              Live Demo
+            </motion.a>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex-1 bg-gray-600 text-gray-400 text-sm font-semibold py-2 px-4 rounded-lg text-center cursor-not-allowed"
+              disabled
+            >
+              Demo Soon
+            </motion.button>
+          )}
+          
+          {project.githubUrl && project.githubUrl !== "https://github.com" ? (
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-gray-700 text-gray-300 text-sm font-semibold py-2 px-4 rounded-lg text-center hover:bg-gray-600 transition-all border border-gray-600 cursor-pointer"
+            >
+              View Code
+            </motion.a>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex-1 bg-gray-600 text-gray-400 text-sm font-semibold py-2 px-4 rounded-lg text-center cursor-not-allowed border border-gray-600"
+              disabled
+            >
+              Code Private
+            </motion.button>
+          )}
         </div>
       </div>
 
@@ -353,6 +354,81 @@ const ProjectsSection = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
     </motion.div>
   );
+};
+
+const ProjectsSection = () => {
+  const [showAll, setShowAll] = useState(false);
+
+  const projectsData = [
+    {
+      id: 1,
+      title: "Satu Data Parepare – Government Data Integration Dashboard",
+      description: "Sistem manajemen dan integrasi data pemerintah Kota Parepare dengan fitur dashboard, visualisasi data, dan pengelolaan dataset terpusat menggunakan Laravel dan React.",
+      image: "/images/satu-data.png",
+      technologies: ["Laravel", "React", "MySQL", "Tailwind CSS", "Filament"],
+      category: "Web Application",
+      liveUrl: "https://satu-data.pareparekota.go.id",
+      githubUrl: "https://github.com/nrmalasari/satu-data",
+      pptUrl: "https://drive.google.com/file/d/your-satudata-documentation-link/view?usp=sharing",
+      videoUrl: "https://youtube.com",
+      featured: true
+    },
+    {
+      id: 2,
+      title: "TERPARKIR – Teknologi Efisiensi Rencana Parkir (Studi Kasus: Mall Panakkukang)",
+      description: "Sistem parkir pintar berbasis IoT yang menampilkan ketersediaan slot secara real-time. Terparkir memudahkan pengunjung menemukan lokasi parkir kosong melalui aplikasi, meningkatkan efisiensi operasional parkir, dan mendukung konsep smart city di Makassar. Sistem ini telah di terbitkan jurnalnya",
+      image: "/images/terparkir.png",
+      technologies: ["Android Studio", "MySQL", "Firebase", "IoT Sensors"],
+      category: "Mobile App / IoT System / AI Integration",
+      githubUrl: "https://github.com/nrmalasari/ProyekTerparkir",
+      pptUrl: "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
+      liveUrl: "https://www.linkedin.com/posts/nirmalasari-rodito-sulnas-159845344_jurnal-activity-7319382236892475392-Xwwc?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFZEBpUBg_lLB3gIickj4n4dSPsh_bYiz_4",
+      videoUrl: "https://youtube.com/your-terparkir-demo",
+      featured: true
+    },
+    {
+      id: 3,
+      title: "Web Pelayanan & Pengaduan Digital Kelurahan Ujung Bulu – Kota Parepare",
+      description:"Platform layanan digital untuk pengaduan masyarakat yang memudahkan warga dalam menyampaikan laporan, mengikuti status penanganan, dan mengakses pelayanan kelurahan secara online. Sistem ini meningkatkan transparansi dan efisiensi pelayanan publik di Kelurahan Ujung Bulu.",
+      image: "/images/ublapor.png",
+      technologies: ["HTML", "CSS", "JavaScript"],
+      category: "Web Application",
+      liveUrl: "https://ublapor.vercel.app/",
+      githubUrl: "https://github.com/nrmalasari/KOTAKSARAN_DIGITAL_UJUNGBULU",
+      pptUrl: "https://drive.google.com/file/d/your-chatbot-documentation-link/view?usp=sharing",
+      videoUrl: "https://youtube.com/your-chatbot-demo",
+      featured: true
+    },
+    {
+      id: 4,
+      title: "Sistem Inventaris TK SC2 Menara – Manajemen Aset & Barang Sekolah",
+      description:"Sistem inventaris berbasis web untuk mengelola barang, stok, dan aset sekolah di TK SC2 Menara. Fitur meliputi pencatatan barang masuk/keluar, manajemen kategori, pencarian cepat, dan pelacakan riwayat perubahan guna meningkatkan efisiensi dan transparansi pengelolaan aset.",
+      image: "/images/inventastk.png",
+      technologies: ["Laravel", "MySQL", "CSS"],
+      category: "Web Application",
+      liveUrl: "https://example.com", 
+      githubUrl: "https://github.com/nrmalasari/inventaris-TKSC2Menara",
+      pptUrl: "https://drive.google.com/file/d/your-inventaris-documentation-link/view?usp=sharing",
+      videoUrl: "https://youtube.com/your-inventaris-demo",
+      featured: false
+    },
+    {
+      id: 5,
+      title: "Web Repository Akademik ITH",
+      description: "Platform repository akademik untuk ITH dengan fitur penyimpanan jurnal, artikel ilmiah, tesis, materi kuliah, serta manajemen dokumen institusi. Sistem menyediakan akses terstruktur bagi mahasiswa, dosen, dan peneliti untuk mendukung kolaborasi dan penyebaran pengetahuan.",
+      image: "/images/repositori.jpeg",
+      technologies: ["Laravel", "MySQL", "HTML/CSS", "JavaScript"],
+      category: "Web Application",
+      liveUrl: "https://drive.google.com/file/d/1BRX8kp7MuFsODCBMRXO_CggVqYkj86wC/view?usp=drive_link",
+      githubUrl: "https://github.com/wokkk15/repository",
+      pptUrl: "https://drive.google.com/file/d/your-repository-documentation-link/view?usp=sharing",
+      videoUrl: "https://youtube.com/your-repository-demo",
+      featured: false
+    }
+  ];
+
+  // Tampilkan hanya 3 project pertama jika showAll false
+  const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
 
   return (
     <div className="container mx-auto">
@@ -373,12 +449,12 @@ const ProjectsSection = () => {
 
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projectsData.map((project, index) => (
+        {displayedProjects.map((project, index) => (
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>
 
-      {/* View More Button */}
+      {/* View More / View Less Button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -389,9 +465,10 @@ const ProjectsSection = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25"
+          onClick={() => setShowAll(!showAll)}
+          className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
         >
-          View All Projects
+          {showAll ? 'Show Less' : 'View All Projects'}
         </motion.button>
       </motion.div>
     </div>
@@ -400,83 +477,125 @@ const ProjectsSection = () => {
 
 // Certificates Section Component
 const CertificatesSection = () => {
+  const [showAll, setShowAll] = useState(false);
+  
   const certificatesData = [
     {
       id: 1,
       title: "Full Stack Web Development",
       issuer: "Dicoding Indonesia",
       date: "2023",
-      image: "/certificates/fullstack.jpg",
+      image: "/assets/images/android.png",
       credentialUrl: "https://example.com/certificate1",
       skills: ["React", "Node.js", "MongoDB"]
     },
     {
       id: 2,
-      title: "AWS Cloud Practitioner",
-      issuer: "Amazon Web Services",
-      date: "2023",
-      image: "/certificates/aws.jpg",
-      credentialUrl: "https://example.com/certificate2",
+      title: "Belajar Dasar Cloud dan Gen AI di AWS",
+      issuer: "Dicoding Indonesia",
+      date: "2025",
+      image: "/images/AWS.png", 
+      credentialUrl: "https://drive.google.com/file/d/1uXZyDussWf5kHjLYmPHBFa_6mjDtCDUe/view?usp=drive_link",
       skills: ["Cloud Computing", "AWS", "Infrastructure"]
     },
     {
       id: 3,
-      title: "React Native Development",
-      issuer: "Coursera",
-      date: "2022",
-      image: "/certificates/react-native.jpg",
-      credentialUrl: "https://example.com/certificate3",
-      skills: ["React Native", "Mobile Development", "JavaScript"]
+      title: "Belajar Membuat Aplikasi Android untuk Pemula",
+      issuer: "Dicoding Indonesia",
+      date: "2025",
+      image: "/images/android.png",
+      credentialUrl: "https://drive.google.com/file/d/1TiJGBznk8qzLjQof-leOuEFmgyCiSJl6/view?usp=drive_link",
+      skills: ["Android Studio", "Kotlin", "JavaScript"]
     },
     {
       id: 4,
-      title: "UI/UX Design Fundamentals",
-      issuer: "Google",
-      date: "2022",
-      image: "/certificates/uiux.jpg",
-      credentialUrl: "https://example.com/certificate4",
-      skills: ["Figma", "User Research", "Prototyping"]
+      title: "Belajar Dasar AI",
+      issuer: "Dicoding Indonesia",
+      date: "2025",
+      image: "/images/dasar_AI.png", 
+      credentialUrl: "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=drive_link",
+      skills: ["Artificial Intelligence", "Machine Learning", "Deep Learning"]
     },
     {
       id: 5,
-      title: "Python for Data Science",
-      issuer: "DataCamp",
-      date: "2021",
-      image: "/certificates/python.jpg",
-      credentialUrl: "https://example.com/certificate5",
-      skills: ["Python", "Pandas", "Data Analysis"]
+      title: "Memulai Pemrograman dengan Kotlin",
+      issuer: "Dicoding Indonesia",
+      date: "2025",
+      image: "/images/kotlin.png",
+      credentialUrl: "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=drive_link",
+      skills: ["Kotlin", "Android Development", "Programming"]
     },
     {
       id: 6,
-      title: "Laravel Advanced",
-      issuer: "Laracasts",
-      date: "2021",
-      image: "/certificates/laravel.jpg",
-      credentialUrl: "https://example.com/certificate6",
-      skills: ["Laravel", "PHP", "Backend"]
+      title: "CELEBES ROBOT CONTEST HASANUDDIN TECHNO FEST #8",
+      issuer: "Universitas Hasanuddin",
+      date: "2024",
+      image: "/images/crc.png",
+      credentialUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
+      skills: ["Robotics", "Competition", "Technology"]
+    },
+    {
+      id: 7,
+      title: "Kompetisi Robot Line Follower",
+      issuer: "Universitas Negeri Makassar",
+      date: "2023",
+      image: "/images/Sertifikat-21.png",
+      credentialUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
+      skills: ["Robotics", "Line Follower", "Competition"]
     }
   ];
 
-  const CertificateCard = ({ certificate, index }: { certificate: any; index: number }) => (
-    <FadeContent
-      key={certificate.id}
-      delay={index * 100}
-      duration={800}
-      blur={true}
-      className="group relative"
-    >
+  // Tampilkan hanya 3 certificate pertama jika showAll false
+  const displayedCertificates = showAll ? certificatesData : certificatesData.slice(0, 3);
+
+  const CertificateCard = ({ certificate, index }: { certificate: any; index: number }) => {
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
+
+    return (
       <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        viewport={{ once: true }}
         whileHover={{ scale: 1.02 }}
-        className="bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full"
+        className="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full"
       >
-        {/* Certificate Image */}
+        {/* Certificate Image dengan gambar asli */}
         <div className="relative h-48 overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-            <Award className="w-16 h-16 text-purple-400" />
-          </div>
+          {certificate.image ? (
+            <>
+              {!imageLoaded && !imageError && (
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
+                  <div className="text-2xl">📜</div>
+                </div>
+              )}
+              <img 
+                src={certificate.image} 
+                alt={certificate.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => {
+                  setImageError(true);
+                  setImageLoaded(true);
+                }}
+              />
+            </>
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+              <Award className="w-16 h-16 text-purple-400" />
+            </div>
+          )}
+          
+          {/* Error state */}
+          {imageError && (
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
+              <Award className="w-16 h-16 text-purple-400" />
+            </div>
+          )}
           
           {/* Overlay */}
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-3">
               <motion.a
                 whileHover={{ scale: 1.1 }}
@@ -484,19 +603,21 @@ const CertificatesSection = () => {
                 href={certificate.credentialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
+                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
                 title="View Credential"
               >
                 <ExternalLink className="w-5 h-5" />
               </motion.a>
-              <motion.button
+              <motion.a
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
+                href={certificate.credentialUrl}
+                download
+                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
                 title="Download Certificate"
               >
                 <Download className="w-5 h-5" />
-              </motion.button>
+              </motion.a>
             </div>
           </div>
         </div>
@@ -508,7 +629,7 @@ const CertificatesSection = () => {
             <span className="text-gray-400 text-sm">{certificate.date}</span>
           </div>
 
-          <h3 className="text-lg font-bold text-white mb-3 group-hover:text-purple-300 transition-colors line-clamp-2">
+          <h3 className="text-lg font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">
             {certificate.title}
           </h3>
 
@@ -531,7 +652,7 @@ const CertificatesSection = () => {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg text-center hover:from-purple-600 hover:to-pink-600 transition-all block"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg text-center hover:from-purple-600 hover:to-pink-600 transition-all cursor-pointer block"
           >
             Verify Credential
           </motion.a>
@@ -540,41 +661,59 @@ const CertificatesSection = () => {
         {/* Hover Effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
       </motion.div>
-    </FadeContent>
-  );
+    );
+  };
 
   return (
     <div className="container mx-auto">
-      <FadeContent duration={800} delay={200}>
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Certificates</span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Sertifikat dan credential yang telah saya peroleh dalam perjalanan pengembangan karir saya
-          </p>
-        </div>
-      </FadeContent>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Certificates</span>
+        </h2>
+        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          Sertifikat dan credential yang telah saya peroleh dalam perjalanan pengembangan karir saya
+        </p>
+      </motion.div>
 
       {/* Certificates Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {certificatesData.map((certificate, index) => (
+        {displayedCertificates.map((certificate, index) => (
           <CertificateCard key={certificate.id} certificate={certificate} index={index} />
         ))}
       </div>
 
-      {/* View More Button */}
-      <FadeContent duration={800} delay={600}>
-        <div className="text-center mt-12">
+      {/* View More / View Less Button */}
+      {certificatesData.length > 3 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25"
+            onClick={() => setShowAll(!showAll)}
+            className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
           >
-            View All Certificates
+            {showAll ? 'Show Less Certificates' : `View All Certificates (${certificatesData.length})`}
           </motion.button>
-        </div>
-      </FadeContent>
+          
+          {!showAll && (
+            <p className="text-gray-400 text-sm mt-3">
+              Showing 3 of {certificatesData.length} certificates
+            </p>
+          )}
+        </motion.div>
+      )}
     </div>
   );
 };
@@ -917,7 +1056,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Navbar - SIMPLIFIED VERSION */}
+      {/* Navbar */}
       <Navbar />
 
       {/* Hero Section */}
@@ -1042,7 +1181,7 @@ export default function Home() {
           </motion.h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Right side - Profile Card (now on the left) */}
+            {/* Profile Card */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -1066,7 +1205,7 @@ export default function Home() {
               />
             </motion.div>
             
-            {/* Left side - About text (now on the right) */}
+            {/* About text */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
