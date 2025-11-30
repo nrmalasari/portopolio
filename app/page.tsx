@@ -1339,37 +1339,37 @@ export default function PortfolioPage() {
               <h3 className="text-2xl font-semibold text-purple-300">
                 Passionate Developer & Problem Solver
               </h3>
-              
-              <p className="text-gray-300 leading-relaxed text-base lg:text-lg">
+
+              <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-4">
                 Saya adalah pengembang pemula yang fokus pada pengembangan web dan mobile, dengan pengalaman membangun beberapa proyek nyata baik secara mandiri maupun selama magang di beberapa instansi. Dari pengalaman tersebut, saya terbiasa bekerja dengan teknologi seperti React, Next.js, Laravel, Android Studio, serta integrasi API untuk kebutuhan aplikasi modern.
               </p>
-              
-              <p className="text-gray-300 leading-relaxed text-base lg:text-lg">
+
+              <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-6">
                 Saya memiliki ketertarikan kuat pada pengembangan sistem yang rapi, mudah digunakan, dan relevan dengan kebutuhan pengguna. Setiap proyek yang saya kerjakan selalu menjadi ruang belajar untuk memahami alur kerja profesional dan meningkatkan kemampuan teknis saya agar dapat berkembang menjadi developer yang lebih matang dan kompeten.
               </p>
-              
+
               <div className="pt-2">
                 <h4 className="text-lg font-medium text-purple-200 mb-4">What I Do</h4>
-                <ul className="space-y-3 text-gray-300">
+                <ul className="space-y-2 text-gray-300">
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
-                    <span className="text-base">Mengembangkan aplikasi web responsif dengan React/Next.js</span>
+                    <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                    <span className="text-sm">Mengembangkan aplikasi web responsif dengan React/Next.js</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
-                    <span className="text-base">Membangun aplikasi backend dengan Laravel dan Filament</span>
+                    <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                    <span className="text-sm">Membangun aplikasi backend dengan Laravel dan Filament</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
-                    <span className="text-base">Mengembangkan aplikasi mobile dengan Android Studio</span>
+                    <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                    <span className="text-sm">Mengembangkan aplikasi mobile dengan Android Studio</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
-                    <span className="text-base">Mampu mendesain UI dan UX yang menarik</span>
+                    <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                    <span className="text-sm">Mampu mendesain UI dan UX yang menarik</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
-                    <span className="text-base">Optimasi performa dan pengalaman pengguna</span>
+                    <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                    <span className="text-sm">Optimasi performa dan pengalaman pengguna</span>
                   </li>
                 </ul>
               </div>
