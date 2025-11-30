@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Lanyard from "./components/Lanyard/Lanyard";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import ShinyText from "./components/ShinyText/ShinyText";
 import ProfileCard from "../src/blocks/Components/ProfileCard/ProfileCard";
 import { 
@@ -21,7 +21,12 @@ import {
   Instagram,
   MessageCircle,
   Award,
-  Download
+  Download,
+  Menu,
+  X,
+  Home as HomeIcon,
+  User,
+  FolderOpen
 } from "lucide-react";
 
 // FadeContent Component
@@ -85,67 +90,195 @@ const FadeContent: React.FC<FadeContentProps> = ({
   );
 };
 
-// Navbar Component
+// Navbar Component - FIXED: Menu di tengah, background transparan
 const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
+    setIsMobileMenuOpen(false);
   };
 
+  const navItems = [
+    { id: "hero", text: "Home", icon: <HomeIcon className="w-4 h-4" /> },
+    { id: "about", text: "About", icon: <User className="w-4 h-4" /> },
+    { id: "skills", text: "Skills", icon: <Code2 className="w-4 h-4" /> },
+    { id: "certificates", text: "Certificates", icon: <Award className="w-4 h-4" /> },
+    { id: "projects", text: "Projects", icon: <FolderOpen className="w-4 h-4" /> },
+    { id: "contact", text: "Contact", icon: <Mail className="w-4 h-4" /> }
+  ];
+
+  const socialLinks = [
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/nirmalasari-rodito-sulnas-159845344",
+      icon: <Linkedin className="w-5 h-5" />
+    },
+    {
+      name: "Instagram", 
+      url: "https://instagram.com/nrmlardt",
+      icon: <Instagram className="w-5 h-5" />
+    }
+  ];
+
   return (
-    <nav className="w-full fixed top-0 left-0 z-50">
-      <div className="container mx-auto px-6 py-6">
-        <div className="flex items-center justify-between">
-          <div className="flex-1 flex justify-start">
-            {/* Empty space for balance */}
-          </div>
-
-          <div className="flex-1 flex justify-center">
-            <div className="flex space-x-6 bg-gray-900/50 backdrop-blur-sm rounded-full px-8 py-3 border border-gray-800">
-              {[
-                { id: "about", text: "About" },
-                { id: "skills", text: "Skills" },
-                { id: "certificates", text: "Certificates" },
-                { id: "projects", text: "Projects" },
-                { id: "contact", text: "Contact" }
-              ].map((item, index) => (
-                <button
-                  key={index}
-                  onClick={() => scrollToSection(item.id)}
-                  className="text-sm font-medium text-gray-300 hover:text-purple-300 transition-colors px-4 py-1 rounded-full hover:bg-purple-900/20 cursor-pointer"
-                >
-                  {item.text}
-                </button>
-              ))}
+    <>
+      {/* Desktop Navbar - FULLY TRANSPARANT dengan menu di tengah */}
+      <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-transparent`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4">
+            {/* Empty Space - LEFT */}
+            <div className="hidden lg:flex flex-1">
+              {/* Empty space untuk balance */}
             </div>
-          </div>
 
-          <div className="flex-1 flex justify-end">
-            <div className="flex space-x-3">
-              <a
-                href="https://www.linkedin.com/in/nirmalasari-rodito-sulnas-159845344"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white hover:scale-110 transition-transform"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+            {/* Navigation Items - CENTER dengan background hanya di menu */}
+            <div className="hidden lg:flex">
+              <div className="flex space-x-1 bg-gray-900/70 backdrop-blur-md rounded-full px-6 py-2 border border-gray-700/30">
+                {navItems.map((item, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => scrollToSection(item.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-sm font-medium text-gray-300 hover:text-purple-300 transition-colors px-4 py-2 rounded-full hover:bg-purple-900/20 cursor-pointer"
+                  >
+                    {item.text}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
 
-              <a
-                href="https://instagram.com/nrmlardt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white hover:scale-110 transition-transform"
+            {/* Social Links - RIGHT */}
+            <div className="hidden lg:flex flex-1 justify-end">
+              <div className="flex space-x-3">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all"
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="flex lg:hidden items-center justify-end w-full">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white"
               >
-                <Instagram className="w-5 h-5" />
-              </a>
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </motion.button>
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+            />
+            
+            {/* Sidebar */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed top-0 right-0 h-full w-80 bg-gray-900/95 backdrop-blur-xl z-50 lg:hidden border-l border-gray-800"
+            >
+              {/* Sidebar Header */}
+              <div className="p-6 border-b border-gray-800">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">Menu</h2>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white"
+                  >
+                    <X className="w-5 h-5" />
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Navigation Items */}
+              <div className="p-6">
+                <div className="space-y-2">
+                  {navItems.map((item, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => scrollToSection(item.id)}
+                      whileHover={{ scale: 1.02, x: 8 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full flex items-center space-x-3 px-4 py-3 text-left text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-xl transition-all duration-200"
+                    >
+                      <div className="text-purple-400">
+                        {item.icon}
+                      </div>
+                      <span className="font-medium">{item.text}</span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Social Links in Sidebar */}
+                <div className="mt-8 pt-6 border-t border-gray-800">
+                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                    Connect with me
+                  </h3>
+                  <div className="flex space-x-3">
+                    {socialLinks.map((social, index) => (
+                      <motion.a
+                        key={index}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all"
+                        title={social.name}
+                      >
+                        {social.icon}
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -173,9 +306,8 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
       )}
 
-      {/* Project Image - SIMPLIFIED VERSION */}
+      {/* Project Image */}
       <div className="relative h-48 overflow-hidden">
-        {/* Gambar langsung ditampilkan tanpa transition */}
         {project.image && (
           <img 
             src={project.image} 
@@ -189,7 +321,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           />
         )}
         
-        {/* Error state */}
         {imageError && (
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
             <div className="text-center">
@@ -199,7 +330,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           </div>
         )}
         
-        {/* Overlay - langsung aktif */}
         {!imageError && (
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-4">
@@ -427,7 +557,6 @@ const ProjectsSection = () => {
     }
   ];
 
-  // Tampilkan hanya 3 project pertama jika showAll false
   const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
 
   return (
@@ -447,14 +576,12 @@ const ProjectsSection = () => {
         </p>
       </motion.div>
 
-      {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayedProjects.map((project, index) => (
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>
 
-      {/* View More / View Less Button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -545,7 +672,6 @@ const CertificatesSection = () => {
     }
   ];
 
-  // Tampilkan hanya 3 certificate pertama jika showAll false
   const displayedCertificates = showAll ? certificatesData : certificatesData.slice(0, 3);
 
   const CertificateCard = ({ certificate, index }: { certificate: any; index: number }) => {
@@ -561,7 +687,6 @@ const CertificatesSection = () => {
         whileHover={{ scale: 1.02 }}
         className="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full"
       >
-        {/* Certificate Image dengan gambar asli */}
         <div className="relative h-48 overflow-hidden">
           {certificate.image ? (
             <>
@@ -587,14 +712,12 @@ const CertificatesSection = () => {
             </div>
           )}
           
-          {/* Error state */}
           {imageError && (
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
               <Award className="w-16 h-16 text-purple-400" />
             </div>
           )}
           
-          {/* Overlay */}
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-3">
               <motion.a
@@ -622,7 +745,6 @@ const CertificatesSection = () => {
           </div>
         </div>
 
-        {/* Certificate Content */}
         <div className="p-6">
           <div className="flex items-center justify-between mb-3">
             <span className="text-purple-400 text-sm font-medium">{certificate.issuer}</span>
@@ -633,7 +755,6 @@ const CertificatesSection = () => {
             {certificate.title}
           </h3>
 
-          {/* Skills */}
           <div className="flex flex-wrap gap-2 mb-4">
             {certificate.skills.map((skill: string, skillIndex: number) => (
               <span
@@ -645,7 +766,6 @@ const CertificatesSection = () => {
             ))}
           </div>
 
-          {/* Verify Button */}
           <motion.a
             href={certificate.credentialUrl}
             target="_blank"
@@ -658,7 +778,6 @@ const CertificatesSection = () => {
           </motion.a>
         </div>
 
-        {/* Hover Effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
       </motion.div>
     );
@@ -666,7 +785,6 @@ const CertificatesSection = () => {
 
   return (
     <div className="container mx-auto">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -682,14 +800,12 @@ const CertificatesSection = () => {
         </p>
       </motion.div>
 
-      {/* Certificates Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayedCertificates.map((certificate, index) => (
           <CertificateCard key={certificate.id} certificate={certificate} index={index} />
         ))}
       </div>
 
-      {/* View More / View Less Button */}
       {certificatesData.length > 3 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -818,21 +934,18 @@ const ContactSection = () => {
           whileTap={{ scale: 0.98 }}
           className={`block bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border ${colorClasses.border} hover:border-opacity-60 transition-all duration-300 h-full`}
         >
-          {/* Icon */}
           <div className={`w-14 h-14 rounded-2xl ${colorClasses.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
             <div className={colorClasses.icon}>
               {contact.icon}
             </div>
           </div>
 
-          {/* Content */}
           <h3 className="text-xl font-bold text-white mb-2">{contact.name}</h3>
           <p className="text-gray-300 text-sm mb-3">{contact.description}</p>
           <div className="text-purple-300 font-medium text-sm truncate">
             {contact.username}
           </div>
 
-          {/* Hover Effect */}
           <div className={`absolute inset-0 bg-gradient-to-br ${colorClasses.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
         </motion.a>
       </motion.div>
@@ -856,14 +969,12 @@ const ContactSection = () => {
         </p>
       </motion.div>
 
-      {/* Contact Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         {contactData.map((contact, index) => (
           <ContactCard key={contact.id} contact={contact} index={index} />
         ))}
       </div>
 
-      {/* CTA Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -894,8 +1005,10 @@ const ContactSection = () => {
   );
 };
 
-export default function Home() {
+// Komponen utama
+export default function PortfolioPage() {
   const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
@@ -904,6 +1017,14 @@ export default function Home() {
 
   useEffect(() => {
     setIsMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const scrollToAbout = () => {
@@ -1060,8 +1181,8 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-screen relative z-10 pt-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100vh-80px)] items-center gap-8 lg:gap-12">
+      <div id="hero" className="container mx-auto px-4 sm:px-6 lg:px-8 h-screen relative z-10 pt-24">
+        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'} h-[calc(100vh-80px)] items-center gap-8 lg:gap-12`}>
           {/* Left content */}
           <motion.div 
             initial={{ opacity: 0, x: -40 }}
@@ -1135,31 +1256,33 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Right content */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative h-full w-full flex items-center justify-center"
-          >
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.25 }}
-                transition={{ delay: 1.0 }}
-                className="absolute w-[400px] h-[400px] rounded-full bg-purple-500 blur-[100px]"
-              />
-            </div>
-            
-            {isMounted && (
-              <div className="relative z-20 w-full h-full min-h-[400px] flex items-center justify-center">
-                <Lanyard 
-                  position={[0, 0, 15]}
-                  gravity={[0, -25, 0]}
+          {/* Right content - Hide Lanyard on mobile */}
+          {!isMobile && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="relative h-full w-full flex items-center justify-center"
+            >
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.25 }}
+                  transition={{ delay: 1.0 }}
+                  className="absolute w-[400px] h-[400px] rounded-full bg-purple-500 blur-[100px]"
                 />
               </div>
-            )}
-          </motion.div>
+              
+              {isMounted && (
+                <div className="relative z-20 w-full h-full min-h-[400px] flex items-center justify-center">
+                  <Lanyard 
+                    position={[0, 0, 15]}
+                    gravity={[0, -25, 0]}
+                  />
+                </div>
+              )}
+            </motion.div>
+          )}
         </div>
       </div>
 
@@ -1180,14 +1303,14 @@ export default function Home() {
             About <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Me</span>
           </motion.h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Profile Card */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Profile Card - KIRI */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
-              className="flex justify-center lg:justify-start order-2 lg:order-1"
+              className="flex justify-center lg:justify-start"
             >
               <ProfileCard
                 avatarUrl="/avatar.png"
@@ -1205,53 +1328,48 @@ export default function Home() {
               />
             </motion.div>
             
-            {/* About text */}
+            {/* About text - KANAN */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              className="space-y-6 order-1 lg:order-2"
+              className="space-y-6"
             >
               <h3 className="text-2xl font-semibold text-purple-300">
                 Passionate Developer & Problem Solver
               </h3>
               
-              <p className="text-gray-300 leading-relaxed">
-                Saya adalah seorang Full Stack Developer dengan pengalaman lebih dari 3 tahun 
-                dalam mengembangkan aplikasi web dan mobile. Saya memiliki passion dalam menciptakan 
-                solusi teknologi yang tidak hanya fungsional tetapi juga memberikan pengalaman 
-                pengguna yang memukau.
+              <p className="text-gray-300 leading-relaxed text-base lg:text-lg">
+                Saya adalah pengembang pemula yang fokus pada pengembangan web dan mobile, dengan pengalaman membangun beberapa proyek nyata baik secara mandiri maupun selama magang di beberapa instansi. Dari pengalaman tersebut, saya terbiasa bekerja dengan teknologi seperti React, Next.js, Laravel, Android Studio, serta integrasi API untuk kebutuhan aplikasi modern.
               </p>
               
-              <p className="text-gray-300 leading-relaxed">
-                Keahlian teknis saya mencakup berbagai teknologi modern termasuk React, Next.js, 
-                Node.js, Python, Laravel, Filament, Android Studio, dan integrasi AI/ML. Saya selalu bersemangat untuk mempelajari 
-                teknologi baru dan menerapkannya dalam proyek-proyek inovatif.
+              <p className="text-gray-300 leading-relaxed text-base lg:text-lg">
+                Saya memiliki ketertarikan kuat pada pengembangan sistem yang rapi, mudah digunakan, dan relevan dengan kebutuhan pengguna. Setiap proyek yang saya kerjakan selalu menjadi ruang belajar untuk memahami alur kerja profesional dan meningkatkan kemampuan teknis saya agar dapat berkembang menjadi developer yang lebih matang dan kompeten.
               </p>
               
-              <div className="pt-4">
-                <h4 className="text-lg font-medium text-purple-200 mb-3">What I Do</h4>
-                <ul className="space-y-2 text-gray-300">
+              <div className="pt-2">
+                <h4 className="text-lg font-medium text-purple-200 mb-4">What I Do</h4>
+                <ul className="space-y-3 text-gray-300">
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">▸</span>
-                    Mengembangkan aplikasi web responsif dengan React/Next.js
+                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
+                    <span className="text-base">Mengembangkan aplikasi web responsif dengan React/Next.js</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">▸</span>
-                    Membangun aplikasi backend dengan Laravel dan Filament
+                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
+                    <span className="text-base">Membangun aplikasi backend dengan Laravel dan Filament</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">▸</span>
-                    Mengembangkan aplikasi mobile dengan Android Studio
+                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
+                    <span className="text-base">Mengembangkan aplikasi mobile dengan Android Studio</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">▸</span>
-                    Mampu mendesain UI dan UX yang menarik
+                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
+                    <span className="text-base">Mampu mendesain UI dan UX yang menarik</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-purple-400 mr-2">▸</span>
-                    Optimasi performa dan pengalaman pengguna
+                    <span className="text-purple-400 mr-3 mt-1 flex-shrink-0">▸</span>
+                    <span className="text-base">Optimasi performa dan pengalaman pengguna</span>
                   </li>
                 </ul>
               </div>
