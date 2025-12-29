@@ -1181,14 +1181,14 @@ export default function PortfolioPage() {
               <div className="overflow-hidden">
                 <h1 className="font-bold text-white leading-[1.1] tracking-tight">
                   <ShinyText
-                    text="Full Stack"
+                    text="Software "
                     speed={3}
                     size="lg"
                     color="purple"
                     className="block mb-2"
                   />
                   <span className="block text-4xl sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-                    Developer
+                    Engineer
                   </span>
                 </h1>
               </div>
