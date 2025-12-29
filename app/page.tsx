@@ -591,7 +591,7 @@ const CertificatesSection = () => {
       issuer: "Dicoding Indonesia",
       date: "2025",
       image: "/images/JavaScrip.png",
-      credentialUrl: "https://example.com/certificate1",
+      credentialUrl: "https://drive.google.com/file/d/1rLRF4p9RnLNkpQSi5YpFZqlJSpy6yOin/view?usp=sharing",
       skills: ["JavaScript", "Programming Basics", "Web Development"]
     },
     {
