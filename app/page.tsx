@@ -287,6 +287,25 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  // Simple URL check
+  const hasValidUrl = (url: string) => {
+    return url && 
+           url !== "" && 
+           !url.includes("example.com") && 
+           !url.includes("your-") &&
+           url !== "https://youtube.com" &&
+           url !== "https://github.com";
+  };
+
+  // Handle URL opening
+  const openUrl = (url: string) => {
+    if (hasValidUrl(url)) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      console.log('No valid URL provided');
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -333,29 +352,23 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         {!imageError && (
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-4">
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* Live Demo Button */}
+              <button
+                onClick={() => openUrl(project.liveUrl)}
                 className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
                 title="Live Demo"
               >
                 <ExternalLink className="w-5 h-5" />
-              </motion.a>
+              </button>
               
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* GitHub Button */}
+              <button
+                onClick={() => openUrl(project.githubUrl)}
                 className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
                 title="View Code"
               >
                 <Github className="w-5 h-5" />
-              </motion.a>
+              </button>
             </div>
           </div>
         )}
@@ -366,49 +379,33 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-purple-400 text-sm font-medium">{project.category}</span>
           <div className="flex space-x-2">
-            {project.pptUrl ? (
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href={project.pptUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 hover:bg-purple-500/30 transition-all cursor-pointer"
-                title="View Documentation"
-              >
-                <FileText className="w-4 h-4" />
-              </motion.a>
-            ) : (
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                className="w-8 h-8 bg-gray-500/20 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed"
-                title="Documentation not available"
-                disabled
-              >
-                <FileText className="w-4 h-4" />
-              </motion.button>
-            )}
+            {/* PPT Button */}
+            <button
+              onClick={() => openUrl(project.pptUrl)}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                hasValidUrl(project.pptUrl) 
+                  ? 'bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 cursor-pointer' 
+                  : 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
+              }`}
+              title={hasValidUrl(project.pptUrl) ? "View Documentation" : "Documentation not available"}
+              disabled={!hasValidUrl(project.pptUrl)}
+            >
+              <FileText className="w-4 h-4" />
+            </button>
             
-            {project.videoUrl && project.videoUrl !== "https://youtube.com" ? (
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href={project.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 bg-pink-500/20 rounded-full flex items-center justify-center text-pink-300 hover:bg-pink-500/30 transition-all cursor-pointer"
-                title="Watch Demo Video"
-              >
-                <Play className="w-4 h-4" />
-              </motion.a>
-            ) : (
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                className="w-8 h-8 bg-gray-500/20 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed"
-                title="Video not available"
-                disabled
-              >
-                <Play className="w-4 h-4" />
-              </motion.button>
-            )}
+            {/* Video Button */}
+            <button
+              onClick={() => openUrl(project.videoUrl)}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                hasValidUrl(project.videoUrl) 
+                  ? 'bg-pink-500/20 text-pink-300 hover:bg-pink-500/30 cursor-pointer' 
+                  : 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
+              }`}
+              title={hasValidUrl(project.videoUrl) ? "Watch Demo Video" : "Video not available"}
+              disabled={!hasValidUrl(project.videoUrl)}
+            >
+              <Play className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -434,49 +431,31 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
 
         {/* Action Buttons */}
         <div className="flex space-x-3">
-          {project.liveUrl && project.liveUrl !== "https://example.com" ? (
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold py-2 px-4 rounded-lg text-center hover:from-purple-600 hover:to-pink-600 transition-all cursor-pointer"
-            >
-              Live Demo
-            </motion.a>
-          ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex-1 bg-gray-600 text-gray-400 text-sm font-semibold py-2 px-4 rounded-lg text-center cursor-not-allowed"
-              disabled
-            >
-              Demo Soon
-            </motion.button>
-          )}
+          {/* Live Demo Button */}
+          <button
+            onClick={() => openUrl(project.liveUrl)}
+            className={`flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all ${
+              hasValidUrl(project.liveUrl)
+                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 cursor-pointer'
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+            }`}
+            disabled={!hasValidUrl(project.liveUrl)}
+          >
+            {hasValidUrl(project.liveUrl) ? 'Live Demo' : 'Demo Soon'}
+          </button>
           
-          {project.githubUrl && project.githubUrl !== "https://github.com" ? (
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-gray-700 text-gray-300 text-sm font-semibold py-2 px-4 rounded-lg text-center hover:bg-gray-600 transition-all border border-gray-600 cursor-pointer"
-            >
-              View Code
-            </motion.a>
-          ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex-1 bg-gray-600 text-gray-400 text-sm font-semibold py-2 px-4 rounded-lg text-center cursor-not-allowed border border-gray-600"
-              disabled
-            >
-              Code Private
-            </motion.button>
-          )}
+          {/* GitHub Button */}
+          <button
+            onClick={() => openUrl(project.githubUrl)}
+            className={`flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all border ${
+              hasValidUrl(project.githubUrl)
+                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-gray-600 cursor-pointer'
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed border-gray-600'
+            }`}
+            disabled={!hasValidUrl(project.githubUrl)}
+          >
+            {hasValidUrl(project.githubUrl) ? 'View Code' : 'Code Private'}
+          </button>
         </div>
       </div>
 
@@ -499,8 +478,8 @@ const ProjectsSection = () => {
       category: "Web Application",
       liveUrl: "https://satu-data.pareparekota.go.id",
       githubUrl: "https://github.com/nrmalasari/satu-data",
-      pptUrl: "https://drive.google.com/file/d/your-satudata-documentation-link/view?usp=sharing",
-      videoUrl: "https://youtube.com",
+      pptUrl: "https://drive.google.com/file/d/1BRX8kp7MuFsODCBMRXO_CggVqYkj86wC/view?usp=sharing",
+      videoUrl: "",
       featured: true
     },
     {
@@ -513,7 +492,7 @@ const ProjectsSection = () => {
       githubUrl: "https://github.com/nrmalasari/ProyekTerparkir",
       pptUrl: "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
       liveUrl: "https://www.linkedin.com/posts/nirmalasari-rodito-sulnas-159845344_jurnal-activity-7319382236892475392-Xwwc?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFZEBpUBg_lLB3gIickj4n4dSPsh_bYiz_4",
-      videoUrl: "https://youtube.com/your-terparkir-demo",
+      videoUrl: "",
       featured: true
     },
     {
@@ -525,8 +504,8 @@ const ProjectsSection = () => {
       category: "Web Application",
       liveUrl: "https://ublapor.vercel.app/",
       githubUrl: "https://github.com/nrmalasari/KOTAKSARAN_DIGITAL_UJUNGBULU",
-      pptUrl: "https://drive.google.com/file/d/your-chatbot-documentation-link/view?usp=sharing",
-      videoUrl: "https://youtube.com/your-chatbot-demo",
+      pptUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=sharing",
+      videoUrl: "",
       featured: true
     },
     {
@@ -536,10 +515,10 @@ const ProjectsSection = () => {
       image: "/images/inventastk.png",
       technologies: ["Laravel", "MySQL", "CSS"],
       category: "Web Application",
-      liveUrl: "https://example.com", 
+      liveUrl: "", 
       githubUrl: "https://github.com/nrmalasari/inventaris-TKSC2Menara",
-      pptUrl: "https://drive.google.com/file/d/your-inventaris-documentation-link/view?usp=sharing",
-      videoUrl: "https://youtube.com/your-inventaris-demo",
+      pptUrl: "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=sharing",
+      videoUrl: "",
       featured: false
     },
     {
@@ -548,11 +527,10 @@ const ProjectsSection = () => {
       description: "Platform repository akademik untuk ITH dengan fitur penyimpanan jurnal, artikel ilmiah, tesis, materi kuliah, serta manajemen dokumen institusi. Sistem menyediakan akses terstruktur bagi mahasiswa, dosen, dan peneliti untuk mendukung kolaborasi dan penyebaran pengetahuan.",
       image: "/images/repositori.jpeg",
       technologies: ["Laravel", "MySQL", "HTML/CSS", "JavaScript"],
-      category: "Web Application",
-      liveUrl: "https://drive.google.com/file/d/1BRX8kp7MuFsODCBMRXO_CggVqYkj86wC/view?usp=drive_link",
+      liveUrl: "",
       githubUrl: "https://github.com/wokkk15/repository",
-      pptUrl: "https://drive.google.com/file/d/your-repository-documentation-link/view?usp=sharing",
-      videoUrl: "https://youtube.com/your-repository-demo",
+      pptUrl: "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=sharing",
+      videoUrl: "",
       featured: false
     }
   ];
@@ -609,12 +587,12 @@ const CertificatesSection = () => {
   const certificatesData = [
     {
       id: 1,
-      title: "Full Stack Web Development",
+      title: "Belajar Dasar Pemrograman Javascript",
       issuer: "Dicoding Indonesia",
       date: "2023",
-      image: "/assets/images/android.png",
+      image: "/images/JavaScrip.png",
       credentialUrl: "https://example.com/certificate1",
-      skills: ["React", "Node.js", "MongoDB"]
+      skills: ["JavaScript", "Programming Basics", "Web Development"]
     },
     {
       id: 2,
@@ -1047,15 +1025,14 @@ export default function PortfolioPage() {
         { name: "React/Next.js", level: 90 },
         { name: "TypeScript", level: 85 },
         { name: "Tailwind CSS", level: 88 },
-        { name: "Vue.js", level: 75 },
       ]
     },
     backend: {
       title: "Backend Development", 
       icon: <Server className="w-6 h-6 text-purple-400" />,
       skills: [
-        { name: "Node.js", level: 87 },
-        { name: "Laravel", level: 82 },
+        { name: "Laravel", level: 87 },
+        { name: "Node.js", level: 72 },
         { name: "Python", level: 80 },
         { name: "PHP", level: 85 },
       ]
@@ -1316,7 +1293,7 @@ export default function PortfolioPage() {
                 avatarUrl="/avatar.png"
                 miniAvatarUrl="/avatar.png"
                 name="Nirmalasari Rodito S"
-                title="Full Stack Developer"
+                title="Software Engineer"
                 handle="nrmla.slns"
                 status="Available for work"
                 contactText="Hire Me"
