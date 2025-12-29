@@ -589,7 +589,7 @@ const CertificatesSection = () => {
       id: 1,
       title: "Belajar Dasar Pemrograman Javascript",
       issuer: "Dicoding Indonesia",
-      date: "2023",
+      date: "2025",
       image: "/images/JavaScrip.png",
       credentialUrl: "https://example.com/certificate1",
       skills: ["JavaScript", "Programming Basics", "Web Development"]
