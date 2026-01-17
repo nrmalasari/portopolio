@@ -1215,9 +1215,14 @@ export default function PortfolioPage() {
               transition={{ delay: 0.8 }}
               className="flex flex-col sm:flex-row gap-3 pt-3"
             >
-              <button className="px-6 py-3 text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg shadow-purple-500/25">
+              <a 
+                href="https://drive.google.com/uc?export=download&id=1SwkqX8i3vUWlTYEy6AiSYYMByi6UjggC"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg shadow-purple-500/25 inline-flex items-center justify-center"
+              >
                 Download CV
-              </button>
+              </a>
               <button 
                 className="px-6 py-3 text-sm bg-transparent border-2 border-purple-500 text-purple-300 rounded-full font-semibold hover:bg-purple-500/10 hover:text-white transition-all transform hover:scale-105"
                 onClick={scrollToAbout}
