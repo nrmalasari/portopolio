@@ -491,7 +491,7 @@ const ProjectsSection = () => {
       category: "Mobile App / IoT System / AI Integration",
       githubUrl: "https://github.com/nrmalasari/ProyekTerparkir",
       pptUrl: "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
-      liveUrl: "https://www.linkedin.com/posts/nirmalasari-rodito-sulnas-159845344_jurnal-activity-7319382236892475392-Xwwc?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFZEBpUBg_lLB3gIickj4n4dSPsh_bYiz_4",
+      liveUrl: "https://jurnal.lppm-stmikhandayani.ac.id/index.php/jti/article/view/382/175",
       videoUrl: "",
       featured: true
     },
