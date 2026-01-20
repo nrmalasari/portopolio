@@ -647,6 +647,15 @@ const CertificatesSection = () => {
       image: "/images/Sertifikat-21.png",
       credentialUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
       skills: ["Robotics", "Line Follower", "Competition"]
+    },
+    {
+      id: 8,
+      title: "Sertifikat Magaang",
+      issuer: "YK SC2 Menara",
+      date: "2025",
+      image: "/images/sertimagang1.png",
+      credentialUrl: "https://drive.google.com/file/d/1iFWvdmzWzoCTA6b9vnhiaEbUjq1L6NsE/view?usp=sharing",
+      skills: ["WEB Inventaris Sekolah", "Magang", "PHP, MySQL"]
     }
   ];
 
