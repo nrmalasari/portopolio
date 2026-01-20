@@ -651,7 +651,7 @@ const CertificatesSection = () => {
     {
       id: 8,
       title: "Sertifikat Magaang",
-      issuer: "YK SC2 Menara",
+      issuer: "TK SC2 Menara",
       date: "2025",
       image: "/images/sertimagang1.png",
       credentialUrl: "https://drive.google.com/file/d/1iFWvdmzWzoCTA6b9vnhiaEbUjq1L6NsE/view?usp=sharing",
