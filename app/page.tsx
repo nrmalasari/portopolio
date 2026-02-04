@@ -26,7 +26,19 @@ import {
   X,
   Home as HomeIcon,
   User,
-  FolderOpen
+  FolderOpen,
+  Briefcase,
+  Users,
+  Calendar,
+  MapPin,
+  ChevronRight,
+  Star,
+  Heart,
+  Sparkles,
+  Rocket,
+  Zap,
+  Send,
+  ThumbsUp
 } from "lucide-react";
 
 // FadeContent Component
@@ -90,7 +102,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
   );
 };
 
-// Navbar Component - FIXED: Menu di tengah, background transparan
+// Navbar Component
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -115,6 +127,7 @@ const Navbar = () => {
   const navItems = [
     { id: "hero", text: "Home", icon: <HomeIcon className="w-4 h-4" /> },
     { id: "about", text: "About", icon: <User className="w-4 h-4" /> },
+    { id: "experience", text: "Experience", icon: <Briefcase className="w-4 h-4" /> },
     { id: "skills", text: "Skills", icon: <Code2 className="w-4 h-4" /> },
     { id: "certificates", text: "Certificates", icon: <Award className="w-4 h-4" /> },
     { id: "projects", text: "Projects", icon: <FolderOpen className="w-4 h-4" /> },
@@ -136,7 +149,7 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Desktop Navbar - FULLY TRANSPARANT dengan menu di tengah */}
+      {/* Desktop Navbar */}
       <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-transparent`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
@@ -145,7 +158,7 @@ const Navbar = () => {
               {/* Empty space untuk balance */}
             </div>
 
-            {/* Navigation Items - CENTER dengan background hanya di menu */}
+            {/* Navigation Items - CENTER */}
             <div className="hidden lg:flex">
               <div className="flex space-x-1 bg-gray-900/70 backdrop-blur-md rounded-full px-6 py-2 border border-gray-700/30">
                 {navItems.map((item, index) => (
@@ -279,6 +292,337 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </>
+  );
+};
+
+// Experience Section Component
+const ExperienceSection = () => {
+  const experienceData = [
+    {
+      id: 1,
+      title: "Magang Pengembangan Sistem Informasi Inventaris",
+      company: "TK SC2 Menara Parepare",
+      period: "Oktober 2025 – Desember 2025",
+      location: "Parepare, Indonesia",
+      description: "Mengembangkan sistem informasi inventaris berbasis aplikasi untuk mengdigitalisasi proses pendataan aset sekolah yang sebelumnya dilakukan secara manual.",
+      responsibilities: [
+        "Merancang alur sistem dan antarmuka (UI/UX) yang sederhana dan mudah digunakan oleh guru serta staf administrasi non-teknis",
+        "Mengimplementasikan fitur inti seperti manajemen data aset, pencatatan riwayat keluar–masuk barang, serta laporan inventaris",
+        "Berkontribusi dalam meningkatkan akurasi data, efisiensi pengelolaan aset, dan kemudahan akses informasi bagi pihak sekolah"
+      ],
+      technologies: ["Laravel", "MySQL", "PHP", "CSS", "UI/UX Design"],
+      type: "Internship"
+    },
+    {
+      id: 2,
+      title: "Magang MBKM Mandiri - Web Development",
+      company: "Dinas Komunikasi dan Informatika Kota Parepare",
+      period: "April 2025 – Mei 2025",
+      location: "Parepare, Indonesia",
+      description: "Berperan dalam redesain dan pengembangan website SATU DATA Kota Parepare sebagai platform resmi pengelolaan data pemerintah daerah.",
+      responsibilities: [
+        "Mengoptimalkan tampilan antarmuka (UI/UX) agar lebih modern, konsisten, dan mudah digunakan",
+        "Berkolaborasi dengan tim untuk memastikan struktur informasi, navigasi, dan konten data tersaji secara jelas",
+        "Website hasil pengembangan digunakan secara aktif oleh Pemerintah Kota Parepare untuk tata kelola data yang lebih efektif"
+      ],
+      technologies: ["React", "Laravel", "Tailwind CSS", "MySQL", "Filament"],
+      type: "Internship"
+    },
+    {
+      id: 3,
+      title: "Asisten Dosen Mata Kuliah Computer Vision",
+      company: "Institut Teknologi Bacharuddin Jusuf Habibie",
+      period: "2023 – Sekarang",
+      location: "Parepare, Indonesia",
+      description: "Membantu dosen dalam kegiatan akademik dan praktikum untuk mata kuliah pemrograman dan teknologi informasi.",
+      responsibilities: [
+        "Membimbing mahasiswa dalam praktikum pemrograman dan pengembangan aplikasi",
+        "Membantu persiapan materi pembelajaran dan evaluasi tugas",
+        "Memberikan dukungan teknis dalam penggunaan tools dan teknologi terkait"
+      ],
+      technologies: ["Java", "Python", "Algoritma", "Struktur Data"],
+      type: "Teaching"
+    }
+  ];
+
+  return (
+    <div id="experience" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Experience</span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Perjalanan profesional dan pengalaman kerja yang telah saya lalui
+          </p>
+        </motion.div>
+
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-purple-500/30 via-pink-500/30 to-transparent hidden lg:block"></div>
+          
+          {experienceData.map((exp, index) => (
+            <motion.div
+              key={exp.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              viewport={{ once: true }}
+              className={`relative mb-12 ${index % 2 === 0 ? 'lg:pr-1/2 lg:pl-0' : 'lg:pl-1/2 lg:pr-0'} lg:pr-8 lg:pl-8`}
+            >
+              {/* Timeline dot */}
+              <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full border-4 border-gray-900 z-10"></div>
+              
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        exp.type === 'Internship' 
+                          ? 'bg-purple-500/20 text-purple-300' 
+                          : 'bg-blue-500/20 text-blue-300'
+                      }`}>
+                        {exp.type}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                      {exp.title}
+                    </h3>
+                    <div className="flex items-center text-purple-400 font-medium mt-1">
+                      <Briefcase className="w-4 h-4 mr-2" />
+                      {exp.company}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 lg:mt-0 lg:text-right">
+                    <div className="flex items-center text-gray-300 text-sm">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {exp.period}
+                    </div>
+                    <div className="flex items-center text-gray-400 text-sm mt-1">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      {exp.location}
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-gray-300 mb-4">
+                  {exp.description}
+                </p>
+
+                <div className="mb-4">
+                  <h4 className="text-purple-300 font-semibold mb-2 flex items-center">
+                    <ChevronRight className="w-4 h-4 mr-1" />
+                    Responsibilities & Achievements
+                  </h4>
+                  <ul className="space-y-2">
+                    {exp.responsibilities.map((resp, idx) => (
+                      <li key={idx} className="flex items-start text-gray-400 text-sm">
+                        <span className="text-purple-400 mr-2 mt-1">•</span>
+                        {resp}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {exp.technologies.map((tech, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-purple-500/10 text-purple-300 text-xs rounded-full border border-purple-500/20"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Organization Section Component
+const OrganizationSection = () => {
+  const organizationData = [
+    {
+      id: 1,
+      name: "Habibie Engineering Robotic of Organization (HERO)",
+      position: "Anggota Hubungan Masyarakat (HUMAS)",
+      period: "September 2023 – Desember 2024",
+      description: "Organisasi robotika di Institut Teknologi Bacharuddin Jusuf Habibie yang fokus pada pengembangan teknologi robotik dan kecerdasan buatan.",
+      activities: [
+        "Aktif berperan dalam perencanaan dan pelaksanaan program organisasi, termasuk HERO Goes to School dan seminar robotika",
+        "Terlibat dalam pengelolaan komunikasi dan publikasi kegiatan, memastikan informasi tersampaikan secara jelas dan profesional",
+        "Berkontribusi dalam penyelenggaraan dan fasilitasi pelatihan robotika, mulai dari pengenalan dasar hingga persiapan lomba",
+        "Mengembangkan kemampuan kerja tim, komunikasi, dan problem solving dalam lingkungan organisasi berbasis teknologi"
+      ],
+      skills: ["Teamwork", "Communication", "Event Planning", "Public Relations"],
+      image: "/images/hero-logo.png"
+    },
+    {
+      id: 2,
+      name: "Habibie Coding Club (HCC)",
+      position: "Anggota Aktif",
+      period: "Oktober 2022 – Desember 2023",
+      description: "Komunitas pemrograman di kampus yang berfokus pada pengembangan skill coding dan kolaborasi proyek teknologi.",
+      activities: [
+        "Aktif berkontribusi dalam pelatihan dan mentoring Web Development bagi mahasiswa baru",
+        "Terlibat dalam perencanaan dan pelaksanaan kegiatan belajar rutin untuk meningkatkan kemampuan teknis anggota",
+        "Mengikuti berbagai kompetisi dan kegiatan pengembangan skill di bidang pemrograman",
+        "Mengasah kemampuan teknis, komunikasi, dan kerja tim melalui diskusi dan praktik coding"
+      ],
+      skills: ["Web Development", "Mentoring", "Collaboration", "Problem Solving"],
+      logo: "/images/hcc-logo.png"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Organization <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Involvement</span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Pengalaman berorganisasi dan kontribusi dalam komunitas teknologi
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {organizationData.map((org, index) => (
+            <motion.div
+              key={org.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="group"
+            >
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full">
+                {/* Header */}
+                <div className="flex items-start mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    {org.image ? (
+                      <img 
+                        src={org.image} 
+                        alt={org.name}
+                        className="w-10 h-10 object-contain"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.parentElement!.innerHTML = '<Users className="w-8 h-8 text-purple-400" />';
+                        }}
+                      />
+                    ) : (
+                      <Users className="w-8 h-8 text-purple-400" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                      {org.name}
+                    </h3>
+                    <div className="flex items-center text-purple-400 font-medium mt-1">
+                      <ChevronRight className="w-4 h-4 mr-1" />
+                      {org.position}
+                    </div>
+                    <div className="flex items-center text-gray-300 text-sm mt-1">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {org.period}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-gray-300 mb-6">
+                  {org.description}
+                </p>
+
+                {/* Activities */}
+                <div className="mb-6">
+                  <h4 className="text-purple-300 font-semibold mb-3">Key Activities</h4>
+                  <ul className="space-y-2">
+                    {org.activities.map((activity, idx) => (
+                      <li key={idx} className="flex items-start text-gray-400 text-sm">
+                        <span className="text-purple-400 mr-2 mt-1">▸</span>
+                        {activity}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Skills */}
+                <div>
+                  <h4 className="text-purple-300 font-semibold mb-3">Skills Developed</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {org.skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-300 text-xs rounded-full border border-purple-500/20"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Hover effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Additional Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
+        >
+          <div className="flex items-center mb-6">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mr-4">
+              <Award className="w-6 h-6 text-purple-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-white">Impact & Learning</h3>
+              <p className="text-gray-300">Pengalaman berorganisasi telah mengembangkan soft skills yang berharga</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { title: "Leadership", desc: "Mengkoordinasi tim dalam kegiatan organisasi" },
+              { title: "Communication", desc: "Public speaking dan publikasi kegiatan", },
+              { title: "Teamwork", desc: "Kolaborasi dalam proyek dan event",},
+              { title: "Problem Solving", desc: "Menyelesaikan tantangan teknis dan organisasi",}
+            ].map((item, idx) => (
+              <div key={idx} className="bg-gray-800/30 rounded-xl p-4 hover:bg-gray-800/50 transition-all duration-300">
+                <div className="flex items-center mb-2">
+                  <span className="text-2xl mr-2"></span>
+                  <h4 className="text-purple-300 font-semibold">{item.title}</h4>
+                </div>
+                <p className="text-gray-400 text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -538,7 +882,7 @@ const ProjectsSection = () => {
   const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
 
   return (
-    <div className="container mx-auto">
+    <div id="projects" className="container mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -771,7 +1115,7 @@ const CertificatesSection = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div id="certificates" className="container mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -821,173 +1165,316 @@ const CertificatesSection = () => {
   );
 };
 
-// Contact Section Component
-const ContactSection = () => {
-  const contactData = [
+// Contact Form Section Component (Updated)
+const ContactFormSection = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const [comments, setComments] = useState([
     {
       id: 1,
-      name: "LinkedIn",
-      username: "nirmalasari-rodito-sulnas",
-      url: "https://www.linkedin.com/in/nirmalasari-rodito-sulnas-159845344",
-      icon: <Linkedin className="w-6 h-6" />,
-      color: "blue",
-      description: "Connect professionally"
+      name: "Alex Johnson",
+      time: "2 jam yang lalu",
+      comment: "Amazing AI portfolio! The projects showcase incredible technical depth.",
+      likes: 12
     },
     {
       id: 2,
-      name: "Instagram",
-      username: "nrmlardt",
-      url: "https://instagram.com/nrmlardt",
-      icon: <Instagram className="w-6 h-6" />,
-      color: "pink",
-      description: "Follow for updates"
-    },
-    {
-      id: 3,
-      name: "GitHub",
-      username: "nrmalasari",
-      url: "https://github.com/nrmalasari",
-      icon: <Github className="w-6 h-6" />,
-      color: "gray",
-      description: "Explore my code"
-    },
-    {
-      id: 4,
-      name: "Email",
-      username: "nirmalamala1311@gmail.com",
-      url: "mailto:nirmalamala1311@gmail.com",
-      icon: <Mail className="w-6 h-6" />,
-      color: "green",
-      description: "Send me a message"
+      name: "Sarah Miller",
+      time: "5 jam yang lalu",
+      comment: "Really impressed with your work! The attention to detail is remarkable.",
+      likes: 8
     }
-  ];
+  ]);
 
-  const getColorClasses = (color: string) => {
-    switch (color) {
-      case "blue":
-        return {
-          bg: "bg-blue-500/20",
-          border: "border-blue-500/30",
-          gradient: "from-blue-500 to-blue-600",
-          icon: "text-blue-400"
-        };
-      case "pink":
-        return {
-          bg: "bg-pink-500/20",
-          border: "border-pink-500/30",
-          gradient: "from-pink-500 to-purple-500",
-          icon: "text-pink-400"
-        };
-      case "gray":
-        return {
-          bg: "bg-gray-700/20",
-          border: "border-gray-600/30",
-          gradient: "from-gray-700 to-gray-900",
-          icon: "text-gray-400"
-        };
-      case "green":
-        return {
-          bg: "bg-green-500/20",
-          border: "border-green-500/30",
-          gradient: "from-green-500 to-teal-500",
-          icon: "text-green-400"
-        };
-      default:
-        return {
-          bg: "bg-purple-500/20",
-          border: "border-purple-500/30",
-          gradient: "from-purple-500 to-pink-500",
-          icon: "text-purple-400"
-        };
-    }
+  const [newComment, setNewComment] = useState('');
+  const [newCommentName, setNewCommentName] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted:', formData);
+    alert('Pesan telah dikirim! Terima kasih telah menghubungi saya.');
+    setFormData({ name: '', email: '', message: '' });
   };
 
-  const ContactCard = ({ contact, index }: { contact: any; index: number }) => {
-    const colorClasses = getColorClasses(contact.color);
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
-        viewport={{ once: true }}
-        className="group relative"
-      >
-        <motion.a
-          href={contact.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className={`block bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border ${colorClasses.border} hover:border-opacity-60 transition-all duration-300 h-full`}
-        >
-          <div className={`w-14 h-14 rounded-2xl ${colorClasses.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-            <div className={colorClasses.icon}>
-              {contact.icon}
-            </div>
-          </div>
+  const handleAddComment = () => {
+    if (!newCommentName.trim() || !newComment.trim()) {
+      alert('Silakan isi nama dan komentar Anda');
+      return;
+    }
 
-          <h3 className="text-xl font-bold text-white mb-2">{contact.name}</h3>
-          <p className="text-gray-300 text-sm mb-3">{contact.description}</p>
-          <div className="text-purple-300 font-medium text-sm truncate">
-            {contact.username}
-          </div>
+    const newCommentObj = {
+      id: comments.length + 1,
+      name: newCommentName,
+      time: 'Baru saja',
+      comment: newComment,
+      likes: 0
+    };
 
-          <div className={`absolute inset-0 bg-gradient-to-br ${colorClasses.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`} />
-        </motion.a>
-      </motion.div>
-    );
+    setComments([newCommentObj, ...comments]);
+    setNewComment('');
+    setNewCommentName('');
+  };
+
+  const handleLikeComment = (id: number) => {
+    setComments(comments.map(comment => 
+      comment.id === id ? { ...comment, likes: comment.likes + 1 } : comment
+    ));
   };
 
   return (
-    <div className="container mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="text-center mb-16"
-      >
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          Get In <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Touch</span>
-        </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-          Mari terhubung! Saya selalu terbuka untuk membahas peluang baru, kolaborasi, atau sekadar berbagi ide.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        {contactData.map((contact, index) => (
-          <ContactCard key={contact.id} contact={contact} index={index} />
-        ))}
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        viewport={{ once: true }}
-        className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-3xl p-8 text-center border border-purple-500/20"
-      >
-        <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <MessageCircle className="w-8 h-8 text-purple-400" />
-        </div>
-        <h3 className="text-2xl font-bold text-white mb-4">
-          Ready to Start a Project?
-        </h3>
-        <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-          Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu yang luar biasa bersama!
-        </p>
-        <motion.a
-          href="mailto:nirmalamala1311@gmail.com"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25"
+    <div id="contact" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto">
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
         >
-          <Mail className="w-5 h-5 mr-2" />
-          Start Conversation
-        </motion.a>
-      </motion.div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to Start a <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Project?</span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu yang luar biasa bersama!
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left Column - Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
+          >
+            <h3 className="text-2xl font-bold text-white mb-6">Hubungi Saya</h3>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-gray-300 mb-2 font-medium">Nama Anda</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                  placeholder="Masukkan nama lengkap Anda"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 mb-2 font-medium">Email Anda</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                  placeholder="nama@email.com"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-300 mb-2 font-medium">Pesan Anda</label>
+                <textarea
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all min-h-[150px] resize-vertical"
+                  placeholder="Tulis pesan Anda di sini..."
+                  required
+                />
+              </div>
+
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-[1.02] cursor-pointer flex items-center justify-center"
+                >
+                  <Send className="w-5 h-5 mr-2" />
+                  Kirim Pesan
+                </button>
+              </div>
+            </form>
+
+            {/* General Info */}
+            <div className="mt-8 pt-6 border-t border-gray-700/50">
+              <h4 className="text-lg font-semibold text-white mb-3">General</h4>
+              <p className="text-gray-400 text-sm">
+                Saya akan membalas pesan Anda dalam waktu 24-48 jam. Untuk pertanyaan mendesak, silakan hubungi melalui media sosial.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Right Column - Comments Section */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            {/* Leave Comment Form */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
+              <h3 className="text-2xl font-bold text-white mb-6">Tinggalkan Komentar</h3>
+              <p className="text-gray-400 mb-6">Share pengalaman Anda!</p>
+              
+              <div className="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    value={newCommentName}
+                    onChange={(e) => setNewCommentName(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                    placeholder="Nama Anda"
+                  />
+                </div>
+
+                <div>
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all min-h-[120px] resize-vertical"
+                    placeholder="Tinggalkan komentar Anda..."
+                  />
+                </div>
+
+                <button
+                  onClick={handleAddComment}
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-[1.02] cursor-pointer"
+                >
+                  Post Komentar
+                </button>
+              </div>
+            </div>
+
+            {/* Comments List */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
+              <h3 className="text-2xl font-bold text-white mb-6">Komentar ({comments.length})</h3>
+              
+              <div className="space-y-6">
+                {comments.map((comment) => (
+                  <div key={comment.id} className="pb-6 border-b border-gray-700/50 last:border-0 last:pb-0">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h4 className="font-bold text-white">{comment.name}</h4>
+                        <p className="text-gray-400 text-sm">{comment.time}</p>
+                      </div>
+                      <button
+                        onClick={() => handleLikeComment(comment.id)}
+                        className="flex items-center space-x-1 text-gray-400 hover:text-purple-400 transition-colors cursor-pointer"
+                      >
+                        <ThumbsUp className="w-4 h-4" />
+                        <span className="text-sm">{comment.likes}</span>
+                      </button>
+                    </div>
+                    
+                    <p className="text-gray-300">{comment.comment}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Empty State */}
+              {comments.length === 0 && (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <MessageCircle className="w-8 h-8 text-purple-400" />
+                  </div>
+                  <p className="text-gray-400">Belum ada komentar. Jadilah yang pertama!</p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Ready to Start a Project Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-16 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-3xl p-12 border border-purple-500/20 relative overflow-hidden text-center"
+        >
+          {/* Animated background elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/10 rounded-full blur-3xl"></div>
+          
+          <div className="relative z-10">
+            <div className="w-20 h-20 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <MessageCircle className="w-10 h-10 text-purple-400" />
+            </div>
+            
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Ready to Start Something Amazing?
+            </h3>
+            
+            <p className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
+              Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu yang luar biasa bersama! 
+              <span className="block text-purple-300 mt-2">✨ Setiap proyek adalah petualangan baru ✨</span>
+            </p>
+
+            {/* CTA Button - Direct to Gmail */}
+            <motion.a
+              href="mailto:nirmalamala1311@gmail.com"
+              whileHover={{ scale: 1.05, rotate: 1 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 text-lg cursor-pointer"
+            >
+              <Mail className="w-5 h-5 mr-2" />
+              Start Conversation
+            </motion.a>
+
+            {/* Fun Quote */}
+            <div className="mt-8 pt-6 border-t border-purple-500/20">
+              <p className="text-gray-400 text-sm italic">
+                "Great things in business are never done by one person. They're done by a team of people."
+                <span className="block text-purple-300 mt-1">- Steve Jobs</span>
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Quick Contact Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Mail className="w-6 h-6 text-purple-400" />
+              </div>
+              <h4 className="text-white font-semibold mb-2">Email</h4>
+              <p className="text-gray-300 text-sm">nirmalamala1311@gmail.com</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <MessageCircle className="w-6 h-6 text-pink-400" />
+              </div>
+              <h4 className="text-white font-semibold mb-2">Response Time</h4>
+              <p className="text-gray-300 text-sm">24-48 Jam</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-6 h-6 text-purple-400" />
+              </div>
+              <h4 className="text-white font-semibold mb-2">Availability</h4>
+              <p className="text-gray-300 text-sm">Senin - Jumat</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };
@@ -1369,6 +1856,12 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* Experience Section */}
+      <ExperienceSection />
+
+      {/* Organization Section */}
+      <OrganizationSection />
+
       {/* Skills Section */}
       <section 
         ref={skillsRef} 
@@ -1438,31 +1931,17 @@ export default function PortfolioPage() {
       </section>
 
       {/* Certificates Section */}
-      <section 
-        ref={certificatesRef} 
-        id="certificates" 
-        className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10"
-      >
+      <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <CertificatesSection />
       </section>
 
       {/* Projects Section */}
-      <section 
-        ref={projectsRef} 
-        id="projects" 
-        className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10"
-      >
+      <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <ProjectsSection />
       </section>
 
-      {/* Contact Section */}
-      <section 
-        ref={contactRef} 
-        id="contact" 
-        className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10 flex items-center"
-      >
-        <ContactSection />
-      </section>
+      {/* Contact Form Section */}
+      <ContactFormSection />
     </div>
   );
 }
