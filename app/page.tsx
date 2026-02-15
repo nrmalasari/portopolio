@@ -876,7 +876,19 @@ const ProjectsSection = () => {
       pptUrl: "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=sharing",
       videoUrl: "",
       featured: false
-    }
+    },
+    {
+    id: 6,
+    title: "Demo Sistem Deteksi Objek CCTV",
+    description: "Aplikasi web berbasis React untuk demonstrasi sistem deteksi objek pada video CCTV. Sistem menampilkan hasil deteksi objek secara visual dengan bounding box dan label secara interaktif. Berperan sebagai Frontend Developer dengan implementasi React + TypeScript + Vite untuk membangun antarmuka real-time dan integrasi hasil deteksi.",
+    image: "/images/deteksi-cctv.png",
+    technologies: ["React", "TypeScript", "Vite", "Computer Vision", "Frontend Development"],
+    liveUrl: "https://demo-deteksi-objek-cctv.vercel.app",
+    githubUrl: "https://github.com/AldiAlfatih/DemoDeteksiObjekCCTV",
+    pptUrl: "",
+    videoUrl: "",
+    featured: true
+  }
   ];
 
   const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
