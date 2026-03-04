@@ -332,7 +332,7 @@ const ExperienceSection = () => {
       id: 3,
       title: "Asisten Dosen Mata Kuliah Computer Vision",
       company: "Institut Teknologi Bacharuddin Jusuf Habibie",
-      period: "2023 – Sekarang",
+      period: "2025",
       location: "Parepare, Indonesia",
       description: "Membantu dosen dalam kegiatan akademik dan praktikum untuk mata kuliah pemrograman dan teknologi informasi.",
       responsibilities: [
@@ -1012,6 +1012,15 @@ const CertificatesSection = () => {
       image: "/images/sertimagang1.png",
       credentialUrl: "https://drive.google.com/file/d/1iFWvdmzWzoCTA6b9vnhiaEbUjq1L6NsE/view?usp=sharing",
       skills: ["WEB Inventaris Sekolah", "Magang", "PHP, MySQL"]
+    },
+    {
+      id: 9,
+      title: "FertInnovation Challenge 2025 – Top 20 Proposal (AI-Driven)",
+      issuer: "Indonesia Agrichemical Research Institute",
+      date: "2025",
+      image: "/images/fertinnovation2025.png",
+      credentialUrl: "https://drive.google.com/file/d/11GGsIa4tBKY56ZN9kZtJAmkHnoUp43Bw/view?usp=drive_link",
+      skills: ["Artificial Intelligence", "AI-Driven Innovation", "Proposal Development", "Problem Solving"]
     }
   ];
 
