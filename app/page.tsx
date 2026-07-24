@@ -1897,7 +1897,7 @@ export default function PortfolioPage() {
                   <div className="flex items-center justify-center mb-2">
                     <FolderOpen className="w-6 h-6 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
                   </div>
-                  <div className="text-2xl font-bold text-white">10+</div>
+                  <div className="text-2xl font-bold text-white">6+</div>
                   <div className="text-gray-400 text-xs">Proyek</div>
                 </div>
 
@@ -1905,8 +1905,8 @@ export default function PortfolioPage() {
                   <div className="flex items-center justify-center mb-2">
                     <Cpu className="w-6 h-6 text-pink-400 group-hover:scale-110 transition-transform duration-300" />
                   </div>
-                  <div className="text-2xl font-bold text-white">5+</div>
-                  <div className="text-gray-400 text-xs">Model ML</div>
+                  <div className="text-2xl font-bold text-white">1 Tahun</div>
+                  <div className="text-gray-400 text-xs">Pengalaman</div>
                 </div>
 
                 <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 text-center border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
