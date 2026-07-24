@@ -1761,10 +1761,7 @@ export default function PortfolioPage() {
                 className="max-w-lg"
               >
                 <p className="text-gray-300 text-base leading-relaxed">
-                  Spesialis dalam menciptakan aplikasi web dan mobile dengan pendekatan modern, 
-                  mengutamakan performa optimal dan pengalaman pengguna yang menarik. 
-                  Memiliki keahlian dalam mengintegrasikan kecerdasan buatan dan pembelajaran mesin 
-                  untuk menghasilkan solusi inovatif yang memberikan nilai tambah.
+                  Fresh Graduate S1 Ilmu Komputer (S.Kom) dengan IPK 3,91 yang memiliki minat dan pengalaman dalam pengembangan perangkat lunak, khususnya Software Engineering, Frontend Development, Backend Development, Web Development, Mobile Development, serta UI/UX Design. Terbiasa mengembangkan aplikasi menggunakan teknologi modern melalui proyek akademik, magang, dan proyek pribadi serta selalu antusias mempelajari teknologi baru.
                 </p>
               </motion.div>
             </div>
