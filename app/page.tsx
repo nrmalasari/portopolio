@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Lanyard from "./components/Lanyard/Lanyard";
 import { motion, AnimatePresence } from "framer-motion";
 import ShinyText from "./components/ShinyText/ShinyText";
+import SkillTabs from "@/components/SkillTabs";
 import ProfileCard from "../src/blocks/Components/ProfileCard/ProfileCard";
 import { 
   Code2, 
@@ -38,10 +39,23 @@ import {
   Rocket,
   Zap,
   Send,
-  ThumbsUp
+  ThumbsUp,
+  Database,
+  GraduationCap,
+  Brain,
+  Users as UsersIcon,
+  Globe,
+  Terminal,
+  Layers,
+  BarChart3,
+  Cloud,
+  Shield,
+  Zap as ZapIcon
 } from "lucide-react";
 
-// FadeContent Component
+// ============================================================
+// FADECONTENT COMPONENT
+// ============================================================
 interface FadeContentProps {
   children: React.ReactNode;
   blur?: boolean;
@@ -102,12 +116,13 @@ const FadeContent: React.FC<FadeContentProps> = ({
   );
 };
 
-// Navbar Component
+// ============================================================
+// NAVBAR COMPONENT
+// ============================================================
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -149,16 +164,10 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Desktop Navbar */}
       <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-transparent`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
-            {/* Empty Space - LEFT */}
-            <div className="hidden lg:flex flex-1">
-              {/* Empty space untuk balance */}
-            </div>
-
-            {/* Navigation Items - CENTER */}
+            <div className="hidden lg:flex flex-1"></div>
             <div className="hidden lg:flex">
               <div className="flex space-x-1 bg-gray-900/70 backdrop-blur-md rounded-full px-6 py-2 border border-gray-700/30">
                 {navItems.map((item, index) => (
@@ -174,8 +183,6 @@ const Navbar = () => {
                 ))}
               </div>
             </div>
-
-            {/* Social Links - RIGHT */}
             <div className="hidden lg:flex flex-1 justify-end">
               <div className="flex space-x-3">
                 {socialLinks.map((social, index) => (
@@ -193,8 +200,6 @@ const Navbar = () => {
                 ))}
               </div>
             </div>
-
-            {/* Mobile Menu Button */}
             <div className="flex lg:hidden items-center justify-end w-full">
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -209,11 +214,9 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -221,8 +224,6 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
             />
-            
-            {/* Sidebar */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -230,7 +231,6 @@ const Navbar = () => {
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               className="fixed top-0 right-0 h-full w-80 bg-gray-900/95 backdrop-blur-xl z-50 lg:hidden border-l border-gray-800"
             >
-              {/* Sidebar Header */}
               <div className="p-6 border-b border-gray-800">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-bold text-white">Menu</h2>
@@ -244,8 +244,6 @@ const Navbar = () => {
                   </motion.button>
                 </div>
               </div>
-
-              {/* Navigation Items */}
               <div className="p-6">
                 <div className="space-y-2">
                   {navItems.map((item, index) => (
@@ -256,19 +254,13 @@ const Navbar = () => {
                       whileTap={{ scale: 0.98 }}
                       className="w-full flex items-center space-x-3 px-4 py-3 text-left text-gray-300 hover:text-white hover:bg-purple-900/20 rounded-xl transition-all duration-200"
                     >
-                      <div className="text-purple-400">
-                        {item.icon}
-                      </div>
+                      <div className="text-purple-400">{item.icon}</div>
                       <span className="font-medium">{item.text}</span>
                     </motion.button>
                   ))}
                 </div>
-
-                {/* Social Links in Sidebar */}
                 <div className="mt-8 pt-6 border-t border-gray-800">
-                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
-                    Connect with me
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Connect with me</h3>
                   <div className="flex space-x-3">
                     {socialLinks.map((social, index) => (
                       <motion.a
@@ -295,7 +287,9 @@ const Navbar = () => {
   );
 };
 
-// Experience Section Component
+// ============================================================
+// EXPERIENCE SECTION COMPONENT
+// ============================================================
 const ExperienceSection = () => {
   const experienceData = [
     {
@@ -364,7 +358,6 @@ const ExperienceSection = () => {
         </motion.div>
 
         <div className="relative">
-          {/* Timeline line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-purple-500/30 via-pink-500/30 to-transparent hidden lg:block"></div>
           
           {experienceData.map((exp, index) => (
@@ -376,7 +369,6 @@ const ExperienceSection = () => {
               viewport={{ once: true }}
               className={`relative mb-12 ${index % 2 === 0 ? 'lg:pr-1/2 lg:pl-0' : 'lg:pl-1/2 lg:pr-0'} lg:pr-8 lg:pl-8`}
             >
-              {/* Timeline dot */}
               <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full border-4 border-gray-900 z-10"></div>
               
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
@@ -399,7 +391,6 @@ const ExperienceSection = () => {
                       {exp.company}
                     </div>
                   </div>
-                  
                   <div className="mt-4 lg:mt-0 lg:text-right">
                     <div className="flex items-center text-gray-300 text-sm">
                       <Calendar className="w-4 h-4 mr-2" />
@@ -412,9 +403,7 @@ const ExperienceSection = () => {
                   </div>
                 </div>
 
-                <p className="text-gray-300 mb-4">
-                  {exp.description}
-                </p>
+                <p className="text-gray-300 mb-4">{exp.description}</p>
 
                 <div className="mb-4">
                   <h4 className="text-purple-300 font-semibold mb-2 flex items-center">
@@ -450,7 +439,9 @@ const ExperienceSection = () => {
   );
 };
 
-// Organization Section Component
+// ============================================================
+// ORGANIZATION SECTION COMPONENT
+// ============================================================
 const OrganizationSection = () => {
   const organizationData = [
     {
@@ -514,7 +505,6 @@ const OrganizationSection = () => {
               className="group"
             >
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full">
-                {/* Header */}
                 <div className="flex items-start mb-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
                     {org.image ? (
@@ -546,12 +536,8 @@ const OrganizationSection = () => {
                   </div>
                 </div>
 
-                {/* Description */}
-                <p className="text-gray-300 mb-6">
-                  {org.description}
-                </p>
+                <p className="text-gray-300 mb-6">{org.description}</p>
 
-                {/* Activities */}
                 <div className="mb-6">
                   <h4 className="text-purple-300 font-semibold mb-3">Key Activities</h4>
                   <ul className="space-y-2">
@@ -564,7 +550,6 @@ const OrganizationSection = () => {
                   </ul>
                 </div>
 
-                {/* Skills */}
                 <div>
                   <h4 className="text-purple-300 font-semibold mb-3">Skills Developed</h4>
                   <div className="flex flex-wrap gap-2">
@@ -579,14 +564,12 @@ const OrganizationSection = () => {
                   </div>
                 </div>
 
-                {/* Hover effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Additional Info */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -603,13 +586,12 @@ const OrganizationSection = () => {
               <p className="text-gray-300">Pengalaman berorganisasi telah mengembangkan soft skills yang berharga</p>
             </div>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { title: "Leadership", desc: "Mengkoordinasi tim dalam kegiatan organisasi" },
-              { title: "Communication", desc: "Public speaking dan publikasi kegiatan", },
-              { title: "Teamwork", desc: "Kolaborasi dalam proyek dan event",},
-              { title: "Problem Solving", desc: "Menyelesaikan tantangan teknis dan organisasi",}
+              { title: "Communication", desc: "Public speaking dan publikasi kegiatan" },
+              { title: "Teamwork", desc: "Kolaborasi dalam proyek dan event" },
+              { title: "Problem Solving", desc: "Menyelesaikan tantangan teknis dan organisasi" }
             ].map((item, idx) => (
               <div key={idx} className="bg-gray-800/30 rounded-xl p-4 hover:bg-gray-800/50 transition-all duration-300">
                 <div className="flex items-center mb-2">
@@ -626,12 +608,13 @@ const OrganizationSection = () => {
   );
 };
 
-// Project Card Component
+// ============================================================
+// PROJECT CARD COMPONENT
+// ============================================================
 const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // Simple URL check
   const hasValidUrl = (url: string) => {
     return url && 
            url !== "" && 
@@ -641,7 +624,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
            url !== "https://github.com";
   };
 
-  // Handle URL opening
   const openUrl = (url: string) => {
     if (hasValidUrl(url)) {
       window.open(url, '_blank', 'noopener,noreferrer');
@@ -660,7 +642,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         project.featured ? 'ring-2 ring-purple-500/30' : ''
       }`}
     >
-      {/* Featured Badge */}
       {project.featured && (
         <div className="absolute top-4 left-4 z-20">
           <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-full">
@@ -669,7 +650,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
       )}
 
-      {/* Project Image */}
       <div className="relative h-48 overflow-hidden">
         {project.image && (
           <img 
@@ -683,7 +663,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
             }}
           />
         )}
-        
         {imageError && (
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
             <div className="text-center">
@@ -692,11 +671,9 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
             </div>
           </div>
         )}
-        
         {!imageError && (
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-4">
-              {/* Live Demo Button */}
               <button
                 onClick={() => openUrl(project.liveUrl)}
                 className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
@@ -704,8 +681,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
               >
                 <ExternalLink className="w-5 h-5" />
               </button>
-              
-              {/* GitHub Button */}
               <button
                 onClick={() => openUrl(project.githubUrl)}
                 className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
@@ -718,12 +693,10 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         )}
       </div>
 
-      {/* Project Content */}
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-purple-400 text-sm font-medium">{project.category}</span>
           <div className="flex space-x-2">
-            {/* PPT Button */}
             <button
               onClick={() => openUrl(project.pptUrl)}
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
@@ -736,8 +709,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
             >
               <FileText className="w-4 h-4" />
             </button>
-            
-            {/* Video Button */}
             <button
               onClick={() => openUrl(project.videoUrl)}
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
@@ -761,7 +732,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           {project.description}
         </p>
 
-        {/* Technologies */}
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech: string, techIndex: number) => (
             <span
@@ -773,9 +743,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex space-x-3">
-          {/* Live Demo Button */}
           <button
             onClick={() => openUrl(project.liveUrl)}
             className={`flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all ${
@@ -787,8 +755,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           >
             {hasValidUrl(project.liveUrl) ? 'Live Demo' : 'Demo Soon'}
           </button>
-          
-          {/* GitHub Button */}
           <button
             onClick={() => openUrl(project.githubUrl)}
             className={`flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all border ${
@@ -803,12 +769,14 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
       </div>
 
-      {/* Hover Effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
     </motion.div>
   );
 };
 
+// ============================================================
+// PROJECTS SECTION COMPONENT
+// ============================================================
 const ProjectsSection = () => {
   const [showAll, setShowAll] = useState(false);
 
@@ -878,17 +846,17 @@ const ProjectsSection = () => {
       featured: false
     },
     {
-    id: 6,
-    title: "Demo Sistem Deteksi Objek CCTV",
-    description: "Aplikasi web berbasis React untuk demonstrasi sistem deteksi objek pada video CCTV. Sistem menampilkan hasil deteksi objek secara visual dengan bounding box dan label secara interaktif. Berperan sebagai Frontend Developer dengan implementasi React + TypeScript + Vite untuk membangun antarmuka real-time dan integrasi hasil deteksi.",
-    image: "/images/deteksi-cctv.png",
-    technologies: ["React", "TypeScript", "Vite", "Computer Vision", "Frontend Development"],
-    liveUrl: "https://demo-deteksi-objek-cctv.vercel.app",
-    githubUrl: "https://github.com/AldiAlfatih/DemoDeteksiObjekCCTV",
-    pptUrl: "",
-    videoUrl: "",
-    featured: true
-  }
+      id: 6,
+      title: "Demo Sistem Deteksi Objek CCTV",
+      description: "Aplikasi web berbasis React untuk demonstrasi sistem deteksi objek pada video CCTV. Sistem menampilkan hasil deteksi objek secara visual dengan bounding box dan label secara interaktif. Berperan sebagai Frontend Developer dengan implementasi React + TypeScript + Vite untuk membangun antarmuka real-time dan integrasi hasil deteksi.",
+      image: "/images/deteksi-cctv.png",
+      technologies: ["React", "TypeScript", "Vite", "Computer Vision", "Frontend Development"],
+      liveUrl: "https://demo-deteksi-objek-cctv.vercel.app",
+      githubUrl: "https://github.com/AldiAlfatih/DemoDeteksiObjekCCTV",
+      pptUrl: "",
+      videoUrl: "",
+      featured: true
+    }
   ];
 
   const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
@@ -936,7 +904,9 @@ const ProjectsSection = () => {
   );
 };
 
-// Certificates Section Component
+// ============================================================
+// CERTIFICATES SECTION COMPONENT
+// ============================================================
 const CertificatesSection = () => {
   const [showAll, setShowAll] = useState(false);
   
@@ -1006,7 +976,7 @@ const CertificatesSection = () => {
     },
     {
       id: 8,
-      title: "Sertifikat Magaang",
+      title: "Sertifikat Magang",
       issuer: "TK SC2 Menara",
       date: "2025",
       image: "/images/sertimagang1.png",
@@ -1063,13 +1033,11 @@ const CertificatesSection = () => {
               <Award className="w-16 h-16 text-purple-400" />
             </div>
           )}
-          
           {imageError && (
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center z-10">
               <Award className="w-16 h-16 text-purple-400" />
             </div>
           )}
-          
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-3">
               <motion.a
@@ -1174,7 +1142,6 @@ const CertificatesSection = () => {
           >
             {showAll ? 'Show Less Certificates' : `View All Certificates (${certificatesData.length})`}
           </motion.button>
-          
           {!showAll && (
             <p className="text-gray-400 text-sm mt-3">
               Showing 3 of {certificatesData.length} certificates
@@ -1186,7 +1153,9 @@ const CertificatesSection = () => {
   );
 };
 
-// Contact Form Section Component (Updated)
+// ============================================================
+// CONTACT FORM SECTION COMPONENT
+// ============================================================
 const ContactFormSection = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -1216,7 +1185,6 @@ const ContactFormSection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log('Form submitted:', formData);
     alert('Pesan telah dikirim! Terima kasih telah menghubungi saya.');
     setFormData({ name: '', email: '', message: '' });
@@ -1250,7 +1218,6 @@ const ContactFormSection = () => {
   return (
     <div id="contact" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="container mx-auto">
-        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1267,7 +1234,6 @@ const ContactFormSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left Column - Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -1324,7 +1290,6 @@ const ContactFormSection = () => {
               </div>
             </form>
 
-            {/* General Info */}
             <div className="mt-8 pt-6 border-t border-gray-700/50">
               <h4 className="text-lg font-semibold text-white mb-3">General</h4>
               <p className="text-gray-400 text-sm">
@@ -1333,7 +1298,6 @@ const ContactFormSection = () => {
             </div>
           </motion.div>
 
-          {/* Right Column - Comments Section */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -1341,7 +1305,6 @@ const ContactFormSection = () => {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            {/* Leave Comment Form */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
               <h3 className="text-2xl font-bold text-white mb-6">Tinggalkan Komentar</h3>
               <p className="text-gray-400 mb-6">Share pengalaman Anda!</p>
@@ -1375,7 +1338,6 @@ const ContactFormSection = () => {
               </div>
             </div>
 
-            {/* Comments List */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
               <h3 className="text-2xl font-bold text-white mb-6">Komentar ({comments.length})</h3>
               
@@ -1395,13 +1357,11 @@ const ContactFormSection = () => {
                         <span className="text-sm">{comment.likes}</span>
                       </button>
                     </div>
-                    
                     <p className="text-gray-300">{comment.comment}</p>
                   </div>
                 ))}
               </div>
 
-              {/* Empty State */}
               {comments.length === 0 && (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -1414,7 +1374,6 @@ const ContactFormSection = () => {
           </motion.div>
         </div>
 
-        {/* Ready to Start a Project Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1422,7 +1381,6 @@ const ContactFormSection = () => {
           viewport={{ once: true }}
           className="mt-16 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-3xl p-12 border border-purple-500/20 relative overflow-hidden text-center"
         >
-          {/* Animated background elements */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/10 rounded-full blur-3xl"></div>
           
@@ -1440,7 +1398,6 @@ const ContactFormSection = () => {
               <span className="block text-purple-300 mt-2">✨ Setiap proyek adalah petualangan baru ✨</span>
             </p>
 
-            {/* CTA Button - Direct to Gmail */}
             <motion.a
               href="mailto:nirmalamala1311@gmail.com"
               whileHover={{ scale: 1.05, rotate: 1 }}
@@ -1451,7 +1408,6 @@ const ContactFormSection = () => {
               Start Conversation
             </motion.a>
 
-            {/* Fun Quote */}
             <div className="mt-8 pt-6 border-t border-purple-500/20">
               <p className="text-gray-400 text-sm italic">
                 "Great things in business are never done by one person. They're done by a team of people."
@@ -1461,7 +1417,6 @@ const ContactFormSection = () => {
           </div>
         </motion.div>
 
-        {/* Quick Contact Info */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1500,15 +1455,214 @@ const ContactFormSection = () => {
   );
 };
 
-// Komponen utama
+// SKILLS SECTION dengan SkillTabs
+const SkillsSection = () => {
+  const [activeTab, setActiveTab] = useState("hardskills");
+
+  // Data Skills berdasarkan kategori
+  const skillData = {
+    hardskills: {
+      label: "Hard Skills",
+      icon: <Code2 className="w-4 h-4" />,
+      categories: [
+        {
+          title: "Bahasa Pemrograman",
+          skills: ["Python", "Java", "PHP", "JavaScript", "TypeScript", "Kotlin", "Dart", "C++"]
+        },
+        {
+          title: "Web Development & Backend",
+          skills: ["HTML5",
+    "CSS3",
+                    "Tailwind CSS",
+                    "JavaScript",
+                    "TypeScript",
+                    "PHP Native",
+                    "Laravel",
+                    "Laravel Filament",
+                    "CodeIgniter",
+                    "React.js",
+                    "Next.js",
+                    "Vue.js",
+                    "Node.js",
+                    "REST API",
+                    "Vite",]
+        },
+        {
+          title: "AI/ML & Data",
+          skills: ["Machine Learning", "Deep Learning", "Computer Vision", "NLP", "Data Mining", "EDA", "Data Visualization", "Model Deployment", "TensorFlow", "Keras", "scikit-learn", "MediaPipe"]
+        },
+        {
+          title: "Database",
+          skills: ["MySQL", "PostgreSQL", "Supabase", "Firebase"]
+        },
+        {
+          title: "Tools & Others",
+          skills: ["Git", "Docker", "Figma", "Filament", "Android Studio", "Postman"]
+        }
+      ]
+    },
+    softskills: {
+      label: "Soft Skills",
+      icon: <UsersIcon className="w-4 h-4" />,
+      categories: [
+        {
+          title: "Leadership & Management",
+          skills: ["Team Leadership", "Project Management", "Decision Making", "Delegation"]
+        },
+        {
+          title: "Communication",
+          skills: ["Public Speaking", "Presentation", "Technical Writing", "Active Listening", "Negotiation"]
+        },
+        {
+          title: "Problem Solving",
+          skills: ["Critical Thinking", "Analytical Skills", "Creative Solutions", "Root Cause Analysis"]
+        },
+        {
+          title: "Collaboration",
+          skills: ["Teamwork", "Cross-functional Collaboration", "Mentoring", "Knowledge Sharing"]
+        },
+        {
+          title: "Personal Attributes",
+          skills: ["Adaptability", "Time Management", "Self-motivation", "Continuous Learning", "Resilience"]
+        }
+      ]
+    },
+    languages: {
+      label: "Languages",
+      icon: <Globe className="w-4 h-4" />,
+      categories: [
+        {
+          title: "Native Languages",
+          skills: ["Indonesian (Native)", "Bugis (Native)"]
+        },
+        {
+          title: "Foreign Languages",
+          skills: ["English (Professional)"]
+        }
+      ]
+    }
+  };
+
+  const tabs = [
+    { id: "hardskills", label: "Hard Skills", icon: <Code2 className="w-4 h-4" /> },
+    { id: "softskills", label: "Soft Skills", icon: <UsersIcon className="w-4 h-4" /> },
+    { id: "languages", label: "Languages", icon: <Globe className="w-4 h-4" /> }
+  ];
+
+  return (
+    <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Skills</span>
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+            Keterampilan teknis, soft skills, dan kemampuan bahasa yang mendukung pengembangan solusi AI dan backend development
+          </p>
+        </motion.div>
+
+        {/* SkillTabs dengan GSAP Animation - di-center */}
+        <div className="flex justify-center mb-10 overflow-x-auto">
+          <SkillTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+        </div>
+
+        {/* Content berdasarkan tab aktif */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {skillData[activeTab as keyof typeof skillData].categories.map((category, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: idx * 0.05 }}
+                className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+              >
+                <h3 className="text-lg font-semibold text-purple-300 mb-4 flex items-center gap-2">
+                  <span className="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></span>
+                  {category.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill, skillIdx) => (
+                    <motion.span
+                      key={skillIdx}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.2, delay: skillIdx * 0.02 }}
+                      className="px-3 py-1.5 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-gray-200 text-sm rounded-full border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 cursor-default"
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Additional Tech Stack */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
+        >
+          <h3 className="text-xl font-bold text-white text-center mb-6 flex items-center justify-center gap-2">
+            <ZapIcon className="w-5 h-5 text-purple-400" />
+            Tech Stack Overview
+            <ZapIcon className="w-5 h-5 text-pink-400" />
+          </h3>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              "React", "Next.js", "TypeScript", "Tailwind CSS", 
+              "Node.js", "Laravel", "Python", "PHP", "Android Studio",
+              "React Native", "Flutter", "MySQL", "PostgreSQL",
+              "Git", "Figma", "OpenAI API", "Filament", "Docker",
+              "TensorFlow", "Keras", "scikit-learn", "MediaPipe"
+            ].map((tech, index) => (
+              <motion.span
+                key={tech}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
+                viewport={{ once: true }}
+                className="px-4 py-2 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium border border-purple-500/30 hover:bg-purple-500/40 hover:scale-105 transition-all duration-300 cursor-default"
+              >
+                {tech}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// ============================================================
+// MAIN COMPONENT - PortfolioPage
+// ============================================================
 export default function PortfolioPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
-  const projectsRef = useRef<HTMLDivElement>(null);
-  const contactRef = useRef<HTMLDivElement>(null);
-  const certificatesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -1533,113 +1687,6 @@ export default function PortfolioPage() {
       skillsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const skillsData = {
-    frontend: {
-      title: "Frontend Development",
-      icon: <Code2 className="w-6 h-6 text-purple-400" />,
-      skills: [
-        { name: "React/Next.js", level: 90 },
-        { name: "TypeScript", level: 85 },
-        { name: "Tailwind CSS", level: 88 },
-      ]
-    },
-    backend: {
-      title: "Backend Development", 
-      icon: <Server className="w-6 h-6 text-purple-400" />,
-      skills: [
-        { name: "Laravel", level: 87 },
-        { name: "Node.js", level: 72 },
-        { name: "Python", level: 80 },
-        { name: "PHP", level: 85 },
-      ]
-    },
-    mobile: {
-      title: "Mobile Development",
-      icon: <Smartphone className="w-6 h-6 text-purple-400" />,
-      skills: [
-        { name: "Android Studio", level: 78 },
-        { name: "React Native", level: 75 },
-        { name: "Flutter", level: 70 },
-      ]
-    },
-    tools: {
-      title: "Tools & Technologies",
-      icon: <GitBranch className="w-6 h-6 text-purple-400" />,
-      skills: [
-        { name: "Git/GitHub", level: 88 },
-        { name: "MySQL", level: 82 },
-        { name: "Figma", level: 85 },
-        { name: "Filament", level: 78 },
-      ]
-    },
-    ai: {
-      title: "AI Integration",
-      icon: <Cpu className="w-6 h-6 text-purple-400" />,
-      skills: [
-        { name: "OpenAI API", level: 70 },
-        { name: "Machine Learning Basics", level: 65 },
-      ]
-    },
-    design: {
-      title: "UI/UX Design",
-      icon: <Palette className="w-6 h-6 text-purple-400" />,
-      skills: [
-        { name: "Figma", level: 85 },
-        { name: "Adobe XD", level: 78 },
-        { name: "Prototyping", level: 82 },
-      ]
-    }
-  };
-
-  const SkillBar = ({ name, level }: { name: string; level: number }) => (
-    <div className="mb-4">
-      <div className="flex justify-between mb-2">
-        <span className="text-gray-300 text-sm font-medium">{name}</span>
-        <span className="text-purple-400 text-sm font-semibold">{level}%</span>
-      </div>
-      <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${level}%` }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
-        />
-      </div>
-    </div>
-  );
-
-  const SkillCategory = ({ 
-    title, 
-    icon, 
-    skills, 
-    delay = 0 
-  }: { 
-    title: string; 
-    icon: React.ReactNode; 
-    skills: { name: string; level: number }[];
-    delay?: number;
-  }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay }}
-      viewport={{ once: true }}
-      className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300"
-    >
-      <div className="flex items-center mb-4">
-        <div className="p-2 bg-purple-500/20 rounded-lg mr-3">
-          {icon}
-        </div>
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
-      </div>
-      <div className="space-y-2">
-        {skills.map((skill, index) => (
-          <SkillBar key={index} name={skill.name} level={skill.level} />
-        ))}
-      </div>
-    </motion.div>
-  );
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-[#0a0f1a] via-[#121a2b] to-[#1a2439]">
@@ -1671,20 +1718,17 @@ export default function PortfolioPage() {
         ))}
       </div>
 
-      {/* Navbar */}
       <Navbar />
 
       {/* Hero Section */}
       <div id="hero" className="container mx-auto px-4 sm:px-6 lg:px-8 h-screen relative z-10 pt-24">
         <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'} h-[calc(100vh-80px)] items-center gap-8 lg:gap-12`}>
-          {/* Left content */}
           <motion.div 
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            {/* Greeting bubble */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1725,7 +1769,6 @@ export default function PortfolioPage() {
               </motion.div>
             </div>
 
-            {/* Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1755,7 +1798,6 @@ export default function PortfolioPage() {
             </motion.div>
           </motion.div>
 
-          {/* Right content - Hide Lanyard on mobile */}
           {!isMobile && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
@@ -1771,7 +1813,6 @@ export default function PortfolioPage() {
                   className="absolute w-[400px] h-[400px] rounded-full bg-purple-500 blur-[100px]"
                 />
               </div>
-              
               {isMounted && (
                 <div className="relative z-20 w-full h-full min-h-[400px] flex items-center justify-center">
                   <Lanyard 
@@ -1803,7 +1844,6 @@ export default function PortfolioPage() {
           </motion.h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Profile Card - KIRI */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -1813,10 +1853,10 @@ export default function PortfolioPage() {
             >
               <ProfileCard
                 avatarUrl="/avatar.png"
-                miniAvatarUrl="/avatar.png"
+                miniAvatarUrl="/foto formal.jpeg"
                 name="Nirmalasari Rodito S"
                 title="Software Engineer"
-                handle="nrmla.slns"
+                handle="nrmlardt"
                 status="Available for work"
                 contactText="Hire Me"
                 showUserInfo={true}
@@ -1827,7 +1867,6 @@ export default function PortfolioPage() {
               />
             </motion.div>
             
-            {/* About text - KANAN */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -1846,6 +1885,46 @@ export default function PortfolioPage() {
               <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-6">
                 Saya memiliki ketertarikan kuat pada pengembangan sistem yang rapi, mudah digunakan, dan relevan dengan kebutuhan pengguna. Setiap proyek yang saya kerjakan selalu menjadi ruang belajar untuk memahami alur kerja profesional dan meningkatkan kemampuan teknis saya agar dapat berkembang menjadi developer yang lebih matang dan kompeten.
               </p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6"
+              >
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 text-center border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
+                  <div className="flex items-center justify-center mb-2">
+                    <FolderOpen className="w-6 h-6 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <div className="text-2xl font-bold text-white">10+</div>
+                  <div className="text-gray-400 text-xs">Proyek</div>
+                </div>
+
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 text-center border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
+                  <div className="flex items-center justify-center mb-2">
+                    <Cpu className="w-6 h-6 text-pink-400 group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <div className="text-2xl font-bold text-white">5+</div>
+                  <div className="text-gray-400 text-xs">Model ML</div>
+                </div>
+
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 text-center border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
+                  <div className="flex items-center justify-center mb-2">
+                    <Award className="w-6 h-6 text-yellow-400 group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <div className="text-2xl font-bold text-white">9+</div>
+                  <div className="text-gray-400 text-xs">Sertifikat</div>
+                </div>
+
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 text-center border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
+                  <div className="flex items-center justify-center mb-2">
+                    <GraduationCap className="w-6 h-6 text-yellow-400 group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <div className="text-2xl font-bold text-white">3.91</div>
+                  <div className="text-gray-400 text-xs">IPK</div>
+                </div>
+              </motion.div>
 
               <div className="pt-2">
                 <h4 className="text-lg font-medium text-purple-200 mb-4">What I Do</h4>
@@ -1877,79 +1956,16 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* Skills Section - LANGSUNG DI BAWAH ABOUT ME */}
+      <div ref={skillsRef}>
+        <SkillsSection />
+      </div>
+
       {/* Experience Section */}
       <ExperienceSection />
 
       {/* Organization Section */}
       <OrganizationSection />
-
-      {/* Skills Section */}
-      <section 
-        ref={skillsRef} 
-        id="skills" 
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
-      >
-        <div className="container mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Skills</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              Teknologi dan tools yang saya kuasai untuk menciptakan solusi digital yang inovatif
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.entries(skillsData).map(([key, category], index) => (
-              <SkillCategory
-                key={key}
-                title={category.title}
-                icon={category.icon}
-                skills={category.skills}
-                delay={index * 0.1}
-              />
-            ))}
-          </div>
-
-          {/* Additional Tech Stack */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            viewport={{ once: true }}
-            className="mt-16 bg-gray-800/30 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
-          >
-            <h3 className="text-2xl font-bold text-white text-center mb-8">
-              Tech Stack & Tools
-            </h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              {[
-                "React", "Next.js", "TypeScript", "Tailwind CSS", 
-                "Node.js", "Laravel", "Python", "PHP", "Android Studio",
-                "React Native", "Flutter", "MySQL", "Git",
-                "Figma", "OpenAI API", "Filament"
-              ].map((tech, index) => (
-                <motion.span
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                  className="px-4 py-2 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium border border-purple-500/30 hover:bg-purple-500/30 transition-all duration-300"
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Certificates Section */}
       <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
