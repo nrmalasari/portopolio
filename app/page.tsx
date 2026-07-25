@@ -1537,7 +1537,7 @@ const SkillsSection = () => {
         },
         {
           title: "Foreign Languages",
-          skills: ["English (Professional)"]
+          skills: ["English (Basic)"]
         }
       ]
     }
