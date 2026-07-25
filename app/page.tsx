@@ -1876,7 +1876,7 @@ export default function PortfolioPage() {
               </h3>
 
               <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-4">
-                Saya adalah pengembang pemula yang fokus pada pengembangan web dan mobile, dengan pengalaman membangun beberapa proyek nyata baik secara mandiri maupun selama magang di beberapa instansi. Dari pengalaman tersebut, saya terbiasa bekerja dengan teknologi seperti React, Next.js, Laravel, Android Studio, serta integrasi API untuk kebutuhan aplikasi modern.
+                Saya adalah software engineer yang fokus pada pengembangan web dan mobile, dengan pengalaman membangun beberapa proyek nyata baik secara mandiri maupun selama magang di beberapa instansi. Dari pengalaman tersebut, saya terbiasa bekerja dengan teknologi seperti React, Next.js, Laravel, Android Studio, serta integrasi API untuk kebutuhan aplikasi modern.
               </p>
 
               <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-6">
