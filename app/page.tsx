@@ -1773,7 +1773,7 @@ export default function PortfolioPage() {
               className="flex flex-col sm:flex-row gap-3 pt-3"
             >
               <a 
-                href="https://drive.google.com/uc?export=download&id=1SwkqX8i3vUWlTYEy6AiSYYMByi6UjggC"
+                href="https://drive.google.com/file/d/1flSI0rP2Xxa3AjsXsXWCpzlnTkKUp1OI/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg shadow-purple-500/25 inline-flex items-center justify-center"
