@@ -1786,12 +1786,8 @@ const SkillsSection = () => {
 export default function PortfolioPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [hangPoint, setHangPoint] = useState<[number, number, number]>([0.35, 1.9, 0]);
-  const [hangReady, setHangReady] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
-  const badgeRef = useRef<HTMLDivElement>(null);
-  const sulnasRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -1801,51 +1797,6 @@ export default function PortfolioPage() {
     media.addEventListener("change", syncDesktop);
     return () => media.removeEventListener("change", syncDesktop);
   }, []);
-
-  useEffect(() => {
-    if (!isMounted || isDesktop) return;
-
-    const updateHangPoint = () => {
-      const badge = badgeRef.current;
-      const sulnas = sulnasRef.current;
-      const hero = document.getElementById("hero");
-      if (!badge || !sulnas || !hero) return;
-
-      const badgeRect = badge.getBoundingClientRect();
-      const sulnasRect = sulnas.getBoundingClientRect();
-      const heroRect = hero.getBoundingClientRect();
-      if (heroRect.width === 0 || heroRect.height === 0) return;
-
-      const hangX = sulnasRect.left + sulnasRect.width / 2 - heroRect.left;
-      const hangY = badgeRect.bottom - heroRect.top;
-
-      const ndcX = (hangX / heroRect.width) * 2 - 1;
-      const ndcY = -(hangY / heroRect.height) * 2 + 1;
-
-      const fov = (20 * Math.PI) / 180;
-      const cameraZ = 15;
-      const halfHeight = Math.tan(fov / 2) * cameraZ;
-      const halfWidth = halfHeight * (heroRect.width / heroRect.height);
-
-      setHangPoint([ndcX * halfWidth, ndcY * halfHeight, 0]);
-      setHangReady(true);
-    };
-
-    const frameId = window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(updateHangPoint);
-    });
-    window.addEventListener("resize", updateHangPoint);
-    window.addEventListener("orientationchange", updateHangPoint);
-    window.visualViewport?.addEventListener("resize", updateHangPoint);
-    const timeoutId = window.setTimeout(updateHangPoint, 350);
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", updateHangPoint);
-      window.removeEventListener("orientationchange", updateHangPoint);
-      window.visualViewport?.removeEventListener("resize", updateHangPoint);
-      window.clearTimeout(timeoutId);
-    };
-  }, [isMounted, isDesktop]);
 
   const scrollToAbout = () => {
     if (aboutRef.current) {
@@ -1900,7 +1851,7 @@ export default function PortfolioPage() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <div ref={badgeRef} className="inline-block">
+            <div className="inline-block">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -1908,8 +1859,7 @@ export default function PortfolioPage() {
                 className="inline-block bg-purple-900/30 backdrop-blur-sm px-5 py-2 rounded-2xl border border-purple-500/30"
               >
                 <span className="text-purple-200 text-base font-medium">
-                  👋 Hi, I'm Nirmalasari Rodito{" "}
-                  <span ref={sulnasRef}>Sulnas</span>
+                  👋 Hi, I'm Nirmalasari Rodito Sulnas
                 </span>
               </motion.div>
             </div>
@@ -1994,17 +1944,6 @@ export default function PortfolioPage() {
             </motion.div>
           )}
         </div>
-
-        {isMounted && !isDesktop && hangReady && (
-          <div className="absolute inset-0 z-20">
-            <Lanyard
-              key={`${hangPoint[0].toFixed(1)}-${hangPoint[1].toFixed(1)}`}
-              position={[0, 0, 15]}
-              gravity={[0, -25, 0]}
-              hangPoint={hangPoint}
-            />
-          </div>
-        )}
       </div>
 
       {/* About Section */}
