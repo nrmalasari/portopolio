@@ -1218,13 +1218,13 @@ const CertificatesSection = () => {
         </p>
       </motion.div>
 
-      <div className="lg:hidden">
+      <div className="lg:hidden overflow-visible">
         <p className="text-center text-purple-300/80 text-sm mb-2">
           Ketuk folder untuk membuka sertifikat
         </p>
-        <div className="flex flex-wrap justify-center gap-x-10 gap-y-24 pt-16 pb-10">
+        <div className="flex flex-wrap justify-center gap-x-10 gap-y-32 pt-28 pb-12 overflow-visible">
           {certificateFolders.map((folder) => (
-            <div key={folder.id} className="flex flex-col items-center w-[140px]">
+            <div key={folder.id} className="flex flex-col items-center w-[160px] overflow-visible">
               <Folder
                 color={folder.color}
                 gradientFrom={folder.gradientFrom}
@@ -2149,7 +2149,7 @@ export default function PortfolioPage() {
       <OrganizationSection />
 
       {/* Certificates Section */}
-      <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10 overflow-visible">
         <CertificatesSection />
       </section>
 

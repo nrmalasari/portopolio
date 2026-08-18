@@ -159,12 +159,16 @@ function Band({
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
 
+  const cardScale = isSmall ? 0.92 : 2.25;
+  const scaleRatio = cardScale / 2.25;
+  const jointY = 1.45 * scaleRatio;
+
   const segmentProps: any = {
     type: "dynamic" as RigidBodyProps["type"],
     canSleep: true,
     colliders: false,
-    angularDamping: 4,
-    linearDamping: 4,
+    angularDamping: isSmall ? 14 : 4,
+    linearDamping: isSmall ? 10 : 4,
   };
 
   const { nodes, materials } = useGLTF(cardGLB) as any;
@@ -194,7 +198,7 @@ function Band({
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], ropeLength]);
   useSphericalJoint(j3, card, [
     [0, 0, 0],
-    [0, isSmall ? 0.42 : 1.45, 0],
+    [0, jointY, 0],
   ]);
 
   useEffect(() => {
@@ -237,10 +241,19 @@ function Band({
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
+      if (card.current) {
+        const cardRot = card.current.rotation();
+        const clipLocal = new THREE.Vector3(0, jointY, 0).applyQuaternion(
+          new THREE.Quaternion(cardRot.x, cardRot.y, cardRot.z, cardRot.w)
+        );
+        curve.points[0]
+          .copy(card.current.translation())
+          .add(clipLocal);
+      }
       band.current.geometry.setPoints(curve.getPoints(32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * (isSmall ? 0.08 : 0.25), z: ang.z });
     }
   });
 
@@ -289,10 +302,10 @@ function Band({
               : ("dynamic" as RigidBodyProps["type"])
           }
         >
-          <CuboidCollider args={isSmall ? [0.32, 0.44, 0.01] : [0.8, 1.125, 0.01]} />
+          <CuboidCollider args={[0.8 * scaleRatio, 1.125 * scaleRatio, 0.01]} />
           <group
-            scale={isSmall ? 0.92 : 2.25}
-            position={[0, isSmall ? -0.42 : -1.2, -0.05]}
+            scale={cardScale}
+            position={[0, -1.2 * scaleRatio, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={stopDrag}
@@ -337,7 +350,7 @@ function Band({
             map: texture,
             useMap: true,
             repeat: new THREE.Vector2(-4, 1),
-            lineWidth: isSmall ? 0.38 : 1
+            lineWidth: isSmall ? 0.41 : 1
           })} 
           attach="material" 
         />

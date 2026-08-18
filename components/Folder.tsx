@@ -101,24 +101,26 @@ const Folder: React.FC<FolderProps> = ({
   };
 
   return (
-    <div style={scaleStyle} className={className}>
+    <div style={{ ...scaleStyle, overflow: 'visible' }} className={`${className} overflow-visible`}>
       <div
-        className={`group relative transition-all duration-200 ease-in cursor-pointer ${
+        className={`group relative overflow-visible transition-all duration-200 ease-in cursor-pointer ${
           !open ? 'hover:-translate-y-2' : ''
         }`}
         style={{
-          transform: open ? 'translateY(-8px)' : undefined,
-          filter: `drop-shadow(0 6px 8px ${from}28)`
+          transform: open ? 'translateY(-8px)' : undefined
         }}
         onClick={handleClick}
       >
         <div
-          className="relative w-[100px] h-[80px] rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]"
+          className="relative w-[100px] h-[80px] overflow-visible rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]"
           style={{ backgroundImage: folderBackGradient }}
         >
           <span
             className="absolute z-0 bottom-[98%] left-0 w-[30px] h-[10px] rounded-tl-[5px] rounded-tr-[5px] rounded-bl-0 rounded-br-0"
-            style={{ backgroundImage: folderBackGradient }}
+            style={{
+              backgroundImage: folderBackGradient,
+              filter: `drop-shadow(0 6px 8px ${from}28)`
+            }}
           ></span>
           {papers.map((item, i) => {
             let sizeClasses = '';
