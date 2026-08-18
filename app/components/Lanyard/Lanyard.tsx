@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Canvas, extend, useFrame } from "@react-three/fiber";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
 import {
   useGLTF,
   useTexture,
@@ -31,6 +31,29 @@ interface LanyardProps {
   gravity?: [number, number, number];
   fov?: number;
   transparent?: boolean;
+  className?: string;
+  hangPoint?: [number, number, number];
+}
+
+function ResponsiveCamera({
+  position,
+  fov,
+}: {
+  position: [number, number, number];
+  fov: number;
+}) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    camera.position.set(position[0], position[1], position[2]);
+    const perspective = camera as THREE.PerspectiveCamera;
+    if (perspective.isPerspectiveCamera) {
+      perspective.fov = fov;
+      perspective.updateProjectionMatrix();
+    }
+  }, [camera, fov, position]);
+
+  return null;
 }
 
 export default function Lanyard({
@@ -38,19 +61,42 @@ export default function Lanyard({
   gravity = [0, -40, 0],
   fov = 20,
   transparent = true,
+  className = "",
+  hangPoint = [0, 4, 0],
 }: LanyardProps) {
+  const [isSmall, setIsSmall] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 1024;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = (): void => {
+      setIsSmall(window.innerWidth < 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return (): void => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
+    <div
+      className={`relative z-0 w-full h-full flex justify-center items-center ${className}`}
+    >
       <Canvas
         camera={{ position, fov }}
-        gl={{ alpha: transparent }}
+        gl={{ alpha: transparent, antialias: true }}
+        dpr={[1, 1.5]}
+        style={{ width: "100%", height: "100%", touchAction: "none" }}
         onCreated={({ gl }) =>
           gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
         }
       >
+        <ResponsiveCamera position={position} fov={fov} />
         <ambientLight intensity={Math.PI} />
         <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band />
+          <Band isSmall={isSmall} hangPoint={hangPoint} />
         </Physics>
         <Environment blur={0.75}>
           <Lightformer
@@ -90,9 +136,16 @@ export default function Lanyard({
 interface BandProps {
   maxSpeed?: number;
   minSpeed?: number;
+  isSmall?: boolean;
+  hangPoint?: [number, number, number];
 }
 
-function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
+function Band({
+  maxSpeed = 50,
+  minSpeed = 0,
+  isSmall = false,
+  hangPoint = [0, 4, 0],
+}: BandProps) {
   // Using "any" for refs since the exact types depend on Rapier's internals
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
@@ -128,28 +181,20 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
 
-  const [isSmall, setIsSmall] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 1024;
-    }
-    return false;
-  });
+  const stopDrag = (e: any) => {
+    e?.target?.releasePointerCapture?.(e.pointerId);
+    drag(false);
+  };
 
-  useEffect(() => {
-    const handleResize = (): void => {
-      setIsSmall(window.innerWidth < 1024);
-    };
+  const ropeLength = isSmall ? 0.12 : 1;
+  const jointGap = isSmall ? 0.07 : 0.5;
 
-    window.addEventListener("resize", handleResize);
-    return (): void => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], ropeLength]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], ropeLength]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], ropeLength]);
   useSphericalJoint(j3, card, [
     [0, 0, 0],
-    [0, 1.45, 0],
+    [0, isSmall ? 0.42 : 1.45, 0],
   ]);
 
   useEffect(() => {
@@ -204,14 +249,14 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={hangPoint}>
         <RigidBody
           ref={fixed}
           {...segmentProps}
           type={"fixed" as RigidBodyProps["type"]}
         />
         <RigidBody
-          position={[0.5, 0, 0]}
+          position={[jointGap, 0, 0]}
           ref={j1}
           {...segmentProps}
           type={"dynamic" as RigidBodyProps["type"]}
@@ -219,7 +264,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1, 0, 0]}
+          position={[jointGap * 2, 0, 0]}
           ref={j2}
           {...segmentProps}
           type={"dynamic" as RigidBodyProps["type"]}
@@ -227,7 +272,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1.5, 0, 0]}
+          position={[jointGap * 3, 0, 0]}
           ref={j3}
           {...segmentProps}
           type={"dynamic" as RigidBodyProps["type"]}
@@ -235,7 +280,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[2, 0, 0]}
+          position={[jointGap * 4, 0, 0]}
           ref={card}
           {...segmentProps}
           type={
@@ -244,17 +289,17 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
               : ("dynamic" as RigidBodyProps["type"])
           }
         >
-          <CuboidCollider args={[0.8, 1.125, 0.01]} />
+          <CuboidCollider args={isSmall ? [0.32, 0.44, 0.01] : [0.8, 1.125, 0.01]} />
           <group
-            scale={2.25}
-            position={[0, -1.2, -0.05]}
+            scale={isSmall ? 0.92 : 2.25}
+            position={[0, isSmall ? -0.42 : -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
-            onPointerUp={(e: any) => {
-              e.target.releasePointerCapture(e.pointerId);
-              drag(false);
-            }}
+            onPointerUp={stopDrag}
+            onPointerCancel={stopDrag}
+            onLostPointerCapture={() => drag(false)}
             onPointerDown={(e: any) => {
+              e.stopPropagation();
               e.target.setPointerCapture(e.pointerId);
               drag(
                 new THREE.Vector3()
@@ -292,7 +337,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
             map: texture,
             useMap: true,
             repeat: new THREE.Vector2(-4, 1),
-            lineWidth: 1
+            lineWidth: isSmall ? 0.38 : 1
           })} 
           attach="material" 
         />

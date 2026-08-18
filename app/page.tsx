@@ -5,6 +5,7 @@ import Lanyard from "./components/Lanyard/Lanyard";
 import { motion, AnimatePresence } from "framer-motion";
 import ShinyText from "./components/ShinyText/ShinyText";
 import SkillTabs from "@/components/SkillTabs";
+import Folder from "@/components/Folder";
 import ProfileCard from "../src/blocks/Components/ProfileCard/ProfileCard";
 import { 
   Code2, 
@@ -612,24 +613,21 @@ const OrganizationSection = () => {
 // PROJECT CARD COMPONENT
 // ============================================================
 const ProjectCard = ({ project, index }: { project: any; index: number }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const hasValidUrl = (url: string) => {
-    return url && 
-           url !== "" && 
-           !url.includes("example.com") && 
-           !url.includes("your-") &&
-           url !== "https://youtube.com" &&
-           url !== "https://github.com";
+  const hasValidUrl = (url?: string) => {
+    if (!url || url.trim() === "") return false;
+    return (
+      !url.includes("example.com") &&
+      !url.includes("your-") &&
+      url !== "https://youtube.com" &&
+      url !== "https://github.com"
+    );
   };
 
-  const openUrl = (url: string) => {
-    if (hasValidUrl(url)) {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    } else {
-      console.log('No valid URL provided');
-    }
+  const linkProps = {
+    target: "_blank",
+    rel: "noopener noreferrer",
   };
 
   return (
@@ -650,17 +648,13 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
       )}
 
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden z-10">
         {project.image && (
           <img 
             src={project.image} 
             alt={project.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            onLoad={() => setImageLoaded(true)}
-            onError={() => {
-              setImageError(true);
-              setImageLoaded(true);
-            }}
+            onError={() => setImageError(true)}
           />
         )}
         {imageError && (
@@ -674,53 +668,77 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         {!imageError && (
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
             <div className="flex space-x-4">
-              <button
-                onClick={() => openUrl(project.liveUrl)}
-                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
-                title="Live Demo"
-              >
-                <ExternalLink className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => openUrl(project.githubUrl)}
-                className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
-                title="View Code"
-              >
-                <Github className="w-5 h-5" />
-              </button>
+              {hasValidUrl(project.liveUrl) ? (
+                <a
+                  href={project.liveUrl}
+                  {...linkProps}
+                  className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
+                  title="Live Demo"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                </a>
+              ) : (
+                <span className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed" title="Demo not available">
+                  <ExternalLink className="w-5 h-5" />
+                </span>
+              )}
+              {hasValidUrl(project.githubUrl) ? (
+                <a
+                  href={project.githubUrl}
+                  {...linkProps}
+                  className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
+                  title="View Code"
+                >
+                  <Github className="w-5 h-5" />
+                </a>
+              ) : (
+                <span className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed" title="Code not available">
+                  <Github className="w-5 h-5" />
+                </span>
+              )}
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-6">
+      <div className="relative z-10 p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-purple-400 text-sm font-medium">{project.category}</span>
           <div className="flex space-x-2">
-            <button
-              onClick={() => openUrl(project.pptUrl)}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                hasValidUrl(project.pptUrl) 
-                  ? 'bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 cursor-pointer' 
-                  : 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
-              }`}
-              title={hasValidUrl(project.pptUrl) ? "View Documentation" : "Documentation not available"}
-              disabled={!hasValidUrl(project.pptUrl)}
-            >
-              <FileText className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => openUrl(project.videoUrl)}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                hasValidUrl(project.videoUrl) 
-                  ? 'bg-pink-500/20 text-pink-300 hover:bg-pink-500/30 cursor-pointer' 
-                  : 'bg-gray-500/20 text-gray-400 cursor-not-allowed'
-              }`}
-              title={hasValidUrl(project.videoUrl) ? "Watch Demo Video" : "Video not available"}
-              disabled={!hasValidUrl(project.videoUrl)}
-            >
-              <Play className="w-4 h-4" />
-            </button>
+            {hasValidUrl(project.pptUrl) ? (
+              <a
+                href={project.pptUrl}
+                {...linkProps}
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 cursor-pointer"
+                title="View Documentation"
+              >
+                <FileText className="w-4 h-4" />
+              </a>
+            ) : (
+              <span
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-500/20 text-gray-400 cursor-not-allowed"
+                title="Documentation not available"
+              >
+                <FileText className="w-4 h-4" />
+              </span>
+            )}
+            {hasValidUrl(project.videoUrl) ? (
+              <a
+                href={project.videoUrl}
+                {...linkProps}
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all bg-pink-500/20 text-pink-300 hover:bg-pink-500/30 cursor-pointer"
+                title="Watch Demo Video"
+              >
+                <Play className="w-4 h-4" />
+              </a>
+            ) : (
+              <span
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-500/20 text-gray-400 cursor-not-allowed"
+                title="Video not available"
+              >
+                <Play className="w-4 h-4" />
+              </span>
+            )}
           </div>
         </div>
 
@@ -744,32 +762,36 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         </div>
 
         <div className="flex space-x-3">
-          <button
-            onClick={() => openUrl(project.liveUrl)}
-            className={`flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all ${
-              hasValidUrl(project.liveUrl)
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 cursor-pointer'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-            }`}
-            disabled={!hasValidUrl(project.liveUrl)}
-          >
-            {hasValidUrl(project.liveUrl) ? 'Live Demo' : 'Demo Soon'}
-          </button>
-          <button
-            onClick={() => openUrl(project.githubUrl)}
-            className={`flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all border ${
-              hasValidUrl(project.githubUrl)
-                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-gray-600 cursor-pointer'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed border-gray-600'
-            }`}
-            disabled={!hasValidUrl(project.githubUrl)}
-          >
-            {hasValidUrl(project.githubUrl) ? 'View Code' : 'Code Private'}
-          </button>
+          {hasValidUrl(project.liveUrl) ? (
+            <a
+              href={project.liveUrl}
+              {...linkProps}
+              className="flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 cursor-pointer"
+            >
+              Live Demo
+            </a>
+          ) : (
+            <span className="flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center bg-gray-600 text-gray-400 cursor-not-allowed">
+              Demo Soon
+            </span>
+          )}
+          {hasValidUrl(project.githubUrl) ? (
+            <a
+              href={project.githubUrl}
+              {...linkProps}
+              className="flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center transition-all border bg-gray-700 text-gray-300 hover:bg-gray-600 border-gray-600 cursor-pointer"
+            >
+              View Code
+            </a>
+          ) : (
+            <span className="flex-1 text-sm font-semibold py-2 px-4 rounded-lg text-center bg-gray-600 text-gray-400 cursor-not-allowed border border-gray-600">
+              Code Private
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
     </motion.div>
   );
 };
@@ -791,7 +813,7 @@ const ProjectsSection = () => {
       liveUrl: "https://satu-data.pareparekota.go.id",
       githubUrl: "https://github.com/nrmalasari/satu-data",
       pptUrl: "https://drive.google.com/file/d/1BRX8kp7MuFsODCBMRXO_CggVqYkj86wC/view?usp=sharing",
-      videoUrl: "",
+      videoUrl: "https://drive.google.com/file/d/1sKs3RecQEr5Y_lP-a6b-vgh212sxQw3G/view?usp=drive_link",
       featured: true
     },
     {
@@ -804,8 +826,8 @@ const ProjectsSection = () => {
       githubUrl: "https://github.com/nrmalasari/ProyekTerparkir",
       pptUrl: "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
       liveUrl: "https://jurnal.lppm-stmikhandayani.ac.id/index.php/jti/article/view/382/175",
-      videoUrl: "",
-      featured: true
+      videoUrl: "https://photos.app.goo.gl/8TGmqpnvHnEj7cJ4A",
+      featured: false
     },
     {
       id: 3,
@@ -818,7 +840,7 @@ const ProjectsSection = () => {
       githubUrl: "https://github.com/nrmalasari/KOTAKSARAN_DIGITAL_UJUNGBULU",
       pptUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=sharing",
       videoUrl: "",
-      featured: true
+      featured: false
     },
     {
       id: 4,
@@ -827,10 +849,10 @@ const ProjectsSection = () => {
       image: "/images/inventastk.png",
       technologies: ["Laravel", "MySQL", "CSS"],
       category: "Web Application",
-      liveUrl: "", 
+      liveUrl: "https://drive.google.com/file/d/175tINiG4uoCZlsBDgH8rOaPUizvETuju/view?usp=drive_link", 
       githubUrl: "https://github.com/nrmalasari/inventaris-TKSC2Menara",
       pptUrl: "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=sharing",
-      videoUrl: "",
+      videoUrl: "https://drive.google.com/file/d/175tINiG4uoCZlsBDgH8rOaPUizvETuju/view?usp=drive_link",
       featured: false
     },
     {
@@ -855,6 +877,26 @@ const ProjectsSection = () => {
       githubUrl: "https://github.com/AldiAlfatih/DemoDeteksiObjekCCTV",
       pptUrl: "",
       videoUrl: "",
+      featured: false
+    },
+    {
+      id: 7,
+      title: "Sistem Pendaftaran Taman Kanak-Kanak TK SC2 Menara",
+      description: "Sistem pendaftaran siswa baru berbasis web yang dikembangkan sebagai proyek skripsi untuk mendigitalisasi proses pendaftaran di TK SC2 Menara. Sistem menyediakan pendaftaran online, pengelolaan data calon siswa, validasi data dan dokumen oleh admin, serta pengamanan data sensitif menggunakan enkripsi AES-256-CBC.",
+      image: "/images/pendaftaran-tk.png",
+      technologies: [
+        "React",
+        "Laravel",
+        "Filament",
+        "MySQL",
+        "Tailwind CSS",
+        "AES-256-CBC",
+        "Web Development"
+      ],
+      liveUrl: "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
+      githubUrl: "https://github.com/nrmalasari/TKSC2Menara.git",
+      pptUrl: "https://canva.link/ox2v4o101rqm743",
+      videoUrl: "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
       featured: true
     }
   ];
@@ -884,22 +926,29 @@ const ProjectsSection = () => {
         ))}
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        viewport={{ once: true }}
-        className="text-center mt-12"
-      >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setShowAll(!showAll)}
-          className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
+      {projectsData.length > 3 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
         >
-          {showAll ? 'Show Less' : 'View All Projects'}
-        </motion.button>
-      </motion.div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowAll(!showAll)}
+            className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
+          >
+            {showAll ? 'Show Less Projects' : `View All Projects (${projectsData.length})`}
+          </motion.button>
+          {!showAll && (
+            <p className="text-gray-400 text-sm mt-3">
+              Showing 3 of {projectsData.length} projects
+            </p>
+          )}
+        </motion.div>
+      )}
     </div>
   );
 };
@@ -995,6 +1044,55 @@ const CertificatesSection = () => {
   ];
 
   const displayedCertificates = showAll ? certificatesData : certificatesData.slice(0, 3);
+
+  const certificateFolders = [
+    {
+      id: "dicoding-dev",
+      title: "Dicoding · Programming",
+      color: "#a855f7",
+      gradientFrom: "#c084fc",
+      gradientTo: "#ec4899",
+      ids: [1, 3, 5]
+    },
+    {
+      id: "cloud-ai",
+      title: "Cloud & AI",
+      color: "#ec4899",
+      gradientFrom: "#f472b6",
+      gradientTo: "#818cf8",
+      ids: [2, 4, 9]
+    },
+    {
+      id: "event-magang",
+      title: "Kompetisi & Magang",
+      color: "#7c3aed",
+      gradientFrom: "#818cf8",
+      gradientTo: "#22d3ee",
+      ids: [6, 7, 8]
+    }
+  ];
+
+  const getFolderPapers = (ids: number[]) =>
+    ids.map((id) => {
+      const certificate = certificatesData.find((item) => item.id === id);
+      if (!certificate) return null;
+      return (
+        <a
+          key={certificate.id}
+          href={certificate.credentialUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full h-full"
+          title={certificate.title}
+        >
+          <img
+            src={certificate.image}
+            alt={certificate.title}
+            className="w-full h-full object-cover"
+          />
+        </a>
+      );
+    });
 
   const CertificateCard = ({ certificate, index }: { certificate: any; index: number }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -1120,35 +1218,62 @@ const CertificatesSection = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayedCertificates.map((certificate, index) => (
-          <CertificateCard key={certificate.id} certificate={certificate} index={index} />
-        ))}
+      <div className="lg:hidden">
+        <p className="text-center text-purple-300/80 text-sm mb-2">
+          Ketuk folder untuk membuka sertifikat
+        </p>
+        <div className="flex flex-wrap justify-center gap-x-10 gap-y-24 pt-16 pb-10">
+          {certificateFolders.map((folder) => (
+            <div key={folder.id} className="flex flex-col items-center w-[140px]">
+              <Folder
+                color={folder.color}
+                gradientFrom={folder.gradientFrom}
+                gradientTo={folder.gradientTo}
+                size={1.35}
+                items={getFolderPapers(folder.ids)}
+              />
+              <p className="mt-5 text-center text-sm font-medium text-purple-200 leading-tight">
+                {folder.title}
+              </p>
+              <p className="mt-1 text-center text-[11px] text-gray-400">
+                {folder.ids.length} sertifikat
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {certificatesData.length > 3 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowAll(!showAll)}
-            className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
+      <div className="hidden lg:block">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayedCertificates.map((certificate, index) => (
+            <CertificateCard key={certificate.id} certificate={certificate} index={index} />
+          ))}
+        </div>
+
+        {certificatesData.length > 3 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
           >
-            {showAll ? 'Show Less Certificates' : `View All Certificates (${certificatesData.length})`}
-          </motion.button>
-          {!showAll && (
-            <p className="text-gray-400 text-sm mt-3">
-              Showing 3 of {certificatesData.length} certificates
-            </p>
-          )}
-        </motion.div>
-      )}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowAll(!showAll)}
+              className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
+            >
+              {showAll ? 'Show Less Certificates' : `View All Certificates (${certificatesData.length})`}
+            </motion.button>
+            {!showAll && (
+              <p className="text-gray-400 text-sm mt-3">
+                Showing 3 of {certificatesData.length} certificates
+              </p>
+            )}
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 };
@@ -1660,21 +1785,67 @@ const SkillsSection = () => {
 // ============================================================
 export default function PortfolioPage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [hangPoint, setHangPoint] = useState<[number, number, number]>([0.35, 1.9, 0]);
+  const [hangReady, setHangReady] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const sulnasRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    const media = window.matchMedia("(min-width: 1024px)");
+    const syncDesktop = () => setIsDesktop(media.matches);
+    syncDesktop();
+    media.addEventListener("change", syncDesktop);
+    return () => media.removeEventListener("change", syncDesktop);
   }, []);
+
+  useEffect(() => {
+    if (!isMounted || isDesktop) return;
+
+    const updateHangPoint = () => {
+      const badge = badgeRef.current;
+      const sulnas = sulnasRef.current;
+      const hero = document.getElementById("hero");
+      if (!badge || !sulnas || !hero) return;
+
+      const badgeRect = badge.getBoundingClientRect();
+      const sulnasRect = sulnas.getBoundingClientRect();
+      const heroRect = hero.getBoundingClientRect();
+      if (heroRect.width === 0 || heroRect.height === 0) return;
+
+      const hangX = sulnasRect.left + sulnasRect.width / 2 - heroRect.left;
+      const hangY = badgeRect.bottom - heroRect.top;
+
+      const ndcX = (hangX / heroRect.width) * 2 - 1;
+      const ndcY = -(hangY / heroRect.height) * 2 + 1;
+
+      const fov = (20 * Math.PI) / 180;
+      const cameraZ = 15;
+      const halfHeight = Math.tan(fov / 2) * cameraZ;
+      const halfWidth = halfHeight * (heroRect.width / heroRect.height);
+
+      setHangPoint([ndcX * halfWidth, ndcY * halfHeight, 0]);
+      setHangReady(true);
+    };
+
+    const frameId = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(updateHangPoint);
+    });
+    window.addEventListener("resize", updateHangPoint);
+    window.addEventListener("orientationchange", updateHangPoint);
+    window.visualViewport?.addEventListener("resize", updateHangPoint);
+    const timeoutId = window.setTimeout(updateHangPoint, 350);
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", updateHangPoint);
+      window.removeEventListener("orientationchange", updateHangPoint);
+      window.visualViewport?.removeEventListener("resize", updateHangPoint);
+      window.clearTimeout(timeoutId);
+    };
+  }, [isMounted, isDesktop]);
 
   const scrollToAbout = () => {
     if (aboutRef.current) {
@@ -1721,38 +1892,41 @@ export default function PortfolioPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <div id="hero" className="container mx-auto px-4 sm:px-6 lg:px-8 h-screen relative z-10 pt-24">
-        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'} h-[calc(100vh-80px)] items-center gap-8 lg:gap-12`}>
+      <div id="hero" className="relative w-full lg:h-screen z-10 pt-24 pb-8 lg:pb-0 overflow-visible">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 lg:h-[calc(100vh-80px)] items-center gap-6 lg:gap-12">
           <motion.div 
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="inline-block bg-purple-900/30 backdrop-blur-sm px-5 py-2 rounded-2xl border border-purple-500/30"
-            >
-              <span className="text-purple-200 text-base font-medium">👋 Hi, I'm Nirmalasari Rodito Sulnas</span>
-            </motion.div>
+            <div ref={badgeRef} className="inline-block">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="inline-block bg-purple-900/30 backdrop-blur-sm px-5 py-2 rounded-2xl border border-purple-500/30"
+              >
+                <span className="text-purple-200 text-base font-medium">
+                  👋 Hi, I'm Nirmalasari Rodito{" "}
+                  <span ref={sulnasRef}>Sulnas</span>
+                </span>
+              </motion.div>
+            </div>
 
             <div className="space-y-5">
-              <div className="overflow-hidden">
-                <h1 className="font-bold text-white leading-[1.1] tracking-tight">
-                  <ShinyText
-                    text="Software "
-                    speed={3}
-                    size="lg"
-                    color="purple"
-                    className="block mb-2"
-                  />
-                  <span className="block text-4xl sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-                    Engineer
-                  </span>
-                </h1>
-              </div>
+              <h1 className="font-bold text-white leading-[1.1] tracking-tight">
+                <ShinyText
+                  text="Software "
+                  speed={3}
+                  size="lg"
+                  color="purple"
+                  className="block mb-2"
+                />
+                <span className="block text-4xl sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                  Engineer
+                </span>
+              </h1>
               
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -1770,7 +1944,7 @@ export default function PortfolioPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-3 pt-3"
+              className="relative z-30 flex flex-col sm:flex-row gap-3 pt-3"
             >
               <a 
                 href="/ppt/CV NIRMALASARI RODITO SULNAS_PALING BARU.pdf"
@@ -1795,12 +1969,12 @@ export default function PortfolioPage() {
             </motion.div>
           </motion.div>
 
-          {!isMobile && (
+          {isMounted && isDesktop && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="relative h-full w-full flex items-center justify-center"
+              className="relative h-full w-full min-h-[400px] flex items-center justify-center"
             >
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <motion.div
@@ -1810,28 +1984,38 @@ export default function PortfolioPage() {
                   className="absolute w-[400px] h-[400px] rounded-full bg-purple-500 blur-[100px]"
                 />
               </div>
-              {isMounted && (
-                <div className="relative z-20 w-full h-full min-h-[400px] flex items-center justify-center">
-                  <Lanyard 
-                    position={[0, 0, 15]}
-                    gravity={[0, -25, 0]}
-                  />
-                </div>
-              )}
+              <div className="relative z-20 w-full h-full min-h-[400px] flex items-center justify-center">
+                <Lanyard 
+                  position={[0, 0, 15]}
+                  gravity={[0, -25, 0]}
+                  hangPoint={[0, 4, 0]}
+                />
+              </div>
             </motion.div>
           )}
         </div>
+
+        {isMounted && !isDesktop && hangReady && (
+          <div className="absolute inset-0 z-20">
+            <Lanyard
+              key={`${hangPoint[0].toFixed(1)}-${hangPoint[1].toFixed(1)}`}
+              position={[0, 0, 15]}
+              gravity={[0, -25, 0]}
+              hangPoint={hangPoint}
+            />
+          </div>
+        )}
       </div>
 
       {/* About Section */}
       <section 
         ref={aboutRef} 
         id="about" 
-        className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10 flex items-center"
+        className="py-10 md:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 relative z-10"
       >
         <div className="container mx-auto">
           <motion.h2 
-            className="text-3xl md:text-4xl font-bold text-white mb-12 text-center"
+            className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -1840,7 +2024,7 @@ export default function PortfolioPage() {
             About <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Me</span>
           </motion.h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 items-center">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -1858,7 +2042,7 @@ export default function PortfolioPage() {
                 contactText="Hire Me"
                 showUserInfo={true}
                 onContactClick={() => console.log("Contact clicked")}
-                className="w-full max-w-md"
+                className="w-full max-w-[230px] sm:max-w-[260px] lg:max-w-sm"
                 enableTilt={true}
                 enableMobileTilt={false}
               />
@@ -1869,7 +2053,7 @@ export default function PortfolioPage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              className="space-y-6"
+              className="space-y-4 lg:space-y-6"
             >
               <h3 className="text-2xl font-semibold text-purple-300">
                 Passionate Developer & Problem Solver
@@ -1894,7 +2078,7 @@ export default function PortfolioPage() {
                   <div className="flex items-center justify-center mb-2">
                     <FolderOpen className="w-6 h-6 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
                   </div>
-                  <div className="text-2xl font-bold text-white">6+</div>
+                  <div className="text-2xl font-bold text-white">7+</div>
                   <div className="text-gray-400 text-xs">Proyek</div>
                 </div>
 

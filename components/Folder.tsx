@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 interface FolderProps {
   color?: string;
+  gradientFrom?: string;
+  gradientTo?: string;
   size?: number;
   items?: React.ReactNode[];
   className?: string;
@@ -25,7 +27,14 @@ const darkenColor = (hex: string, percent: number): string => {
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 };
 
-const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = [], className = '' }) => {
+const Folder: React.FC<FolderProps> = ({
+  color = '#a855f7',
+  gradientFrom,
+  gradientTo,
+  size = 1,
+  items = [],
+  className = ''
+}) => {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
   while (papers.length < maxItems) {
@@ -37,7 +46,13 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 }))
   );
 
-  const folderBackColor = darkenColor(color, 0.08);
+  const from = gradientFrom || color;
+  const to = gradientTo || color;
+  const fromDark = darkenColor(from, 0.18);
+  const toDark = darkenColor(to, 0.22);
+  const folderBackGradient = `linear-gradient(160deg, ${fromDark} 0%, ${toDark} 100%)`;
+  const flapLeftGradient = `linear-gradient(210deg, ${from} 0%, ${to} 70%, ${toDark} 100%)`;
+  const flapRightGradient = `linear-gradient(150deg, ${to} 0%, ${from} 65%, ${fromDark} 100%)`;
   const paper1 = darkenColor('#ffffff', 0.1);
   const paper2 = darkenColor('#ffffff', 0.05);
   const paper3 = '#ffffff';
@@ -63,21 +78,13 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
     });
   };
 
-  const handlePaperMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+  const handlePaperMouseLeave = (_e: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
     setPaperOffsets(prev => {
       const newOffsets = [...prev];
       newOffsets[index] = { x: 0, y: 0 };
       return newOffsets;
     });
   };
-
-  const folderStyle: React.CSSProperties = {
-    '--folder-color': color,
-    '--folder-back-color': folderBackColor,
-    '--paper-1': paper1,
-    '--paper-2': paper2,
-    '--paper-3': paper3
-  } as React.CSSProperties;
 
   const scaleStyle = { transform: `scale(${size})` };
 
@@ -88,6 +95,11 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
     return '';
   };
 
+  const flapBaseStyle: React.CSSProperties = {
+    borderRadius: '5px 10px 10px 10px',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22)'
+  };
+
   return (
     <div style={scaleStyle} className={className}>
       <div
@@ -95,22 +107,22 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
           !open ? 'hover:-translate-y-2' : ''
         }`}
         style={{
-          ...folderStyle,
-          transform: open ? 'translateY(-8px)' : undefined
+          transform: open ? 'translateY(-8px)' : undefined,
+          filter: `drop-shadow(0 6px 8px ${from}28)`
         }}
         onClick={handleClick}
       >
         <div
           className="relative w-[100px] h-[80px] rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]"
-          style={{ backgroundColor: folderBackColor }}
+          style={{ backgroundImage: folderBackGradient }}
         >
           <span
             className="absolute z-0 bottom-[98%] left-0 w-[30px] h-[10px] rounded-tl-[5px] rounded-tr-[5px] rounded-bl-0 rounded-br-0"
-            style={{ backgroundColor: folderBackColor }}
+            style={{ backgroundImage: folderBackGradient }}
           ></span>
           {papers.map((item, i) => {
             let sizeClasses = '';
-            if (i === 0) sizeClasses = open ? 'w-[70%] h-[80%]' : 'w-[70%] h-[80%]';
+            if (i === 0) sizeClasses = 'w-[70%] h-[80%]';
             if (i === 1) sizeClasses = open ? 'w-[80%] h-[80%]' : 'w-[80%] h-[70%]';
             if (i === 2) sizeClasses = open ? 'w-[90%] h-[80%]' : 'w-[90%] h-[60%]';
 
@@ -121,15 +133,19 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
             return (
               <div
                 key={i}
+                onClick={e => {
+                  if (open) e.stopPropagation();
+                }}
                 onMouseMove={e => handlePaperMouseMove(e, i)}
                 onMouseLeave={e => handlePaperMouseLeave(e, i)}
-                className={`absolute z-20 bottom-[10%] left-1/2 transition-all duration-300 ease-in-out ${
+                className={`absolute z-20 bottom-[10%] left-1/2 overflow-hidden transition-all duration-300 ease-in-out ${
                   !open ? 'transform -translate-x-1/2 translate-y-[10%] group-hover:translate-y-0' : 'hover:scale-110'
                 } ${sizeClasses}`}
                 style={{
                   ...(!open ? {} : { transform: transformStyle }),
                   backgroundColor: i === 0 ? paper1 : i === 1 ? paper2 : paper3,
-                  borderRadius: '10px'
+                  borderRadius: '10px',
+                  boxShadow: '0 4px 10px rgba(0,0,0,0.18)'
                 }}
               >
                 {item}
@@ -137,25 +153,41 @@ const Folder: React.FC<FolderProps> = ({ color = '#5227FF', size = 1, items = []
             );
           })}
           <div
-            className={`absolute z-30 w-full h-full origin-bottom transition-all duration-300 ease-in-out ${
+            className={`absolute z-30 w-full h-full origin-bottom overflow-hidden transition-all duration-300 ease-in-out ${
               !open ? 'group-hover:[transform:skew(15deg)_scaleY(0.6)]' : ''
             }`}
             style={{
-              backgroundColor: color,
-              borderRadius: '5px 10px 10px 10px',
+              ...flapBaseStyle,
+              backgroundImage: flapLeftGradient,
               ...(open && { transform: 'skew(15deg) scaleY(0.6)' })
             }}
-          ></div>
+          >
+            <span
+              className="pointer-events-none absolute inset-0 opacity-28"
+              style={{
+                background:
+                  'linear-gradient(115deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.08) 38%, rgba(255,255,255,0) 62%)'
+              }}
+            />
+          </div>
           <div
-            className={`absolute z-30 w-full h-full origin-bottom transition-all duration-300 ease-in-out ${
+            className={`absolute z-30 w-full h-full origin-bottom overflow-hidden transition-all duration-300 ease-in-out ${
               !open ? 'group-hover:[transform:skew(-15deg)_scaleY(0.6)]' : ''
             }`}
             style={{
-              backgroundColor: color,
-              borderRadius: '5px 10px 10px 10px',
+              ...flapBaseStyle,
+              backgroundImage: flapRightGradient,
               ...(open && { transform: 'skew(-15deg) scaleY(0.6)' })
             }}
-          ></div>
+          >
+            <span
+              className="pointer-events-none absolute inset-0 opacity-22"
+              style={{
+                background:
+                  'linear-gradient(245deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 45%)'
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

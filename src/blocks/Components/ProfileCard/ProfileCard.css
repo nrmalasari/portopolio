@@ -298,30 +298,38 @@
 .pc-details {
   width: 100%;
   position: absolute;
-  top: 3em;
+  top: 10px;
+  left: 0;
+  right: 0;
+  padding: 0 14px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  z-index: 6;
+  pointer-events: none;
 }
 
 .pc-details h3 {
   font-weight: 600;
   margin: 0;
-  font-size: min(5svh, 3em);
-  margin: 0;
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  line-height: 1.15;
+  text-align: center;
   background-image: linear-gradient(to bottom, #fff, #6f6fbe);
   background-size: 1em 1.5em;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
+  text-shadow: none;
 }
 
 .pc-details p {
   font-weight: 600;
   position: relative;
-  top: -12px;
+  top: 0;
+  margin: 4px auto 0;
   white-space: nowrap;
-  font-size: 16px;
-  margin: 0 auto;
+  font-size: 13px;
   width: min-content;
   background-image: linear-gradient(to bottom, #fff, #4a4ac0);
   background-size: 1em 1.5em;
@@ -352,20 +360,26 @@
 
 @media (max-width: 768px) {
   .pc-card {
-    height: 70svh;
-    max-height: 450px;
+    width: min(100%, 260px);
+    height: auto;
+    max-height: 340px;
+    aspect-ratio: 0.718;
   }
 
   .pc-details {
-    top: 2em;
+    top: 8px;
+    padding: 0 10px;
   }
 
   .pc-details h3 {
-    font-size: min(4svh, 2.5em);
+    font-size: 1.05rem;
+    line-height: 1.1;
   }
 
   .pc-details p {
-    font-size: 14px;
+    font-size: 11px;
+    top: 0;
+    margin-top: 2px;
   }
 
   .pc-user-info {
@@ -400,21 +414,26 @@
 
 @media (max-width: 480px) {
   .pc-card {
-    height: 60svh;
-    max-height: 380px;
+    width: min(100%, 230px);
+    height: auto;
+    max-height: 300px;
+    aspect-ratio: 0.718;
   }
 
   .pc-details {
-    top: 1.5em;
+    top: 6px;
+    padding: 0 8px;
   }
 
   .pc-details h3 {
-    font-size: min(3.5svh, 2em);
+    font-size: 0.95rem;
+    line-height: 1.1;
   }
 
   .pc-details p {
-    font-size: 12px;
-    top: -8px;
+    font-size: 10px;
+    top: 0;
+    margin-top: 2px;
   }
 
   .pc-user-info {
@@ -451,16 +470,23 @@
 
 @media (max-width: 320px) {
   .pc-card {
-    height: 55svh;
-    max-height: 320px;
+    width: min(100%, 200px);
+    height: auto;
+    max-height: 270px;
+    aspect-ratio: 0.718;
+  }
+
+  .pc-details {
+    top: 6px;
   }
 
   .pc-details h3 {
-    font-size: min(3svh, 1.5em);
+    font-size: 0.85rem;
   }
 
   .pc-details p {
-    font-size: 11px;
+    font-size: 9px;
+    top: 0;
   }
 
   .pc-user-info {
