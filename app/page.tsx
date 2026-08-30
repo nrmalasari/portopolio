@@ -825,8 +825,8 @@ const ProjectsSection = () => {
       category: "Mobile App / IoT System / AI Integration",
       githubUrl: "https://github.com/nrmalasari/ProyekTerparkir",
       pptUrl: "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
-      liveUrl: "https://jurnal.lppm-stmikhandayani.ac.id/index.php/jti/article/view/382/175",
-      videoUrl: "https://photos.app.goo.gl/8TGmqpnvHnEj7cJ4A",
+      liveUrl: "https://drive.google.com/file/d/1xNMAhlclgZaPGSVtlCkA-wh_f4NaDTuE/view?usp=sharing",
+      videoUrl: "https://jurnal.lppm-stmikhandayani.ac.id/index.php/jti/article/view/382/175",
       featured: false
     },
     {
