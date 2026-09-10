@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import ShinyText from "./components/ShinyText/ShinyText";
 import SkillTabs from "@/components/SkillTabs";
 import Folder from "@/components/Folder";
+import ActivityDepthCarousel from "@/components/ActivityDepthCarousel";
+import { formatRelativeTime } from "@/lib/format-relative-time";
 import ProfileCard from "../src/blocks/Components/ProfileCard/ProfileCard";
-import { 
-  Code2, 
-  Smartphone, 
-  Palette, 
+import {
+  Code2,
+  Smartphone,
+  Palette,
   Cpu,
   GitBranch,
   Server,
@@ -51,7 +53,7 @@ import {
   BarChart3,
   Cloud,
   Shield,
-  Zap as ZapIcon
+  Zap as ZapIcon,
 } from "lucide-react";
 
 // ============================================================
@@ -109,7 +111,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
       style={{
         opacity: inView ? 1 : initialOpacity,
         transition: `opacity ${duration}ms ${easing}, filter ${duration}ms ${easing}`,
-        filter: blur ? (inView ? 'blur(0px)' : 'blur(10px)') : 'none',
+        filter: blur ? (inView ? "blur(0px)" : "blur(10px)") : "none",
       }}
     >
       {children}
@@ -118,7 +120,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
 };
 
 // ============================================================
-// NAVBAR COMPONENT
+// NAVBAR COMPONENT (Pill ada, tapi tanpa blur)
 // ============================================================
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -128,8 +130,8 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -147,30 +149,35 @@ const Navbar = () => {
     { id: "skills", text: "Skills", icon: <Code2 className="w-4 h-4" /> },
     { id: "certificates", text: "Certificates", icon: <Award className="w-4 h-4" /> },
     { id: "projects", text: "Projects", icon: <FolderOpen className="w-4 h-4" /> },
-    { id: "contact", text: "Contact", icon: <Mail className="w-4 h-4" /> }
+    { id: "contact", text: "Contact", icon: <Mail className="w-4 h-4" /> },
   ];
 
   const socialLinks = [
     {
       name: "LinkedIn",
       url: "https://www.linkedin.com/in/nirmalasari-rodito-sulnas-159845344",
-      icon: <Linkedin className="w-5 h-5" />
+      icon: <Linkedin className="w-5 h-5" />,
     },
     {
-      name: "Instagram", 
+      name: "Instagram",
       url: "https://instagram.com/nrmlardt",
-      icon: <Instagram className="w-5 h-5" />
-    }
+      icon: <Instagram className="w-5 h-5" />,
+    },
   ];
 
   return (
     <>
-      <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-transparent`}>
+      <nav
+        className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${
+          isScrolled ? "bg-gray-900/60" : "bg-transparent"
+        }`}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="hidden lg:flex flex-1"></div>
             <div className="hidden lg:flex">
-              <div className="flex space-x-1 bg-gray-900/70 backdrop-blur-md rounded-full px-6 py-2 border border-gray-700/30">
+              {/* ✅ Pill tetap ada, tapi backdrop-blur-md dihapus */}
+              <div className="flex space-x-1 bg-gray-900/70 rounded-full px-6 py-2 border border-gray-700/30">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={index}
@@ -261,7 +268,9 @@ const Navbar = () => {
                   ))}
                 </div>
                 <div className="mt-8 pt-6 border-t border-gray-800">
-                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Connect with me</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                    Connect with me
+                  </h3>
                   <div className="flex space-x-3">
                     {socialLinks.map((social, index) => (
                       <motion.a
@@ -295,141 +304,206 @@ const ExperienceSection = () => {
   const experienceData = [
     {
       id: 1,
+      title: "Data Analyst dan Verifikator Data Program Bantuan Pangan (Banpang)",
+      company: "Kantor Perum BULOG",
+      period: "April 2026 – Juli 2026",
+      location: "Indonesia",
+      description:
+        "Bertanggung jawab dalam analisis dan verifikasi data penerima Bantuan Pangan (Banpang) untuk memastikan keakuratan, validitas, dan ketepatan sasaran sebelum proses penyaluran bantuan pemerintah.",
+      responsibilities: [
+        "Melakukan analisis dan verifikasi data penerima Bantuan Pangan (Banpang) untuk memastikan keakuratan dan validitas data sebelum proses penyaluran",
+        "Mencocokkan data lapangan dengan basis data resmi serta mengidentifikasi data yang tidak sesuai guna meminimalkan kesalahan penyaluran",
+        "Mengelola dan memvalidasi data penerima secara sistematis untuk mendukung ketepatan sasaran program bantuan pemerintah",
+        "Berkoordinasi dengan tim terkait dalam proses verifikasi dan pembaruan data agar distribusi bantuan berjalan tepat waktu dan akurat",
+        "Berkontribusi dalam kelancaran pelaksanaan program melalui pengelolaan data yang terstruktur, teliti, dan terdokumentasi dengan baik",
+      ],
+      technologies: ["Data Analysis", "Data Verification", "Microsoft Excel", "Documentation"],
+      type: "Internship",
+      gallery: [
+        { src: "/images/experience/bulog/bulog1.jpeg", alt: "Kegiatan di Kantor Perum BULOG 1" },
+        { src: "/images/experience/bulog/bulog2.jpeg", alt: "Kegiatan di Kantor Perum BULOG 2" },
+        { src: "/images/experience/bulog/bulog3.jpeg", alt: "Kegiatan di Kantor Perum BULOG 3" },
+        { src: "/images/experience/bulog/bulog4.jpeg", alt: "Kegiatan di Kantor Perum BULOG 4" },
+      ],
+    },
+    {
+      id: 2,
       title: "Magang Pengembangan Sistem Informasi Inventaris",
       company: "TK SC2 Menara Parepare",
       period: "Oktober 2025 – Desember 2025",
       location: "Parepare, Indonesia",
-      description: "Mengembangkan sistem informasi inventaris berbasis aplikasi untuk mengdigitalisasi proses pendataan aset sekolah yang sebelumnya dilakukan secara manual.",
+      description:
+        "Mengembangkan sistem informasi inventaris berbasis aplikasi untuk mengdigitalisasi proses pendataan aset sekolah yang sebelumnya dilakukan secara manual.",
       responsibilities: [
         "Merancang alur sistem dan antarmuka (UI/UX) yang sederhana dan mudah digunakan oleh guru serta staf administrasi non-teknis",
         "Mengimplementasikan fitur inti seperti manajemen data aset, pencatatan riwayat keluar–masuk barang, serta laporan inventaris",
-        "Berkontribusi dalam meningkatkan akurasi data, efisiensi pengelolaan aset, dan kemudahan akses informasi bagi pihak sekolah"
+        "Berkontribusi dalam meningkatkan akurasi data, efisiensi pengelolaan aset, dan kemudahan akses informasi bagi pihak sekolah",
       ],
       technologies: ["Laravel", "MySQL", "PHP", "CSS", "UI/UX Design"],
-      type: "Internship"
+      type: "Internship",
+      gallery: [
+        { src: "/images/experience/sc2-menara/tk1.jpeg", alt: "Kegiatan magang TK SC2 Menara 1" },
+        { src: "/images/experience/sc2-menara/tk2.jpeg", alt: "Kegiatan magang TK SC2 Menara 2" },
+        { src: "/images/experience/sc2-menara/tk3.jpeg", alt: "Kegiatan magang TK SC2 Menara 3" },
+      ],
     },
     {
-      id: 2,
+      id: 3,
       title: "Magang MBKM Mandiri - Web Development",
       company: "Dinas Komunikasi dan Informatika Kota Parepare",
       period: "April 2025 – Mei 2025",
       location: "Parepare, Indonesia",
-      description: "Berperan dalam redesain dan pengembangan website SATU DATA Kota Parepare sebagai platform resmi pengelolaan data pemerintah daerah.",
+      description:
+        "Berperan dalam redesain dan pengembangan website SATU DATA Kota Parepare sebagai platform resmi pengelolaan data pemerintah daerah.",
       responsibilities: [
         "Mengoptimalkan tampilan antarmuka (UI/UX) agar lebih modern, konsisten, dan mudah digunakan",
         "Berkolaborasi dengan tim untuk memastikan struktur informasi, navigasi, dan konten data tersaji secara jelas",
-        "Website hasil pengembangan digunakan secara aktif oleh Pemerintah Kota Parepare untuk tata kelola data yang lebih efektif"
+        "Website hasil pengembangan digunakan secara aktif oleh Pemerintah Kota Parepare untuk tata kelola data yang lebih efektif",
       ],
       technologies: ["React", "Laravel", "Tailwind CSS", "MySQL", "Filament"],
-      type: "Internship"
+      type: "Internship",
+      gallery: [
+        { src: "/images/experience/diskominfo/kominfo1.jpg", alt: "Kegiatan magang Diskominfo 1" },
+        { src: "/images/experience/diskominfo/kominfo2.jpg", alt: "Kegiatan magang Diskominfo 2" },
+        { src: "/images/experience/diskominfo/kominfo3.jpg", alt: "Kegiatan magang Diskominfo 3" },
+      ],
     },
     {
-      id: 3,
+      id: 4,
       title: "Asisten Dosen Mata Kuliah Computer Vision",
       company: "Institut Teknologi Bacharuddin Jusuf Habibie",
       period: "2025",
       location: "Parepare, Indonesia",
-      description: "Membantu dosen dalam kegiatan akademik dan praktikum untuk mata kuliah pemrograman dan teknologi informasi.",
+      description:
+        "Membantu dosen dalam kegiatan akademik dan praktikum untuk mata kuliah pemrograman dan teknologi informasi.",
       responsibilities: [
         "Membimbing mahasiswa dalam praktikum pemrograman dan pengembangan aplikasi",
         "Membantu persiapan materi pembelajaran dan evaluasi tugas",
-        "Memberikan dukungan teknis dalam penggunaan tools dan teknologi terkait"
+        "Memberikan dukungan teknis dalam penggunaan tools dan teknologi terkait",
       ],
       technologies: ["Java", "Python", "Algoritma", "Struktur Data"],
-      type: "Teaching"
-    }
+      type: "Teaching",
+      gallery: [
+        { src: "/images/experience/asisten-dosen/asdos1.jpeg", alt: "Kegiatan asisten dosen 1" },
+        { src: "/images/experience/asisten-dosen/asdos2.jpeg", alt: "Kegiatan asisten dosen 2" },
+        { src: "/images/experience/asisten-dosen/asdos3.jpeg", alt: "Kegiatan asisten dosen 3" },
+      ],
+    },
   ];
 
   return (
-    <div id="experience" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="container mx-auto">
+    <div id="experience" className="min-h-screen py-16 sm:py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Experience</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
+            My{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              Experience
+            </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg px-2">
             Perjalanan profesional dan pengalaman kerja yang telah saya lalui
           </p>
         </motion.div>
 
-        <div className="relative">
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-purple-500/30 via-pink-500/30 to-transparent hidden lg:block"></div>
-          
+        <div className="space-y-8 sm:space-y-10 lg:space-y-12">
           {experienceData.map((exp, index) => (
             <motion.div
               key={exp.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
               viewport={{ once: true }}
-              className={`relative mb-12 ${index % 2 === 0 ? 'lg:pr-1/2 lg:pl-0' : 'lg:pl-1/2 lg:pr-0'} lg:pr-8 lg:pl-8`}
+              className="group"
             >
-              <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full border-4 border-gray-900 z-10"></div>
-              
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 group">
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        exp.type === 'Internship' 
-                          ? 'bg-purple-500/20 text-purple-300' 
-                          : 'bg-blue-500/20 text-blue-300'
-                      }`}>
+              <div className="bg-gray-800/40 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-500 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-start lg:items-center p-4 sm:p-6 lg:p-8">
+                  <div
+                    className={`order-1 min-w-0 flex flex-col justify-center ${
+                      index % 2 === 1 ? "lg:order-1" : "lg:order-2"
+                    }`}
+                  >
+                    <div className="mb-5">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 ${
+                          exp.type === "Internship"
+                            ? "bg-purple-500/20 text-purple-300"
+                            : "bg-blue-500/20 text-blue-300"
+                        }`}
+                      >
                         {exp.type}
                       </span>
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white group-hover:text-purple-300 transition-colors leading-snug">
+                        {exp.title}
+                      </h3>
+                      <div className="flex items-center text-purple-400 font-medium mt-2 text-sm sm:text-base">
+                        <Briefcase className="w-4 h-4 mr-2 shrink-0" />
+                        <span className="break-words">{exp.company}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 mt-3">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900/50 border border-purple-500/15 text-gray-300 text-xs sm:text-sm">
+                          <Calendar className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                          <span>{exp.period}</span>
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900/50 border border-purple-500/15 text-gray-400 text-xs sm:text-sm">
+                          <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                          <span>{exp.location}</span>
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
-                      {exp.title}
-                    </h3>
-                    <div className="flex items-center text-purple-400 font-medium mt-1">
-                      <Briefcase className="w-4 h-4 mr-2" />
-                      {exp.company}
+
+                    <p className="text-gray-300 mb-5 leading-relaxed text-sm sm:text-base">
+                      {exp.description}
+                    </p>
+
+                    <div className="mb-5">
+                      <h4 className="text-purple-300 font-semibold mb-2 flex items-center text-sm sm:text-base">
+                        <ChevronRight className="w-4 h-4 mr-1 shrink-0" />
+                        Responsibilities & Achievements
+                      </h4>
+                      <ul className="space-y-2">
+                        {exp.responsibilities.map((resp, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start text-gray-400 text-xs sm:text-sm leading-relaxed"
+                          >
+                            <span className="text-purple-400 mr-2 mt-0.5 shrink-0">•</span>
+                            <span>{resp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {exp.technologies.map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 sm:px-3 py-1 bg-purple-500/10 text-purple-300 text-xs rounded-full border border-purple-500/20"
+                        >
+                          {tech}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  <div className="mt-4 lg:mt-0 lg:text-right">
-                    <div className="flex items-center text-gray-300 text-sm">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {exp.period}
-                    </div>
-                    <div className="flex items-center text-gray-400 text-sm mt-1">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      {exp.location}
+
+                  <div
+                    className={`order-2 w-full min-w-0 ${
+                      index % 2 === 1 ? "lg:order-2" : "lg:order-1"
+                    }`}
+                  >
+                    <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-purple-500/15 bg-gray-900/30 p-2 sm:p-3">
+                      <ActivityDepthCarousel
+                        images={exp.gallery}
+                        tiltDirection={index % 2 === 0 ? "right" : "left"}
+                      />
                     </div>
                   </div>
-                </div>
-
-                <p className="text-gray-300 mb-4">{exp.description}</p>
-
-                <div className="mb-4">
-                  <h4 className="text-purple-300 font-semibold mb-2 flex items-center">
-                    <ChevronRight className="w-4 h-4 mr-1" />
-                    Responsibilities & Achievements
-                  </h4>
-                  <ul className="space-y-2">
-                    {exp.responsibilities.map((resp, idx) => (
-                      <li key={idx} className="flex items-start text-gray-400 text-sm">
-                        <span className="text-purple-400 mr-2 mt-1">•</span>
-                        {resp}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {exp.technologies.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 bg-purple-500/10 text-purple-300 text-xs rounded-full border border-purple-500/20"
-                    >
-                      {tech}
-                    </span>
-                  ))}
                 </div>
               </div>
             </motion.div>
@@ -443,6 +517,17 @@ const ExperienceSection = () => {
 // ============================================================
 // ORGANIZATION SECTION COMPONENT
 // ============================================================
+const orgSkillIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  Teamwork: Users,
+  Communication: MessageCircle,
+  "Event Planning": Calendar,
+  "Public Relations": Globe,
+  "Web Development": Code2,
+  Mentoring: GraduationCap,
+  Collaboration: UsersIcon,
+  "Problem Solving": Brain,
+};
+
 const OrganizationSection = () => {
   const organizationData = [
     {
@@ -450,125 +535,174 @@ const OrganizationSection = () => {
       name: "Habibie Engineering Robotic of Organization (HERO)",
       position: "Anggota Hubungan Masyarakat (HUMAS)",
       period: "September 2023 – Desember 2024",
-      description: "Organisasi robotika di Institut Teknologi Bacharuddin Jusuf Habibie yang fokus pada pengembangan teknologi robotik dan kecerdasan buatan.",
+      description:
+        "Organisasi robotika di Institut Teknologi Bacharuddin Jusuf Habibie yang fokus pada pengembangan teknologi robotik dan kecerdasan buatan.",
       activities: [
         "Aktif berperan dalam perencanaan dan pelaksanaan program organisasi, termasuk HERO Goes to School dan seminar robotika",
         "Terlibat dalam pengelolaan komunikasi dan publikasi kegiatan, memastikan informasi tersampaikan secara jelas dan profesional",
         "Berkontribusi dalam penyelenggaraan dan fasilitasi pelatihan robotika, mulai dari pengenalan dasar hingga persiapan lomba",
-        "Mengembangkan kemampuan kerja tim, komunikasi, dan problem solving dalam lingkungan organisasi berbasis teknologi"
+        "Mengembangkan kemampuan kerja tim, komunikasi, dan problem solving dalam lingkungan organisasi berbasis teknologi",
       ],
       skills: ["Teamwork", "Communication", "Event Planning", "Public Relations"],
-      image: "/images/hero-logo.png"
+      image: "/images/hero-logo.png",
+      gallery: [
+        { src: "/images/organization/hero/hero1.jpeg", alt: "Kegiatan HERO 1" },
+        { src: "/images/organization/hero/hero2.jpeg", alt: "Kegiatan HERO 2" },
+        { src: "/images/organization/hero/hero3.jpg", alt: "Kegiatan HERO 3" },
+        { src: "/images/organization/hero/hero4.jpg", alt: "Kegiatan HERO 4" },
+        { src: "/images/organization/hero/hero5.jpg", alt: "Kegiatan HERO 5" },
+        { src: "/images/organization/hero/hero7.jpeg", alt: "Kegiatan HERO 7" },
+      ],
     },
     {
       id: 2,
       name: "Habibie Coding Club (HCC)",
       position: "Anggota Aktif",
       period: "Oktober 2022 – Desember 2023",
-      description: "Komunitas pemrograman di kampus yang berfokus pada pengembangan skill coding dan kolaborasi proyek teknologi.",
+      description:
+        "Komunitas pemrograman di kampus yang berfokus pada pengembangan skill coding dan kolaborasi proyek teknologi.",
       activities: [
         "Aktif berkontribusi dalam pelatihan dan mentoring Web Development bagi mahasiswa baru",
         "Terlibat dalam perencanaan dan pelaksanaan kegiatan belajar rutin untuk meningkatkan kemampuan teknis anggota",
         "Mengikuti berbagai kompetisi dan kegiatan pengembangan skill di bidang pemrograman",
-        "Mengasah kemampuan teknis, komunikasi, dan kerja tim melalui diskusi dan praktik coding"
+        "Mengasah kemampuan teknis, komunikasi, dan kerja tim melalui diskusi dan praktik coding",
       ],
       skills: ["Web Development", "Mentoring", "Collaboration", "Problem Solving"],
-      logo: "/images/hcc-logo.png"
-    }
+      logo: "/images/hcc-logo.png",
+      gallery: [],
+    },
   ];
 
   return (
-    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="container mx-auto">
+    <div id="organization" className="min-h-screen py-16 sm:py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Organization <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Involvement</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
+            Organization{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              Involvement
+            </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg px-2">
             Pengalaman berorganisasi dan kontribusi dalam komunitas teknologi
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {organizationData.map((org, index) => (
-            <motion.div
-              key={org.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full">
-                <div className="flex items-start mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                    {org.image ? (
-                      <img 
-                        src={org.image} 
-                        alt={org.name}
-                        className="w-10 h-10 object-contain"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          e.currentTarget.parentElement!.innerHTML = '<Users className="w-8 h-8 text-purple-400" />';
-                        }}
-                      />
-                    ) : (
-                      <Users className="w-8 h-8 text-purple-400" />
+        <div className="space-y-8 sm:space-y-10 lg:space-y-12">
+          {organizationData.map((org, index) => {
+            const hasGallery = org.gallery && org.gallery.length > 0;
+
+            return (
+              <motion.div
+                key={org.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <div className="relative bg-gray-800/40 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-500 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+                  <div className="p-5 sm:p-6 lg:p-8">
+                    <div className="mb-5">
+                      <div className="flex items-start gap-3 sm:gap-4 min-w-0">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
+                          {org.image || org.logo ? (
+                            <img
+                              src={org.image || org.logo}
+                              alt={org.name}
+                              className="w-8 h-8 sm:w-9 sm:h-9 object-contain"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          ) : (
+                            <Users className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white group-hover:text-purple-300 transition-colors leading-snug">
+                            {org.name}
+                          </h3>
+                          <div className="flex items-center text-purple-400 font-medium mt-1 text-sm sm:text-base">
+                            <ChevronRight className="w-4 h-4 mr-1 shrink-0" />
+                            <span className="break-words">{org.position}</span>
+                          </div>
+                          <div className="mt-3">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900/50 border border-purple-500/15 text-gray-300 text-xs sm:text-sm">
+                              <Calendar className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                              <span>{org.period}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-300 mb-5 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                      {org.description}
+                    </p>
+
+                    <div>
+                      <h4 className="text-purple-300 font-semibold mb-2 sm:mb-3 flex items-center text-sm sm:text-base">
+                        <ChevronRight className="w-4 h-4 mr-1 shrink-0" />
+                        Key Activities
+                      </h4>
+                      <ul className="space-y-2">
+                        {org.activities.map((activity, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start text-gray-400 text-xs sm:text-sm leading-relaxed"
+                          >
+                            <span className="text-purple-400 mr-2 mt-0.5 shrink-0">▸</span>
+                            <span>{activity}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-purple-500/10">
+                      <h4 className="text-purple-300 font-semibold mb-3 flex items-center text-sm sm:text-base">
+                        <Sparkles className="w-4 h-4 mr-1.5 shrink-0 text-pink-400" />
+                        Skills Developed
+                      </h4>
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+                        {org.skills.map((skill, idx) => {
+                          const SkillIcon = orgSkillIcons[skill] ?? Star;
+                          return (
+                            <div
+                              key={idx}
+                              className="inline-flex items-center gap-2 px-3 py-2.5 rounded-lg bg-gray-900/50 border border-purple-500/15 text-gray-300 text-xs sm:text-sm transition-colors hover:border-purple-500/30 hover:bg-gray-900/70"
+                            >
+                              <SkillIcon className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                              <span className="leading-snug">{skill}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {hasGallery && (
+                      <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-purple-500/10">
+                        <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-purple-500/15 bg-gray-900/30 p-2 sm:p-3">
+                          <ActivityDepthCarousel
+                            images={org.gallery}
+                            tiltDirection={index % 2 === 0 ? "right" : "left"}
+                          />
+                        </div>
+                      </div>
                     )}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
-                      {org.name}
-                    </h3>
-                    <div className="flex items-center text-purple-400 font-medium mt-1">
-                      <ChevronRight className="w-4 h-4 mr-1" />
-                      {org.position}
-                    </div>
-                    <div className="flex items-center text-gray-300 text-sm mt-1">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {org.period}
-                    </div>
-                  </div>
+
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl pointer-events-none" />
                 </div>
-
-                <p className="text-gray-300 mb-6">{org.description}</p>
-
-                <div className="mb-6">
-                  <h4 className="text-purple-300 font-semibold mb-3">Key Activities</h4>
-                  <ul className="space-y-2">
-                    {org.activities.map((activity, idx) => (
-                      <li key={idx} className="flex items-start text-gray-400 text-sm">
-                        <span className="text-purple-400 mr-2 mt-1">▸</span>
-                        {activity}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="text-purple-300 font-semibold mb-3">Skills Developed</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {org.skills.map((skill, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-300 text-xs rounded-full border border-purple-500/20"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
         <motion.div
@@ -576,30 +710,34 @@ const OrganizationSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
+          className="mt-10 sm:mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 border border-purple-500/20"
         >
-          <div className="flex items-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center mr-4">
-              <Award className="w-6 h-6 text-purple-400" />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-5 sm:mb-6">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl flex items-center justify-center shrink-0">
+              <Award className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">Impact & Learning</h3>
-              <p className="text-gray-300">Pengalaman berorganisasi telah mengembangkan soft skills yang berharga</p>
+              <h3 className="text-lg sm:text-xl font-bold text-white">Impact & Learning</h3>
+              <p className="text-gray-300 text-sm sm:text-base mt-1">
+                Pengalaman berorganisasi telah mengembangkan soft skills yang berharga
+              </p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
               { title: "Leadership", desc: "Mengkoordinasi tim dalam kegiatan organisasi" },
               { title: "Communication", desc: "Public speaking dan publikasi kegiatan" },
               { title: "Teamwork", desc: "Kolaborasi dalam proyek dan event" },
-              { title: "Problem Solving", desc: "Menyelesaikan tantangan teknis dan organisasi" }
+              { title: "Problem Solving", desc: "Menyelesaikan tantangan teknis dan organisasi" },
             ].map((item, idx) => (
-              <div key={idx} className="bg-gray-800/30 rounded-xl p-4 hover:bg-gray-800/50 transition-all duration-300">
-                <div className="flex items-center mb-2">
-                  <span className="text-2xl mr-2"></span>
-                  <h4 className="text-purple-300 font-semibold">{item.title}</h4>
-                </div>
-                <p className="text-gray-400 text-sm">{item.desc}</p>
+              <div
+                key={idx}
+                className="bg-gray-800/30 rounded-xl p-4 hover:bg-gray-800/50 transition-all duration-300"
+              >
+                <h4 className="text-purple-300 font-semibold text-sm sm:text-base mb-1.5">
+                  {item.title}
+                </h4>
+                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -637,7 +775,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true }}
       className={`group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/40 transition-all duration-500 ${
-        project.featured ? 'ring-2 ring-purple-500/30' : ''
+        project.featured ? "ring-2 ring-purple-500/30" : ""
       }`}
     >
       {project.featured && (
@@ -650,8 +788,8 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
 
       <div className="relative h-48 overflow-hidden z-10">
         {project.image && (
-          <img 
-            src={project.image} 
+          <img
+            src={project.image}
             alt={project.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             onError={() => setImageError(true)}
@@ -678,7 +816,10 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                   <ExternalLink className="w-5 h-5" />
                 </a>
               ) : (
-                <span className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed" title="Demo not available">
+                <span
+                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed"
+                  title="Demo not available"
+                >
                   <ExternalLink className="w-5 h-5" />
                 </span>
               )}
@@ -692,7 +833,10 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                   <Github className="w-5 h-5" />
                 </a>
               ) : (
-                <span className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed" title="Code not available">
+                <span
+                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-gray-400 cursor-not-allowed"
+                  title="Code not available"
+                >
                   <Github className="w-5 h-5" />
                 </span>
               )}
@@ -746,9 +890,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           {project.title}
         </h3>
 
-        <p className="text-gray-400 text-sm leading-relaxed mb-4">
-          {project.description}
-        </p>
+        <p className="text-gray-400 text-sm leading-relaxed mb-4">{project.description}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech: string, techIndex: number) => (
@@ -806,83 +948,102 @@ const ProjectsSection = () => {
     {
       id: 1,
       title: "Satu Data Parepare – Government Data Integration Dashboard",
-      description: "Sistem manajemen dan integrasi data pemerintah Kota Parepare dengan fitur dashboard, visualisasi data, dan pengelolaan dataset terpusat menggunakan Laravel dan React.",
+      description:
+        "Sistem manajemen dan integrasi data pemerintah Kota Parepare dengan fitur dashboard, visualisasi data, dan pengelolaan dataset terpusat menggunakan Laravel dan React.",
       image: "/images/satu-data.png",
       technologies: ["Laravel", "React", "MySQL", "Tailwind CSS", "Filament"],
       category: "Web Application",
       liveUrl: "https://satu-data.pareparekota.go.id",
       githubUrl: "https://github.com/nrmalasari/satu-data",
-      pptUrl: "https://drive.google.com/file/d/1BRX8kp7MuFsODCBMRXO_CggVqYkj86wC/view?usp=sharing",
-      videoUrl: "https://drive.google.com/file/d/1sKs3RecQEr5Y_lP-a6b-vgh212sxQw3G/view?usp=drive_link",
-      featured: true
+      pptUrl:
+        "https://drive.google.com/file/d/1BRX8kp7MuFsODCBMRXO_CggVqYkj86wC/view?usp=sharing",
+      videoUrl:
+        "https://drive.google.com/file/d/1sKs3RecQEr5Y_lP-a6b-vgh212sxQw3G/view?usp=drive_link",
+      featured: true,
     },
     {
       id: 2,
-      title: "TERPARKIR – Teknologi Efisiensi Rencana Parkir (Studi Kasus: Mall Panakkukang)",
-      description: "Sistem parkir pintar berbasis IoT yang menampilkan ketersediaan slot secara real-time. Terparkir memudahkan pengunjung menemukan lokasi parkir kosong melalui aplikasi, meningkatkan efisiensi operasional parkir, dan mendukung konsep smart city di Makassar. Sistem ini telah di terbitkan jurnalnya",
+      title:
+        "TERPARKIR – Teknologi Efisiensi Rencana Parkir (Studi Kasus: Mall Panakkukang)",
+      description:
+        "Sistem parkir pintar berbasis IoT yang menampilkan ketersediaan slot secara real-time. Terparkir memudahkan pengunjung menemukan lokasi parkir kosong melalui aplikasi, meningkatkan efisiensi operasional parkir, dan mendukung konsep smart city di Makassar. Sistem ini telah di terbitkan jurnalnya",
       image: "/images/terparkir.png",
       technologies: ["Android Studio", "MySQL", "Firebase", "IoT Sensors"],
       category: "Mobile App / IoT System / AI Integration",
       githubUrl: "https://github.com/nrmalasari/ProyekTerparkir",
-      pptUrl: "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
-      liveUrl: "https://drive.google.com/file/d/1xNMAhlclgZaPGSVtlCkA-wh_f4NaDTuE/view?usp=sharing",
-      videoUrl: "https://jurnal.lppm-stmikhandayani.ac.id/index.php/jti/article/view/382/175",
-      featured: false
+      pptUrl:
+        "https://drive.google.com/file/d/16rYGnCkeIFNaZfXoLoZo5ZRbuPA8fra9/view?usp=drive_link",
+      liveUrl:
+        "https://drive.google.com/file/d/1xNMAhlclgZaPGSVtlCkA-wh_f4NaDTuE/view?usp=sharing",
+      videoUrl:
+        "https://jurnal.lppm-stmikhandayani.ac.id/index.php/jti/article/view/382/175",
+      featured: false,
     },
     {
       id: 3,
-      title: "Web Pelayanan & Pengaduan Digital Kelurahan Ujung Bulu – Kota Parepare",
-      description:"Platform layanan digital untuk pengaduan masyarakat yang memudahkan warga dalam menyampaikan laporan, mengikuti status penanganan, dan mengakses pelayanan kelurahan secara online. Sistem ini meningkatkan transparansi dan efisiensi pelayanan publik di Kelurahan Ujung Bulu.",
+      title:
+        "Web Pelayanan & Pengaduan Digital Kelurahan Ujung Bulu – Kota Parepare",
+      description:
+        "Platform layanan digital untuk pengaduan masyarakat yang memudahkan warga dalam menyampaikan laporan, mengikuti status penanganan, dan mengakses pelayanan kelurahan secara online. Sistem ini meningkatkan transparansi dan efisiensi pelayanan publik di Kelurahan Ujung Bulu.",
       image: "/images/ublapor.png",
       technologies: ["HTML", "CSS", "JavaScript"],
       category: "Web Application",
       liveUrl: "https://ublapor.vercel.app/",
       githubUrl: "https://github.com/nrmalasari/KOTAKSARAN_DIGITAL_UJUNGBULU",
-      pptUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=sharing",
+      pptUrl:
+        "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=sharing",
       videoUrl: "",
-      featured: false
+      featured: false,
     },
     {
       id: 4,
       title: "Sistem Inventaris TK SC2 Menara – Manajemen Aset & Barang Sekolah",
-      description:"Sistem inventaris berbasis web untuk mengelola barang, stok, dan aset sekolah di TK SC2 Menara. Fitur meliputi pencatatan barang masuk/keluar, manajemen kategori, pencarian cepat, dan pelacakan riwayat perubahan guna meningkatkan efisiensi dan transparansi pengelolaan aset.",
+      description:
+        "Sistem inventaris berbasis web untuk mengelola barang, stok, dan aset sekolah di TK SC2 Menara. Fitur meliputi pencatatan barang masuk/keluar, manajemen kategori, pencarian cepat, dan pelacakan riwayat perubahan guna meningkatkan efisiensi dan transparansi pengelolaan aset.",
       image: "/images/inventastk.png",
       technologies: ["Laravel", "MySQL", "CSS"],
       category: "Web Application",
-      liveUrl: "https://drive.google.com/file/d/175tINiG4uoCZlsBDgH8rOaPUizvETuju/view?usp=drive_link", 
+      liveUrl:
+        "https://drive.google.com/file/d/175tINiG4uoCZlsBDgH8rOaPUizvETuju/view?usp=drive_link",
       githubUrl: "https://github.com/nrmalasari/inventaris-TKSC2Menara",
-      pptUrl: "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=sharing",
-      videoUrl: "https://drive.google.com/file/d/175tINiG4uoCZlsBDgH8rOaPUizvETuju/view?usp=drive_link",
-      featured: false
+      pptUrl:
+        "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=sharing",
+      videoUrl:
+        "https://drive.google.com/file/d/175tINiG4uoCZlsBDgH8rOaPUizvETuju/view?usp=drive_link",
+      featured: false,
     },
     {
       id: 5,
       title: "Web Repository Akademik ITH",
-      description: "Platform repository akademik untuk ITH dengan fitur penyimpanan jurnal, artikel ilmiah, tesis, materi kuliah, serta manajemen dokumen institusi. Sistem menyediakan akses terstruktur bagi mahasiswa, dosen, dan peneliti untuk mendukung kolaborasi dan penyebaran pengetahuan.",
+      description:
+        "Platform repository akademik untuk ITH dengan fitur penyimpanan jurnal, artikel ilmiah, tesis, materi kuliah, serta manajemen dokumen institusi. Sistem menyediakan akses terstruktur bagi mahasiswa, dosen, dan peneliti untuk mendukung kolaborasi dan penyebaran pengetahuan.",
       image: "/images/repositori.jpeg",
       technologies: ["Laravel", "MySQL", "HTML/CSS", "JavaScript"],
       liveUrl: "",
       githubUrl: "https://github.com/wokkk15/repository",
-      pptUrl: "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=sharing",
+      pptUrl:
+        "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=sharing",
       videoUrl: "",
-      featured: false
+      featured: false,
     },
     {
       id: 6,
       title: "Demo Sistem Deteksi Objek CCTV",
-      description: "Aplikasi web berbasis React untuk demonstrasi sistem deteksi objek pada video CCTV. Sistem menampilkan hasil deteksi objek secara visual dengan bounding box dan label secara interaktif. Berperan sebagai Frontend Developer dengan implementasi React + TypeScript + Vite untuk membangun antarmuka real-time dan integrasi hasil deteksi.",
+      description:
+        "Aplikasi web berbasis React untuk demonstrasi sistem deteksi objek pada video CCTV. Sistem menampilkan hasil deteksi objek secara visual dengan bounding box dan label secara interaktif. Berperan sebagai Frontend Developer dengan implementasi React + TypeScript + Vite untuk membangun antarmuka real-time dan integrasi hasil deteksi.",
       image: "/images/deteksi-cctv.png",
       technologies: ["React", "TypeScript", "Vite", "Computer Vision", "Frontend Development"],
       liveUrl: "https://demo-deteksi-objek-cctv.vercel.app",
       githubUrl: "https://github.com/AldiAlfatih/DemoDeteksiObjekCCTV",
       pptUrl: "",
       videoUrl: "",
-      featured: false
+      featured: false,
     },
     {
       id: 7,
       title: "Sistem Pendaftaran Taman Kanak-Kanak TK SC2 Menara",
-      description: "Sistem pendaftaran siswa baru berbasis web yang dikembangkan sebagai proyek skripsi untuk mendigitalisasi proses pendaftaran di TK SC2 Menara. Sistem menyediakan pendaftaran online, pengelolaan data calon siswa, validasi data dan dokumen oleh admin, serta pengamanan data sensitif menggunakan enkripsi AES-256-CBC.",
+      description:
+        "Sistem pendaftaran siswa baru berbasis web yang dikembangkan sebagai proyek skripsi untuk mendigitalisasi proses pendaftaran di TK SC2 Menara. Sistem menyediakan pendaftaran online, pengelolaan data calon siswa, validasi data dan dokumen oleh admin, serta pengamanan data sensitif menggunakan enkripsi AES-256-CBC.",
       image: "/images/pendaftaran-tk.png",
       technologies: [
         "React",
@@ -891,14 +1052,16 @@ const ProjectsSection = () => {
         "MySQL",
         "Tailwind CSS",
         "AES-256-CBC",
-        "Web Development"
+        "Web Development",
       ],
-      liveUrl: "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
+      liveUrl:
+        "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
       githubUrl: "https://github.com/nrmalasari/TKSC2Menara.git",
       pptUrl: "https://canva.link/ox2v4o101rqm743",
-      videoUrl: "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
-      featured: true
-    }
+      videoUrl:
+        "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
+      featured: true,
+    },
   ];
 
   const displayedProjects = showAll ? projectsData : projectsData.slice(0, 3);
@@ -913,10 +1076,14 @@ const ProjectsSection = () => {
         className="text-center mb-16"
       >
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Projects</span>
+          My{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+            Projects
+          </span>
         </h2>
         <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-          Koleksi project yang telah saya kembangkan, mencakup web application, mobile app, dan integrasi AI
+          Koleksi project yang telah saya kembangkan, mencakup web application, mobile app, dan
+          integrasi AI
         </p>
       </motion.div>
 
@@ -940,7 +1107,7 @@ const ProjectsSection = () => {
             onClick={() => setShowAll(!showAll)}
             className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
           >
-            {showAll ? 'Show Less Projects' : `View All Projects (${projectsData.length})`}
+            {showAll ? "Show Less Projects" : `View All Projects (${projectsData.length})`}
           </motion.button>
           {!showAll && (
             <p className="text-gray-400 text-sm mt-3">
@@ -958,7 +1125,7 @@ const ProjectsSection = () => {
 // ============================================================
 const CertificatesSection = () => {
   const [showAll, setShowAll] = useState(false);
-  
+
   const certificatesData = [
     {
       id: 1,
@@ -966,17 +1133,19 @@ const CertificatesSection = () => {
       issuer: "Dicoding Indonesia",
       date: "2025",
       image: "/images/JavaScrip.png",
-      credentialUrl: "https://drive.google.com/file/d/1rLRF4p9RnLNkpQSi5YpFZqlJSpy6yOin/view?usp=sharing",
-      skills: ["JavaScript", "Programming Basics", "Web Development"]
+      credentialUrl:
+        "https://drive.google.com/file/d/1rLRF4p9RnLNkpQSi5YpFZqlJSpy6yOin/view?usp=sharing",
+      skills: ["JavaScript", "Programming Basics", "Web Development"],
     },
     {
       id: 2,
       title: "Belajar Dasar Cloud dan Gen AI di AWS",
       issuer: "Dicoding Indonesia",
       date: "2025",
-      image: "/images/AWS.png", 
-      credentialUrl: "https://drive.google.com/file/d/1uXZyDussWf5kHjLYmPHBFa_6mjDtCDUe/view?usp=drive_link",
-      skills: ["Cloud Computing", "AWS", "Infrastructure"]
+      image: "/images/AWS.png",
+      credentialUrl:
+        "https://drive.google.com/file/d/1uXZyDussWf5kHjLYmPHBFa_6mjDtCDUe/view?usp=drive_link",
+      skills: ["Cloud Computing", "AWS", "Infrastructure"],
     },
     {
       id: 3,
@@ -984,17 +1153,19 @@ const CertificatesSection = () => {
       issuer: "Dicoding Indonesia",
       date: "2025",
       image: "/images/android.png",
-      credentialUrl: "https://drive.google.com/file/d/1TiJGBznk8qzLjQof-leOuEFmgyCiSJl6/view?usp=drive_link",
-      skills: ["Android Studio", "Kotlin", "JavaScript"]
+      credentialUrl:
+        "https://drive.google.com/file/d/1TiJGBznk8qzLjQof-leOuEFmgyCiSJl6/view?usp=drive_link",
+      skills: ["Android Studio", "Kotlin", "JavaScript"],
     },
     {
       id: 4,
       title: "Belajar Dasar AI",
       issuer: "Dicoding Indonesia",
       date: "2025",
-      image: "/images/dasar_AI.png", 
-      credentialUrl: "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=drive_link",
-      skills: ["Artificial Intelligence", "Machine Learning", "Deep Learning"]
+      image: "/images/dasar_AI.png",
+      credentialUrl:
+        "https://drive.google.com/file/d/1m1oQEO4aNZqDxr7pWwuTItqzaeAMJm6k/view?usp=drive_link",
+      skills: ["Artificial Intelligence", "Machine Learning", "Deep Learning"],
     },
     {
       id: 5,
@@ -1002,8 +1173,9 @@ const CertificatesSection = () => {
       issuer: "Dicoding Indonesia",
       date: "2025",
       image: "/images/kotlin.png",
-      credentialUrl: "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=drive_link",
-      skills: ["Kotlin", "Android Development", "Programming"]
+      credentialUrl:
+        "https://drive.google.com/file/d/1QKhJrVpHW7KW-3UWE0etQS_6oTsHK-xD/view?usp=drive_link",
+      skills: ["Kotlin", "Android Development", "Programming"],
     },
     {
       id: 6,
@@ -1011,8 +1183,9 @@ const CertificatesSection = () => {
       issuer: "Universitas Hasanuddin",
       date: "2024",
       image: "/images/crc.png",
-      credentialUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
-      skills: ["Robotics", "Competition", "Technology"]
+      credentialUrl:
+        "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
+      skills: ["Robotics", "Competition", "Technology"],
     },
     {
       id: 7,
@@ -1020,8 +1193,9 @@ const CertificatesSection = () => {
       issuer: "Universitas Negeri Makassar",
       date: "2023",
       image: "/images/Sertifikat-21.png",
-      credentialUrl: "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
-      skills: ["Robotics", "Line Follower", "Competition"]
+      credentialUrl:
+        "https://drive.google.com/file/d/1czMZHG-_xWnoZb86KWN7Qg2TnnozJdCR/view?usp=drive_link",
+      skills: ["Robotics", "Line Follower", "Competition"],
     },
     {
       id: 8,
@@ -1029,8 +1203,9 @@ const CertificatesSection = () => {
       issuer: "TK SC2 Menara",
       date: "2025",
       image: "/images/sertimagang1.png",
-      credentialUrl: "https://drive.google.com/file/d/1iFWvdmzWzoCTA6b9vnhiaEbUjq1L6NsE/view?usp=sharing",
-      skills: ["WEB Inventaris Sekolah", "Magang", "PHP, MySQL"]
+      credentialUrl:
+        "https://drive.google.com/file/d/1iFWvdmzWzoCTA6b9vnhiaEbUjq1L6NsE/view?usp=sharing",
+      skills: ["WEB Inventaris Sekolah", "Magang", "PHP, MySQL"],
     },
     {
       id: 9,
@@ -1038,9 +1213,15 @@ const CertificatesSection = () => {
       issuer: "Indonesia Agrichemical Research Institute",
       date: "2025",
       image: "/images/fertinnovation2025.png",
-      credentialUrl: "https://drive.google.com/file/d/11GGsIa4tBKY56ZN9kZtJAmkHnoUp43Bw/view?usp=drive_link",
-      skills: ["Artificial Intelligence", "AI-Driven Innovation", "Proposal Development", "Problem Solving"]
-    }
+      credentialUrl:
+        "https://drive.google.com/file/d/11GGsIa4tBKY56ZN9kZtJAmkHnoUp43Bw/view?usp=drive_link",
+      skills: [
+        "Artificial Intelligence",
+        "AI-Driven Innovation",
+        "Proposal Development",
+        "Problem Solving",
+      ],
+    },
   ];
 
   const displayedCertificates = showAll ? certificatesData : certificatesData.slice(0, 3);
@@ -1052,7 +1233,7 @@ const CertificatesSection = () => {
       color: "#a855f7",
       gradientFrom: "#c084fc",
       gradientTo: "#ec4899",
-      ids: [1, 3, 5]
+      ids: [1, 3, 5],
     },
     {
       id: "cloud-ai",
@@ -1060,7 +1241,7 @@ const CertificatesSection = () => {
       color: "#ec4899",
       gradientFrom: "#f472b6",
       gradientTo: "#818cf8",
-      ids: [2, 4, 9]
+      ids: [2, 4, 9],
     },
     {
       id: "event-magang",
@@ -1068,8 +1249,8 @@ const CertificatesSection = () => {
       color: "#7c3aed",
       gradientFrom: "#818cf8",
       gradientTo: "#22d3ee",
-      ids: [6, 7, 8]
-    }
+      ids: [6, 7, 8],
+    },
   ];
 
   const getFolderPapers = (ids: number[]) =>
@@ -1085,11 +1266,7 @@ const CertificatesSection = () => {
           className="block w-full h-full"
           title={certificate.title}
         >
-          <img
-            src={certificate.image}
-            alt={certificate.title}
-            className="w-full h-full object-cover"
-          />
+          <img src={certificate.image} alt={certificate.title} className="w-full h-full object-cover" />
         </a>
       );
     });
@@ -1115,8 +1292,8 @@ const CertificatesSection = () => {
                   <div className="text-2xl">📜</div>
                 </div>
               )}
-              <img 
-                src={certificate.image} 
+              <img
+                src={certificate.image}
                 alt={certificate.title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 onLoad={() => setImageLoaded(true)}
@@ -1211,7 +1388,10 @@ const CertificatesSection = () => {
         className="text-center mb-16"
       >
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Certificates</span>
+          My{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+            Certificates
+          </span>
         </h2>
         <p className="text-gray-400 max-w-2xl mx-auto text-lg">
           Sertifikat dan credential yang telah saya peroleh dalam perjalanan pengembangan karir saya
@@ -1264,7 +1444,9 @@ const CertificatesSection = () => {
               onClick={() => setShowAll(!showAll)}
               className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform shadow-lg shadow-purple-500/25 cursor-pointer"
             >
-              {showAll ? 'Show Less Certificates' : `View All Certificates (${certificatesData.length})`}
+              {showAll
+                ? "Show Less Certificates"
+                : `View All Certificates (${certificatesData.length})`}
             </motion.button>
             {!showAll && (
               <p className="text-gray-400 text-sm mt-3">
@@ -1281,63 +1463,113 @@ const CertificatesSection = () => {
 // ============================================================
 // CONTACT FORM SECTION COMPONENT
 // ============================================================
+interface ContactComment {
+  id: string;
+  name: string;
+  comment: string;
+  likes: number;
+  createdAt: string;
+}
+
 const ContactFormSection = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      name: "Alex Johnson",
-      time: "2 jam yang lalu",
-      comment: "Amazing AI portfolio! The projects showcase incredible technical depth.",
-      likes: 12
-    },
-    {
-      id: 2,
-      name: "Sarah Miller",
-      time: "5 jam yang lalu",
-      comment: "Really impressed with your work! The attention to detail is remarkable.",
-      likes: 8
-    }
-  ]);
+  const [comments, setComments] = useState<ContactComment[]>([]);
+  const [newComment, setNewComment] = useState("");
+  const [newCommentName, setNewCommentName] = useState("");
+  const [isLoadingComments, setIsLoadingComments] = useState(true);
+  const [isPostingComment, setIsPostingComment] = useState(false);
+  const [commentError, setCommentError] = useState("");
+  const [commentSuccess, setCommentSuccess] = useState("");
 
-  const [newComment, setNewComment] = useState('');
-  const [newCommentName, setNewCommentName] = useState('');
+  useEffect(() => {
+    const loadComments = async () => {
+      try {
+        const response = await fetch("/api/comments");
+        if (!response.ok) throw new Error("Gagal memuat komentar");
+        const data = await response.json();
+        setComments(Array.isArray(data) ? data : []);
+      } catch {
+        setCommentError("Gagal memuat komentar. Silakan refresh halaman.");
+      } finally {
+        setIsLoadingComments(false);
+      }
+    };
+
+    loadComments();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Pesan telah dikirim! Terima kasih telah menghubungi saya.');
-    setFormData({ name: '', email: '', message: '' });
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(
+      `Pesan dari ${formData.name}`
+    )}&body=${encodeURIComponent(
+      `Nama: ${formData.name}\nEmail: ${formData.email}\n\nPesan:\n${formData.message}`
+    )}`;
+    window.location.href = mailtoLink;
+    alert("Pesan telah disiapkan di aplikasi email Anda. Terima kasih telah menghubungi saya.");
+    setFormData({ name: "", email: "", message: "" });
   };
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (!newCommentName.trim() || !newComment.trim()) {
-      alert('Silakan isi nama dan komentar Anda');
+      setCommentError("Silakan isi nama dan komentar Anda");
       return;
     }
 
-    const newCommentObj = {
-      id: comments.length + 1,
-      name: newCommentName,
-      time: 'Baru saja',
-      comment: newComment,
-      likes: 0
-    };
+    setIsPostingComment(true);
+    setCommentError("");
+    setCommentSuccess("");
 
-    setComments([newCommentObj, ...comments]);
-    setNewComment('');
-    setNewCommentName('');
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newCommentName,
+          comment: newComment,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Gagal mengirim komentar");
+      }
+
+      setComments((prev) => [data, ...prev]);
+      setNewComment("");
+      setNewCommentName("");
+      setCommentSuccess("Komentar berhasil diposting!");
+    } catch (error) {
+      setCommentError(
+        error instanceof Error ? error.message : "Gagal mengirim komentar"
+      );
+    } finally {
+      setIsPostingComment(false);
+    }
   };
 
-  const handleLikeComment = (id: number) => {
-    setComments(comments.map(comment => 
-      comment.id === id ? { ...comment, likes: comment.likes + 1 } : comment
-    ));
+  const handleLikeComment = async (id: string) => {
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "like", id }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) return;
+
+      setComments((prev) =>
+        prev.map((comment) => (comment.id === id ? data : comment))
+      );
+    } catch {
+      // ignore like errors silently
+    }
   };
 
   return (
@@ -1351,10 +1583,14 @@ const ContactFormSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Start a <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Project?</span>
+            Ready to Start a{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              Project?
+            </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu yang luar biasa bersama!
+            Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu yang
+            luar biasa bersama!
           </p>
         </motion.div>
 
@@ -1367,14 +1603,14 @@ const ContactFormSection = () => {
             className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20"
           >
             <h3 className="text-2xl font-bold text-white mb-6">Hubungi Saya</h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-gray-300 mb-2 font-medium">Nama Anda</label>
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
                   placeholder="Masukkan nama lengkap Anda"
                   required
@@ -1386,7 +1622,7 @@ const ContactFormSection = () => {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
                   placeholder="nama@email.com"
                   required
@@ -1397,7 +1633,7 @@ const ContactFormSection = () => {
                 <label className="block text-gray-300 mb-2 font-medium">Pesan Anda</label>
                 <textarea
                   value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all min-h-[150px] resize-vertical"
                   placeholder="Tulis pesan Anda di sini..."
                   required
@@ -1418,7 +1654,8 @@ const ContactFormSection = () => {
             <div className="mt-8 pt-6 border-t border-gray-700/50">
               <h4 className="text-lg font-semibold text-white mb-3">General</h4>
               <p className="text-gray-400 text-sm">
-                Saya akan membalas pesan Anda dalam waktu 24-48 jam. Untuk pertanyaan mendesak, silakan hubungi melalui media sosial.
+                Saya akan membalas pesan Anda dalam waktu 24-48 jam. Untuk pertanyaan mendesak,
+                silakan hubungi melalui media sosial.
               </p>
             </div>
           </motion.div>
@@ -1433,14 +1670,27 @@ const ContactFormSection = () => {
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
               <h3 className="text-2xl font-bold text-white mb-6">Tinggalkan Komentar</h3>
               <p className="text-gray-400 mb-6">Share pengalaman Anda!</p>
-              
+
               <div className="space-y-4">
+                {commentError && (
+                  <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+                    {commentError}
+                  </p>
+                )}
+                {commentSuccess && (
+                  <p className="text-sm text-green-400 bg-green-500/10 border border-green-500/20 rounded-lg px-4 py-3">
+                    {commentSuccess}
+                  </p>
+                )}
+
                 <div>
                   <input
                     type="text"
                     value={newCommentName}
                     onChange={(e) => setNewCommentName(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                    maxLength={80}
+                    disabled={isPostingComment}
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all disabled:opacity-60"
                     placeholder="Nama Anda"
                   />
                 </div>
@@ -1449,45 +1699,61 @@ const ContactFormSection = () => {
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all min-h-[120px] resize-vertical"
+                    maxLength={1000}
+                    disabled={isPostingComment}
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all min-h-[120px] resize-vertical disabled:opacity-60"
                     placeholder="Tinggalkan komentar Anda..."
                   />
                 </div>
 
                 <button
+                  type="button"
                   onClick={handleAddComment}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-[1.02] cursor-pointer"
+                  disabled={isPostingComment}
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-[1.02] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  Post Komentar
+                  {isPostingComment ? "Mengirim..." : "Post Komentar"}
                 </button>
               </div>
             </div>
 
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
-              <h3 className="text-2xl font-bold text-white mb-6">Komentar ({comments.length})</h3>
-              
+              <h3 className="text-2xl font-bold text-white mb-6">
+                Komentar ({comments.length})
+              </h3>
+
               <div className="space-y-6">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="pb-6 border-b border-gray-700/50 last:border-0 last:pb-0">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h4 className="font-bold text-white">{comment.name}</h4>
-                        <p className="text-gray-400 text-sm">{comment.time}</p>
+                {isLoadingComments ? (
+                  <p className="text-gray-400 text-center py-6">Memuat komentar...</p>
+                ) : (
+                  comments.map((comment) => (
+                    <div
+                      key={comment.id}
+                      className="pb-6 border-b border-gray-700/50 last:border-0 last:pb-0"
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h4 className="font-bold text-white">{comment.name}</h4>
+                          <p className="text-gray-400 text-sm">
+                            {formatRelativeTime(comment.createdAt)}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleLikeComment(comment.id)}
+                          className="flex items-center space-x-1 text-gray-400 hover:text-purple-400 transition-colors cursor-pointer"
+                        >
+                          <ThumbsUp className="w-4 h-4" />
+                          <span className="text-sm">{comment.likes}</span>
+                        </button>
                       </div>
-                      <button
-                        onClick={() => handleLikeComment(comment.id)}
-                        className="flex items-center space-x-1 text-gray-400 hover:text-purple-400 transition-colors cursor-pointer"
-                      >
-                        <ThumbsUp className="w-4 h-4" />
-                        <span className="text-sm">{comment.likes}</span>
-                      </button>
+                      <p className="text-gray-300">{comment.comment}</p>
                     </div>
-                    <p className="text-gray-300">{comment.comment}</p>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
 
-              {comments.length === 0 && (
+              {!isLoadingComments && comments.length === 0 && (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <MessageCircle className="w-8 h-8 text-purple-400" />
@@ -1508,19 +1774,22 @@ const ContactFormSection = () => {
         >
           <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/10 rounded-full blur-3xl"></div>
-          
+
           <div className="relative z-10">
             <div className="w-20 h-20 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <MessageCircle className="w-10 h-10 text-purple-400" />
             </div>
-            
+
             <h3 className="text-2xl font-bold text-white mb-4">
               Ready to Start Something Amazing?
             </h3>
-            
+
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
-              Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu yang luar biasa bersama! 
-              <span className="block text-purple-300 mt-2">✨ Setiap proyek adalah petualangan baru ✨</span>
+              Saya senang mendengar tentang ide Anda. Mari berkolaborasi untuk menciptakan sesuatu
+              yang luar biasa bersama!
+              <span className="block text-purple-300 mt-2">
+                ✨ Setiap proyek adalah petualangan baru ✨
+              </span>
             </p>
 
             <motion.a
@@ -1535,7 +1804,8 @@ const ContactFormSection = () => {
 
             <div className="mt-8 pt-6 border-t border-purple-500/20">
               <p className="text-gray-400 text-sm italic">
-                "Great things in business are never done by one person. They're done by a team of people."
+                "Great things in business are never done by one person. They're done by a team of
+                people."
                 <span className="block text-purple-300 mt-1">- Steve Jobs</span>
               </p>
             </div>
@@ -1580,11 +1850,12 @@ const ContactFormSection = () => {
   );
 };
 
-// SKILLS SECTION dengan SkillTabs
+// ============================================================
+// SKILLS SECTION
+// ============================================================
 const SkillsSection = () => {
   const [activeTab, setActiveTab] = useState("hardskills");
 
-  // Data Skills berdasarkan kategori
   const skillData = {
     hardskills: {
       label: "Hard Skills",
@@ -1592,39 +1863,54 @@ const SkillsSection = () => {
       categories: [
         {
           title: "Bahasa Pemrograman",
-          skills: ["Python", "Java", "PHP", "JavaScript", "TypeScript", "Kotlin", "Dart", "C++"]
+          skills: ["Python", "Java", "PHP", "JavaScript", "TypeScript", "Kotlin", "Dart", "C++"],
         },
         {
           title: "Web Development & Backend",
-          skills: ["HTML5",
-    "CSS3",
-                    "Tailwind CSS",
-                    "JavaScript",
-                    "TypeScript",
-                    "PHP Native",
-                    "Laravel",
-                    "Laravel Filament",
-                    "CodeIgniter",
-                    "React.js",
-                    "Next.js",
-                    "Vue.js",
-                    "Node.js",
-                    "REST API",
-                    "Vite",]
+          skills: [
+            "HTML5",
+            "CSS3",
+            "Tailwind CSS",
+            "JavaScript",
+            "TypeScript",
+            "PHP Native",
+            "Laravel",
+            "Laravel Filament",
+            "CodeIgniter",
+            "React.js",
+            "Next.js",
+            "Vue.js",
+            "Node.js",
+            "REST API",
+            "Vite",
+          ],
         },
         {
           title: "AI/ML & Data",
-          skills: ["Machine Learning", "Deep Learning", "Computer Vision", "NLP", "Data Mining", "EDA", "Data Visualization", "Model Deployment", "TensorFlow", "Keras", "scikit-learn", "MediaPipe"]
+          skills: [
+            "Machine Learning",
+            "Deep Learning",
+            "Computer Vision",
+            "NLP",
+            "Data Mining",
+            "EDA",
+            "Data Visualization",
+            "Model Deployment",
+            "TensorFlow",
+            "Keras",
+            "scikit-learn",
+            "MediaPipe",
+          ],
         },
         {
           title: "Database",
-          skills: ["MySQL", "PostgreSQL", "Supabase", "Firebase"]
+          skills: ["MySQL", "PostgreSQL", "Supabase", "Firebase"],
         },
         {
           title: "Tools & Others",
-          skills: ["Git", "Docker", "Figma", "Filament", "Android Studio", "Postman"]
-        }
-      ]
+          skills: ["Git", "Docker", "Figma", "Filament", "Android Studio", "Postman"],
+        },
+      ],
     },
     softskills: {
       label: "Soft Skills",
@@ -1632,25 +1918,42 @@ const SkillsSection = () => {
       categories: [
         {
           title: "Leadership & Management",
-          skills: ["Team Leadership", "Project Management", "Decision Making", "Delegation"]
+          skills: ["Team Leadership", "Project Management", "Decision Making", "Delegation"],
         },
         {
           title: "Communication",
-          skills: ["Public Speaking", "Presentation", "Technical Writing", "Active Listening", "Negotiation"]
+          skills: [
+            "Public Speaking",
+            "Presentation",
+            "Technical Writing",
+            "Active Listening",
+            "Negotiation",
+          ],
         },
         {
           title: "Problem Solving",
-          skills: ["Critical Thinking", "Analytical Skills", "Creative Solutions", "Root Cause Analysis"]
+          skills: [
+            "Critical Thinking",
+            "Analytical Skills",
+            "Creative Solutions",
+            "Root Cause Analysis",
+          ],
         },
         {
           title: "Collaboration",
-          skills: ["Teamwork", "Cross-functional Collaboration", "Mentoring", "Knowledge Sharing"]
+          skills: ["Teamwork", "Cross-functional Collaboration", "Mentoring", "Knowledge Sharing"],
         },
         {
           title: "Personal Attributes",
-          skills: ["Adaptability", "Time Management", "Self-motivation", "Continuous Learning", "Resilience"]
-        }
-      ]
+          skills: [
+            "Adaptability",
+            "Time Management",
+            "Self-motivation",
+            "Continuous Learning",
+            "Resilience",
+          ],
+        },
+      ],
     },
     languages: {
       label: "Languages",
@@ -1658,20 +1961,20 @@ const SkillsSection = () => {
       categories: [
         {
           title: "Native Languages",
-          skills: ["Indonesian (Native)", "Bugis (Native)"]
+          skills: ["Indonesian (Native)", "Bugis (Native)"],
         },
         {
           title: "Foreign Languages",
-          skills: ["English (Basic)"]
-        }
-      ]
-    }
+          skills: ["English (Basic)"],
+        },
+      ],
+    },
   };
 
   const tabs = [
     { id: "hardskills", label: "Hard Skills", icon: <Code2 className="w-4 h-4" /> },
     { id: "softskills", label: "Soft Skills", icon: <UsersIcon className="w-4 h-4" /> },
-    { id: "languages", label: "Languages", icon: <Globe className="w-4 h-4" /> }
+    { id: "languages", label: "Languages", icon: <Globe className="w-4 h-4" /> },
   ];
 
   return (
@@ -1685,23 +1988,21 @@ const SkillsSection = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            My <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Skills</span>
+            My{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              Skills
+            </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Keterampilan teknis, soft skills, dan kemampuan bahasa yang mendukung pengembangan solusi AI dan backend development
+            Keterampilan teknis, soft skills, dan kemampuan bahasa yang mendukung pengembangan
+            solusi AI dan backend development
           </p>
         </motion.div>
 
-        {/* SkillTabs dengan GSAP Animation - di-center */}
         <div className="flex justify-center mb-10 overflow-x-auto">
-          <SkillTabs
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
+          <SkillTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
-        {/* Content berdasarkan tab aktif */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -1741,7 +2042,6 @@ const SkillsSection = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Additional Tech Stack */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1756,11 +2056,28 @@ const SkillsSection = () => {
           </h3>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              "React", "Next.js", "TypeScript", "Tailwind CSS", 
-              "Node.js", "Laravel", "Python", "PHP", "Android Studio",
-              "React Native", "Flutter", "MySQL", "PostgreSQL",
-              "Git", "Figma", "OpenAI API", "Filament", "Docker",
-              "TensorFlow", "Keras", "scikit-learn", "MediaPipe"
+              "React",
+              "Next.js",
+              "TypeScript",
+              "Tailwind CSS",
+              "Node.js",
+              "Laravel",
+              "Python",
+              "PHP",
+              "Android Studio",
+              "React Native",
+              "Flutter",
+              "MySQL",
+              "PostgreSQL",
+              "Git",
+              "Figma",
+              "OpenAI API",
+              "Filament",
+              "Docker",
+              "TensorFlow",
+              "Keras",
+              "scikit-learn",
+              "MediaPipe",
             ].map((tech, index) => (
               <motion.span
                 key={tech}
@@ -1781,7 +2098,7 @@ const SkillsSection = () => {
 };
 
 // ============================================================
-// MAIN COMPONENT - PortfolioPage
+// MAIN COMPONENT — PortfolioPage
 // ============================================================
 export default function PortfolioPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -1819,15 +2136,15 @@ export default function PortfolioPage() {
             key={i}
             className="absolute rounded-full bg-gradient-to-br from-purple-500/15 to-pink-500/15"
             initial={{
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
+              x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
+              y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 1000),
               width: Math.random() * 120 + 30,
               height: Math.random() * 120 + 30,
               opacity: 0,
             }}
             animate={{
-              x: [null, (Math.random() * 100 - 50)],
-              y: [null, (Math.random() * 100 - 50)],
+              x: [null, Math.random() * 100 - 50],
+              y: [null, Math.random() * 100 - 50],
               opacity: [0, 0.4, 0],
             }}
             transition={{
@@ -1843,13 +2160,51 @@ export default function PortfolioPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <div id="hero" className="relative w-full lg:h-screen z-10 pt-24 pb-8 lg:pb-0 overflow-visible">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 lg:h-[calc(100vh-80px)] items-center gap-6 lg:gap-12">
-          <motion.div 
+      <div
+        id="hero"
+        className="relative w-full h-screen z-10 overflow-visible"
+      >
+        {/* LANYARD — di dalam hero, absolute, TANPA pointer-events-none di parent */}
+        {isMounted && (
+          <div
+            className="absolute top-0 left-0 w-full z-20"
+            style={{ height: "100vh" }}
+          >
+            {/* Desktop: sisi kanan layar */}
+            {isDesktop && (
+              <div
+                className="absolute top-0 right-0 h-full"
+                style={{ width: "50vw" }}
+              >
+                <Lanyard
+                  position={[0, 0, 20]}
+                  gravity={[0, -30, 0]}
+                  fov={20}
+                  hangPoint={[0, 5, 0]}
+                />
+              </div>
+            )}
+
+            {/* Mobile: full width */}
+            {!isDesktop && (
+              <div className="absolute top-0 left-0 w-full h-full">
+                <Lanyard
+                  position={[0, 0, 15]}
+                  gravity={[0, -25, 0]}
+                  fov={20}
+                  hangPoint={[0, 5, 0]}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-6 lg:gap-12 relative z-30 pt-24 lg:pt-0 pointer-events-none">
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-6 pointer-events-auto"
           >
             <div className="inline-block">
               <motion.div
@@ -1877,7 +2232,7 @@ export default function PortfolioPage() {
                   Engineer
                 </span>
               </h1>
-              
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1885,7 +2240,12 @@ export default function PortfolioPage() {
                 className="max-w-lg"
               >
                 <p className="text-gray-300 text-base leading-relaxed">
-                  Fresh Graduate S1 Ilmu Komputer (S.Kom) dengan IPK 3,91 yang memiliki minat dan pengalaman dalam pengembangan perangkat lunak, khususnya Software Engineering, Frontend Development, Backend Development, Web Development, Mobile Development, serta UI/UX Design. Terbiasa mengembangkan aplikasi menggunakan teknologi modern melalui proyek akademik, magang, dan proyek pribadi serta selalu antusias mempelajari teknologi baru.
+                  Fresh Graduate S1 Ilmu Komputer (S.Kom) dengan IPK 3,91 yang memiliki minat dan
+                  pengalaman dalam pengembangan perangkat lunak, khususnya Software Engineering,
+                  Frontend Development, Backend Development, Web Development, Mobile Development,
+                  serta UI/UX Design. Terbiasa mengembangkan aplikasi menggunakan teknologi modern
+                  melalui proyek akademik, magang, dan proyek pribadi serta selalu antusias
+                  mempelajari teknologi baru.
                 </p>
               </motion.div>
             </div>
@@ -1894,9 +2254,9 @@ export default function PortfolioPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="relative z-30 flex flex-col sm:flex-row gap-3 pt-3"
+              className="flex flex-col sm:flex-row gap-3 pt-3"
             >
-              <a 
+              <a
                 href="/ppt/CV NIRMALASARI RODITO SULNAS_PALING BARU.pdf"
                 download="CV_NIRMALASARI_RODITO_SULNAS.pdf"
                 rel="noopener noreferrer"
@@ -1904,13 +2264,13 @@ export default function PortfolioPage() {
               >
                 Download CV
               </a>
-              <button 
+              <button
                 className="px-6 py-3 text-sm bg-transparent border-2 border-purple-500 text-purple-300 rounded-full font-semibold hover:bg-purple-500/10 hover:text-white transition-all transform hover:scale-105"
                 onClick={scrollToAbout}
               >
                 Explore My Projects
               </button>
-              <button 
+              <button
                 className="px-6 py-3 text-sm bg-transparent border-2 border-pink-500 text-pink-300 rounded-full font-semibold hover:bg-pink-500/10 hover:text-white transition-all transform hover:scale-105"
                 onClick={scrollToSkills}
               >
@@ -1919,50 +2279,30 @@ export default function PortfolioPage() {
             </motion.div>
           </motion.div>
 
-          {isMounted && isDesktop && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="relative h-full w-full min-h-[400px] flex items-center justify-center"
-            >
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.25 }}
-                  transition={{ delay: 1.0 }}
-                  className="absolute w-[400px] h-[400px] rounded-full bg-purple-500 blur-[100px]"
-                />
-              </div>
-              <div className="relative z-20 w-full h-full min-h-[400px] flex items-center justify-center">
-                <Lanyard 
-                  position={[0, 0, 15]}
-                  gravity={[0, -25, 0]}
-                  hangPoint={[0, 4, 0]}
-                />
-              </div>
-            </motion.div>
-          )}
+          <div className="hidden lg:block" />
         </div>
       </div>
 
       {/* About Section */}
-      <section 
-        ref={aboutRef} 
-        id="about" 
+      <section
+        ref={aboutRef}
+        id="about"
         className="py-10 md:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 relative z-10"
       >
         <div className="container mx-auto">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            About <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">Me</span>
+            About{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              Me
+            </span>
           </motion.h2>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 items-center">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -1986,7 +2326,7 @@ export default function PortfolioPage() {
                 enableMobileTilt={false}
               />
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -1999,11 +2339,19 @@ export default function PortfolioPage() {
               </h3>
 
               <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-4">
-                Saya adalah software engineer yang fokus pada pengembangan web dan mobile, dengan pengalaman membangun beberapa proyek nyata baik secara mandiri maupun selama magang di beberapa instansi. Dari pengalaman tersebut, saya terbiasa bekerja dengan teknologi seperti React, Next.js, Laravel, Android Studio, serta integrasi API untuk kebutuhan aplikasi modern.
+                Saya adalah software engineer yang fokus pada pengembangan web dan mobile, dengan
+                pengalaman membangun beberapa proyek nyata baik secara mandiri maupun selama magang
+                di beberapa instansi. Dari pengalaman tersebut, saya terbiasa bekerja dengan
+                teknologi seperti React, Next.js, Laravel, Android Studio, serta integrasi API untuk
+                kebutuhan aplikasi modern.
               </p>
 
               <p className="text-gray-300 leading-relaxed text-sm lg:text-base mb-6">
-                Saya memiliki ketertarikan kuat pada pengembangan sistem yang rapi, mudah digunakan, dan relevan dengan kebutuhan pengguna. Setiap proyek yang saya kerjakan selalu menjadi ruang belajar untuk memahami alur kerja profesional dan meningkatkan kemampuan teknis saya agar dapat berkembang menjadi developer yang lebih matang dan kompeten.
+                Saya memiliki ketertarikan kuat pada pengembangan sistem yang rapi, mudah digunakan,
+                dan relevan dengan kebutuhan pengguna. Setiap proyek yang saya kerjakan selalu
+                menjadi ruang belajar untuk memahami alur kerja profesional dan meningkatkan
+                kemampuan teknis saya agar dapat berkembang menjadi developer yang lebih matang dan
+                kompeten.
               </p>
 
               <motion.div
@@ -2051,15 +2399,21 @@ export default function PortfolioPage() {
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-start">
                     <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
-                    <span className="text-sm">Mengembangkan aplikasi web responsif dengan React/Next.js</span>
+                    <span className="text-sm">
+                      Mengembangkan aplikasi web responsif dengan React/Next.js
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
-                    <span className="text-sm">Membangun aplikasi backend dengan Laravel dan Filament</span>
+                    <span className="text-sm">
+                      Membangun aplikasi backend dengan Laravel dan Filament
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
-                    <span className="text-sm">Mengembangkan aplikasi mobile dengan Android Studio</span>
+                    <span className="text-sm">
+                      Mengembangkan aplikasi mobile dengan Android Studio
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-purple-400 mr-2 mt-0.5 flex-shrink-0 text-xs">▸</span>
@@ -2076,7 +2430,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Skills Section - LANGSUNG DI BAWAH ABOUT ME */}
+      {/* Skills Section */}
       <div ref={skillsRef}>
         <SkillsSection />
       </div>

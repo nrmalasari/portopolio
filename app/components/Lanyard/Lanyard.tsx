@@ -20,7 +20,6 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
 
-// replace with your own imports, see the usage snippet for details
 const cardGLB = "/assets/lanyard/card.glb";
 const lanyard = "/assets/lanyard/lanyard.png";
 
@@ -57,12 +56,12 @@ function ResponsiveCamera({
 }
 
 export default function Lanyard({
-  position = [0, 0, 30],
-  gravity = [0, -40, 0],
+  position = [0, 0, 20],
+  gravity = [0, -30, 0],
   fov = 20,
   transparent = true,
   className = "",
-  hangPoint = [0, 4, 0],
+  hangPoint = [0, 5, 0],
 }: LanyardProps) {
   const [isSmall, setIsSmall] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
@@ -82,13 +81,14 @@ export default function Lanyard({
 
   return (
     <div
-      className={`relative z-0 w-full h-full flex justify-center items-center ${className}`}
+      className={`relative z-0 w-full h-full flex justify-center items-start ${className}`}
+      style={{ pointerEvents: "auto" }}
     >
       <Canvas
         camera={{ position, fov }}
         gl={{ alpha: transparent, antialias: true }}
         dpr={[1, 1.5]}
-        style={{ width: "100%", height: "100%", touchAction: "none" }}
+        style={{ width: "100%", height: "100%", touchAction: "none", pointerEvents: "auto" }}
         onCreated={({ gl }) =>
           gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
         }
@@ -144,9 +144,8 @@ function Band({
   maxSpeed = 50,
   minSpeed = 0,
   isSmall = false,
-  hangPoint = [0, 4, 0],
+  hangPoint = [0, 5, 0],
 }: BandProps) {
-  // Using "any" for refs since the exact types depend on Rapier's internals
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -190,7 +189,7 @@ function Band({
     drag(false);
   };
 
-  const ropeLength = isSmall ? 0.12 : 1;
+  const ropeLength = isSmall ? 0.2 : 1.6;
   const jointGap = isSmall ? 0.07 : 0.5;
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], ropeLength]);
@@ -253,7 +252,11 @@ function Band({
       band.current.geometry.setPoints(curve.getPoints(32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * (isSmall ? 0.08 : 0.25), z: ang.z });
+      card.current.setAngvel({
+        x: ang.x,
+        y: ang.y - rot.y * (isSmall ? 0.08 : 0.25),
+        z: ang.z,
+      });
     }
   });
 
@@ -342,17 +345,19 @@ function Band({
       </group>
       <mesh ref={band}>
         <primitive object={new MeshLineGeometry()} attach="geometry" />
-        <primitive 
+        <primitive
           object={new MeshLineMaterial({
-            color: 'white',
+            color: "white",
             depthTest: false,
-            resolution: isSmall ? new THREE.Vector2(1000, 2000) : new THREE.Vector2(1000, 1000),
+            resolution: isSmall
+              ? new THREE.Vector2(1000, 2000)
+              : new THREE.Vector2(1000, 1000),
             map: texture,
             useMap: true,
             repeat: new THREE.Vector2(-4, 1),
-            lineWidth: isSmall ? 0.41 : 1
-          })} 
-          attach="material" 
+            lineWidth: isSmall ? 0.41 : 1,
+          })}
+          attach="material"
         />
       </mesh>
     </>
