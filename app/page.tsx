@@ -547,10 +547,10 @@ const OrganizationSection = () => {
       image: "/images/hero-logo.png",
       gallery: [
         { src: "/images/organization/hero/hero1.jpeg", alt: "Kegiatan HERO 1" },
-        { src: "/images/organization/hero/hero2.jpeg", alt: "Kegiatan HERO 2" },
+        { src: "/images/organization/hero/hero2.JPEG", alt: "Kegiatan HERO 2" },
         { src: "/images/organization/hero/hero3.jpg", alt: "Kegiatan HERO 3" },
         { src: "/images/organization/hero/hero4.jpg", alt: "Kegiatan HERO 4" },
-        { src: "/images/organization/hero/hero5.jpg", alt: "Kegiatan HERO 5" },
+        { src: "/images/organization/hero/hero5.JPG", alt: "Kegiatan HERO 5" },
         { src: "/images/organization/hero/hero7.jpeg", alt: "Kegiatan HERO 7" },
       ],
     },
