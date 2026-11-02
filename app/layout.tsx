@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,10 +38,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Buang atribut yang disisipkan ekstensi browser sebelum React hydrate */}
+        <Script id="strip-extension-attrs" strategy="beforeInteractive">
+          {`(function(){
+  var attrs=["bis_skin_checked","bis_register","__processed_c6ea889a-dd0f-4973-a1db-d6803d10cfdc__"];
+  function clean(root){
+    attrs.forEach(function(a){
+      if(root.removeAttribute) root.removeAttribute(a);
+      var n=root.querySelectorAll?root.querySelectorAll("["+a+"]"):[];
+      for(var i=0;i<n.length;i++) n[i].removeAttribute(a);
+    });
+  }
+  clean(document.documentElement);
+  new MutationObserver(function(ms){
+    ms.forEach(function(m){
+      if(m.type==="attributes"&&attrs.indexOf(m.attributeName)>-1){m.target.removeAttribute(m.attributeName);}
+      m.addedNodes&&m.addedNodes.forEach(function(nd){if(nd.nodeType===1)clean(nd);});
+    });
+  }).observe(document.documentElement,{attributes:true,childList:true,subtree:true});
+})();`}
+        </Script>
         {children}
       </body>
     </html>

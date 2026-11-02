@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unknown-property */
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   useGLTF,
   useTexture,
@@ -20,132 +21,212 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
 
-const cardGLB = "/assets/lanyard/card.glb";
-const lanyard = "/assets/lanyard/lanyard.png";
+/* ------------------------------------------------------------------ */
+/*  ASET (taruh di /public/assets/lanyard/)                            */
+/* ------------------------------------------------------------------ */
+const CARD_GLB = "/assets/lanyard/nirma-card.glb";
+const STRAP_PNG = "/assets/lanyard/nirma-strap.png";
 
-extend({ MeshLineGeometry, MeshLineMaterial });
+/* ------------------------------------------------------------------ */
+/*  KAMERA TETAP — semua ukuran dihitung dari sini                     */
+/* ------------------------------------------------------------------ */
+const CAM_Z = 20;
+const FOV = 20;
+const VIS_H = 2 * CAM_Z * Math.tan(THREE.MathUtils.degToRad(FOV / 2)); // tinggi dunia yang terlihat (~7.06)
+
+/* Ukuran kartu saat r = 1 (r = faktor skala) */
+const CARD_W = 1.61;
+const CARD_H = 2.25;
 
 interface LanyardProps {
-  position?: [number, number, number];
-  gravity?: [number, number, number];
-  fov?: number;
-  transparent?: boolean;
   className?: string;
-  hangPoint?: [number, number, number];
+  gravity?: [number, number, number];
+  /** geser titik gantung ke kiri/kanan (satuan dunia) */
+  offsetX?: number;
+  transparent?: boolean;
 }
 
-function ResponsiveCamera({
-  position,
-  fov,
-}: {
-  position: [number, number, number];
-  fov: number;
-}) {
-  const { camera } = useThree();
-
-  useEffect(() => {
-    camera.position.set(position[0], position[1], position[2]);
-    const perspective = camera as THREE.PerspectiveCamera;
-    if (perspective.isPerspectiveCamera) {
-      perspective.fov = fov;
-      perspective.updateProjectionMatrix();
-    }
-  }, [camera, fov, position]);
-
-  return null;
+interface Layout {
+  portrait: boolean;
+  r: number; // skala kartu
+  rope: number; // panjang tiap segmen tali
+  anchorY: number; // titik gantung (di atas layar)
+  strapWidth: number;
+  repeatX: number;
+  resW: number;
+  resH: number;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Hitung ukuran kartu & tali dari ukuran container                   */
+/*  -> otomatis pas di HP (portrait) maupun desktop (landscape)        */
+/* ------------------------------------------------------------------ */
+function computeLayout(w: number, h: number): Layout {
+  const aspect = w / h;
+  const portrait = aspect < 1;
+  const visW = VIS_H * aspect;
+
+  // lebar kartu maks 60% (HP) / 50% (desktop) dari container,
+  // tinggi kartu maks 40% (HP) / 34% (desktop)
+  const rW = (visW * (portrait ? 0.6 : 0.5)) / CARD_W;
+  const rH = (VIS_H * (portrait ? 0.4 : 0.34)) / CARD_H;
+  const r = Math.round(THREE.MathUtils.clamp(Math.min(rW, rH), 0.55, 1.3) * 20) / 20;
+
+  const anchorY = VIS_H / 2 + 0.5; // sedikit di atas tepi atas container
+  const centerY = VIS_H * (portrait ? -0.04 : -0.08); // posisi tengah kartu saat menggantung
+  const rope =
+    Math.round(Math.max(0.35, (anchorY - 1.45 * r - centerY) / 3) * 20) / 20;
+
+  const strapWidth = r; // lineWidth proporsional dengan kartu
+  const strapWorldW = strapWidth * Math.tan(THREE.MathUtils.degToRad(FOV / 2));
+  const chain = 3 * rope + 1.45 * r + 1;
+  const repeatX = Math.max(2, chain / (strapWorldW * (1024 / 249)));
+
+  return {
+    portrait,
+    r,
+    rope,
+    anchorY,
+    strapWidth,
+    repeatX,
+    resW: Math.max(1, Math.round(w)),
+    resH: Math.max(1, Math.round(h)),
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  KOMPONEN UTAMA                                                     */
+/* ------------------------------------------------------------------ */
 export default function Lanyard({
-  position = [0, 0, 20],
-  gravity = [0, -30, 0],
-  fov = 20,
-  transparent = true,
   className = "",
-  hangPoint = [0, 5, 0],
+  gravity = [0, -30, 0],
+  offsetX = 0,
+  transparent = true,
 }: LanyardProps) {
-  const [isSmall, setIsSmall] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 1024;
-    }
-    return false;
-  });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  const [inView, setInView] = useState(true);
 
+  // ukur container
   useEffect(() => {
-    const handleResize = (): void => {
-      setIsSmall(window.innerWidth < 1024);
+    const el = wrapRef.current;
+    if (!el) return;
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        setSize((prev) =>
+          prev &&
+          Math.abs(prev.w - rect.width) < 2 &&
+          Math.abs(prev.h - rect.height) < 80 // abaikan perubahan kecil (address-bar HP)
+            ? prev
+            : { w: rect.width, h: rect.height }
+        );
+      }
     };
-
-    window.addEventListener("resize", handleResize);
-    return (): void => window.removeEventListener("resize", handleResize);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
+
+  // hemat baterai: berhenti render saat lanyard keluar layar
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const layout = useMemo(
+    () => (size ? computeLayout(size.w, size.h) : null),
+    [size]
+  );
 
   return (
     <div
-      className={`relative z-0 w-full h-full flex justify-center items-start ${className}`}
+      ref={wrapRef}
+      className={`relative z-0 w-full h-full ${className}`}
       style={{ pointerEvents: "auto" }}
     >
-      <Canvas
-        camera={{ position, fov }}
-        gl={{ alpha: transparent, antialias: true }}
-        dpr={[1, 1.5]}
-        style={{ width: "100%", height: "100%", touchAction: "none", pointerEvents: "auto" }}
-        onCreated={({ gl }) =>
-          gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
-        }
-      >
-        <ResponsiveCamera position={position} fov={fov} />
-        <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band isSmall={isSmall} hangPoint={hangPoint} />
-        </Physics>
-        <Environment blur={0.75}>
-          <Lightformer
-            intensity={2}
-            color="white"
-            position={[0, -1, 5]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[-1, -1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[1, 1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={10}
-            color="white"
-            position={[-10, 0, 14]}
-            rotation={[0, Math.PI / 2, Math.PI / 3]}
-            scale={[100, 10, 1]}
-          />
-        </Environment>
-      </Canvas>
+      {layout && (
+        <Canvas
+          camera={{ position: [0, 0, CAM_Z], fov: FOV }}
+          gl={{ alpha: transparent, antialias: true }}
+          dpr={[1, 2]}
+          frameloop={inView ? "always" : "never"}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            // HP: scroll halaman tetap jalan saat jari geser vertikal di atas lanyard
+            touchAction: layout.portrait ? "pan-y" : "none",
+          }}
+          onCreated={({ gl }) =>
+            gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
+          }
+        >
+          <ambientLight intensity={Math.PI} />
+          <Physics
+            gravity={gravity}
+            timeStep={1 / 60}
+            key={`${layout.portrait}-${layout.r}-${layout.rope}`}
+          >
+            <Band layout={layout} offsetX={offsetX} />
+          </Physics>
+          <Environment blur={0.75}>
+            <Lightformer
+              intensity={2}
+              color="white"
+              position={[0, -1, 5]}
+              rotation={[0, 0, Math.PI / 3]}
+              scale={[100, 0.1, 1]}
+            />
+            <Lightformer
+              intensity={3}
+              color="white"
+              position={[-1, -1, 1]}
+              rotation={[0, 0, Math.PI / 3]}
+              scale={[100, 0.1, 1]}
+            />
+            <Lightformer
+              intensity={3}
+              color="white"
+              position={[1, 1, 1]}
+              rotation={[0, 0, Math.PI / 3]}
+              scale={[100, 0.1, 1]}
+            />
+            <Lightformer
+              intensity={10}
+              color="white"
+              position={[-10, 0, 14]}
+              rotation={[0, Math.PI / 2, Math.PI / 3]}
+              scale={[100, 10, 1]}
+            />
+          </Environment>
+        </Canvas>
+      )}
     </div>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  BAND = tali + kartu + fisika                                       */
+/* ------------------------------------------------------------------ */
 interface BandProps {
+  layout: Layout;
+  offsetX: number;
   maxSpeed?: number;
   minSpeed?: number;
-  isSmall?: boolean;
-  hangPoint?: [number, number, number];
 }
 
-function Band({
-  maxSpeed = 50,
-  minSpeed = 0,
-  isSmall = false,
-  hangPoint = [0, 5, 0],
-}: BandProps) {
+function Band({ layout, offsetX, maxSpeed = 50, minSpeed = 0 }: BandProps) {
+  const { r, rope, anchorY, portrait } = layout;
+
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -158,20 +239,21 @@ function Band({
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
 
-  const cardScale = isSmall ? 0.92 : 2.25;
-  const scaleRatio = cardScale / 2.25;
-  const jointY = 1.45 * scaleRatio;
+  const cardScale = CARD_H * r; // 2.25 * r
+  const jointY = 1.45 * r;
 
   const segmentProps: any = {
     type: "dynamic" as RigidBodyProps["type"],
     canSleep: true,
     colliders: false,
-    angularDamping: isSmall ? 14 : 4,
-    linearDamping: isSmall ? 10 : 4,
+    angularDamping: portrait ? 5 : 4,
+    linearDamping: portrait ? 5 : 4,
   };
 
-  const { nodes, materials } = useGLTF(cardGLB) as any;
-  const texture = useTexture(lanyard);
+  const { nodes, materials } = useGLTF(CARD_GLB) as any;
+  const texture = useTexture(STRAP_PNG);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([
@@ -181,20 +263,35 @@ function Band({
         new THREE.Vector3(),
       ])
   );
+  curve.curveType = "chordal";
+
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
+
+  // geometri & material tali dibuat SEKALI (tidak dibuat ulang tiap render)
+  const strapGeometry = useMemo(() => new MeshLineGeometry(), []);
+  const strapMaterial = useMemo(
+    () =>
+      new MeshLineMaterial({
+        color: "white",
+        depthTest: false,
+        resolution: new THREE.Vector2(layout.resW, layout.resH),
+        map: texture,
+        useMap: true,
+        repeat: new THREE.Vector2(-layout.repeatX, 1),
+        lineWidth: layout.strapWidth,
+      }),
+    [texture, layout.resW, layout.resH, layout.repeatX, layout.strapWidth]
+  );
 
   const stopDrag = (e: any) => {
     e?.target?.releasePointerCapture?.(e.pointerId);
     drag(false);
   };
 
-  const ropeLength = isSmall ? 0.2 : 1.6;
-  const jointGap = isSmall ? 0.07 : 0.5;
-
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], ropeLength]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], ropeLength]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], ropeLength]);
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], rope]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], rope]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], rope]);
   useSphericalJoint(j3, card, [
     [0, 0, 0],
     [0, jointY, 0],
@@ -221,6 +318,7 @@ function Band({
         z: vec.z - dragged.z,
       });
     }
+
     if (fixed.current) {
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped)
@@ -236,43 +334,43 @@ function Band({
           delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
         );
       });
+
       curve.points[0].copy(j3.current.translation());
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
+
+      // ujung tali menempel tepat di klip kartu
       if (card.current) {
-        const cardRot = card.current.rotation();
+        const q = card.current.rotation();
         const clipLocal = new THREE.Vector3(0, jointY, 0).applyQuaternion(
-          new THREE.Quaternion(cardRot.x, cardRot.y, cardRot.z, cardRot.w)
+          new THREE.Quaternion(q.x, q.y, q.z, q.w)
         );
-        curve.points[0]
-          .copy(card.current.translation())
-          .add(clipLocal);
+        curve.points[0].copy(card.current.translation()).add(clipLocal);
       }
+
       band.current.geometry.setPoints(curve.getPoints(32));
+
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({
         x: ang.x,
-        y: ang.y - rot.y * (isSmall ? 0.08 : 0.25),
+        y: ang.y - rot.y * (portrait ? 0.12 : 0.25),
         z: ang.z,
       });
     }
   });
 
-  curve.curveType = "chordal";
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
   return (
     <>
-      <group position={hangPoint}>
+      <group position={[offsetX, anchorY, 0]}>
         <RigidBody
           ref={fixed}
           {...segmentProps}
           type={"fixed" as RigidBodyProps["type"]}
         />
         <RigidBody
-          position={[jointGap, 0, 0]}
+          position={[rope, 0, 0]}
           ref={j1}
           {...segmentProps}
           type={"dynamic" as RigidBodyProps["type"]}
@@ -280,7 +378,7 @@ function Band({
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[jointGap * 2, 0, 0]}
+          position={[rope * 2, 0, 0]}
           ref={j2}
           {...segmentProps}
           type={"dynamic" as RigidBodyProps["type"]}
@@ -288,7 +386,7 @@ function Band({
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[jointGap * 3, 0, 0]}
+          position={[rope * 3, 0, 0]}
           ref={j3}
           {...segmentProps}
           type={"dynamic" as RigidBodyProps["type"]}
@@ -296,7 +394,7 @@ function Band({
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[jointGap * 4, 0, 0]}
+          position={[rope * 4, 0, 0]}
           ref={card}
           {...segmentProps}
           type={
@@ -305,10 +403,10 @@ function Band({
               : ("dynamic" as RigidBodyProps["type"])
           }
         >
-          <CuboidCollider args={[0.8 * scaleRatio, 1.125 * scaleRatio, 0.01]} />
+          <CuboidCollider args={[0.8 * r, 1.125 * r, 0.01]} />
           <group
             scale={cardScale}
-            position={[0, -1.2 * scaleRatio, -0.05]}
+            position={[0, -1.2 * r, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={stopDrag}
@@ -324,14 +422,15 @@ function Band({
               );
             }}
           >
+            {/* KARTU — tekstur desain baru ada di dalam nirma-card.glb */}
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
                 map={materials.base.map}
                 map-anisotropy={16}
                 clearcoat={1}
-                clearcoatRoughness={0.15}
-                roughness={0.9}
-                metalness={0.8}
+                clearcoatRoughness={0.12}
+                roughness={0.55}
+                metalness={0.25}
               />
             </mesh>
             <mesh
@@ -343,22 +442,11 @@ function Band({
           </group>
         </RigidBody>
       </group>
+
+      {/* TALI */}
       <mesh ref={band}>
-        <primitive object={new MeshLineGeometry()} attach="geometry" />
-        <primitive
-          object={new MeshLineMaterial({
-            color: "white",
-            depthTest: false,
-            resolution: isSmall
-              ? new THREE.Vector2(1000, 2000)
-              : new THREE.Vector2(1000, 1000),
-            map: texture,
-            useMap: true,
-            repeat: new THREE.Vector2(-4, 1),
-            lineWidth: isSmall ? 0.41 : 1,
-          })}
-          attach="material"
-        />
+        <primitive object={strapGeometry} attach="geometry" />
+        <primitive object={strapMaterial} attach="material" />
       </mesh>
     </>
   );
