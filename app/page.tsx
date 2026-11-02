@@ -946,6 +946,43 @@ const ProjectsSection = () => {
 
   const projectsData = [
     {
+      id: 8,
+      title: "Ujikom Pusjar SKMP – Sistem Uji Kompetensi Pusat Pelatihan Jarak Jauh",
+      description:
+        "Sistem uji kompetensi berbasis web untuk Pusjar SKMP yang menyediakan portal login penguji, manajemen soal, dan pengelolaan hasil ujian secara terpusat. Sistem ini memudahkan proses uji kompetensi jarak jauh dengan antarmuka yang terstruktur dan aman.",
+      image: "/images/ujikom-pusjar.png", // sesuaikan path image Anda
+      technologies: ["Laravel", "MySQL", "Tailwind CSS", "Filament"], // sesuaikan
+      category: "Web Application",
+      liveUrl: "https://ujikompusjarskmp.online/login-penguji",
+      githubUrl: "", // kosongkan jika private
+      pptUrl: "",
+      videoUrl: "",
+      featured: true,
+    },
+    {
+      id: 7,
+      title: "Sistem Pendaftaran Taman Kanak-Kanak TK SC2 Menara",
+      description:
+        "Sistem pendaftaran siswa baru berbasis web yang dikembangkan sebagai proyek skripsi untuk mendigitalisasi proses pendaftaran di TK SC2 Menara. Sistem menyediakan pendaftaran online, pengelolaan data calon siswa, validasi data dan dokumen oleh admin, serta pengamanan data sensitif menggunakan enkripsi AES-256-CBC.",
+      image: "/images/pendaftaran-tk.png",
+      technologies: [
+        "React",
+        "Laravel",
+        "Filament",
+        "MySQL",
+        "Tailwind CSS",
+        "AES-256-CBC",
+        "Web Development",
+      ],
+      liveUrl:
+        "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
+      githubUrl: "https://github.com/nrmalasari/TKSC2Menara.git",
+      pptUrl: "https://canva.link/ox2v4o101rqm743",
+      videoUrl:
+        "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
+      featured: true,
+    },
+    {
       id: 1,
       title: "Satu Data Parepare – Government Data Integration Dashboard",
       description:
@@ -1038,29 +1075,6 @@ const ProjectsSection = () => {
       pptUrl: "",
       videoUrl: "",
       featured: false,
-    },
-    {
-      id: 7,
-      title: "Sistem Pendaftaran Taman Kanak-Kanak TK SC2 Menara",
-      description:
-        "Sistem pendaftaran siswa baru berbasis web yang dikembangkan sebagai proyek skripsi untuk mendigitalisasi proses pendaftaran di TK SC2 Menara. Sistem menyediakan pendaftaran online, pengelolaan data calon siswa, validasi data dan dokumen oleh admin, serta pengamanan data sensitif menggunakan enkripsi AES-256-CBC.",
-      image: "/images/pendaftaran-tk.png",
-      technologies: [
-        "React",
-        "Laravel",
-        "Filament",
-        "MySQL",
-        "Tailwind CSS",
-        "AES-256-CBC",
-        "Web Development",
-      ],
-      liveUrl:
-        "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
-      githubUrl: "https://github.com/nrmalasari/TKSC2Menara.git",
-      pptUrl: "https://canva.link/ox2v4o101rqm743",
-      videoUrl:
-        "https://drive.google.com/file/d/1EZvjui7JBqJ0ZXZnh07lGRPnDtibOUrw/view?usp=drive_link",
-      featured: true,
     },
   ];
 
