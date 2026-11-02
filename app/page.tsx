@@ -414,6 +414,31 @@ const Navbar = () => {
 const ExperienceSection = () => {
   const experienceData = [
     {
+      id: 5,
+      title: "MagangHub Kemnaker – IT / Programmer",
+      company: "Lembaga Administrasi Negara (LAN)",
+      period: "September 2026 – Sekarang",
+      location: "Indonesia",
+      current: true,
+      description:
+        "Program MagangHub Kemnaker sebagai IT / Programmer di Lembaga Administrasi Negara (LAN), berfokus pada pengembangan aplikasi Uji Kompetensi (UKOM) serta dashboard terpadu untuk aplikasi di lingkungan LAN Pusjar SKMP.",
+      responsibilities: [
+        "Merancang dan membangun aplikasi Uji Kompetensi (UKOM) dari awal, mulai dari analisis kebutuhan, perancangan alur sistem, desain antarmuka, pengembangan fitur, hingga implementasi",
+        "Mengembangkan fitur aplikasi UKOM yang mencakup pengelolaan data peserta dan penguji, pendaftaran, verifikasi administrasi, serta proses penilaian kompetensi",
+        "Mengimplementasikan sistem penilaian otomatis, meliputi perhitungan rata-rata, pembobotan kompetensi, dan validasi nilai untuk mendukung akurasi hasil penilaian",
+        "Mengembangkan dashboard terintegrasi yang menggabungkan berbagai aplikasi hasil pengembangan peserta magang di lingkungan LAN Pusjar SKMP ke dalam satu platform terpusat",
+        "Merancang dashboard untuk memudahkan pegawai mengakses berbagai aplikasi dan layanan internal melalui satu antarmuka yang terorganisasi",
+        "Melakukan pengelolaan basis data, pengujian, debugging, serta penyempurnaan fitur untuk memastikan aplikasi berjalan sesuai kebutuhan pengguna",
+      ],
+      technologies: ["Laravel", "Filament", "MySQL", "Tailwind CSS", "Dashboard Design", "Debugging"],
+      type: "Internship",
+      gallery: [
+        { src: "/images/experience/lan/lan1.jpeg", alt: "Kegiatan MagangHub di LAN 1" },
+        { src: "/images/experience/lan/lan2.jpeg", alt: "Kegiatan MagangHub di LAN 2" },
+        { src: "/images/experience/lan/lan3.JPG", alt: "Kegiatan MagangHub di LAN 3" },
+      ],
+    },
+    {
       id: 1,
       title: "Data Analyst dan Verifikator Data Program Bantuan Pangan (Banpang)",
       company: "Kantor Perum BULOG",
@@ -530,7 +555,11 @@ const ExperienceSection = () => {
                   0{index + 1}
                 </span>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 items-start lg:items-center p-4 sm:p-6 lg:p-10">
+                <div
+                  className={`grid grid-cols-1 ${
+                    exp.gallery.length > 0 ? "lg:grid-cols-2" : "lg:grid-cols-1"
+                  } gap-4 sm:gap-6 lg:gap-10 items-start lg:items-center p-4 sm:p-6 lg:p-10`}
+                >
                   <div
                     className={`order-1 min-w-0 flex flex-col justify-center ${
                       index % 2 === 1 ? "lg:order-1" : "lg:order-2"
@@ -551,6 +580,15 @@ const ExperienceSection = () => {
                         )}
                         {exp.type}
                       </span>
+                      {exp.current && (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3 ml-2 border bg-emerald-500/15 text-emerald-200 border-emerald-400/30">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                          </span>
+                          Sedang berjalan
+                        </span>
+                      )}
                       <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white group-hover:text-purple-200 transition-colors leading-snug">
                         {exp.title}
                       </h3>
@@ -604,18 +642,20 @@ const ExperienceSection = () => {
                     </div>
                   </div>
 
-                  <div
-                    className={`order-2 w-full min-w-0 ${
-                      index % 2 === 1 ? "lg:order-2" : "lg:order-1"
-                    }`}
-                  >
-                    <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/20 p-2 sm:p-3 shadow-inner">
-                      <ActivityDepthCarousel
-                        images={exp.gallery}
-                        tiltDirection={index % 2 === 0 ? "right" : "left"}
-                      />
+                  {exp.gallery.length > 0 && (
+                    <div
+                      className={`order-2 w-full min-w-0 ${
+                        index % 2 === 1 ? "lg:order-2" : "lg:order-1"
+                      }`}
+                    >
+                      <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/20 p-2 sm:p-3 shadow-inner">
+                        <ActivityDepthCarousel
+                          images={exp.gallery}
+                          tiltDirection={index % 2 === 0 ? "right" : "left"}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </motion.div>
