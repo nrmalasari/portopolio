@@ -65,7 +65,7 @@ const gradientText =
   "bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400";
 
 const glassCard =
-  "relative bg-white/[0.03] backdrop-blur-xl rounded-3xl border border-white/10 hover:border-purple-400/40 transition-all duration-500 shadow-[0_8px_40px_rgba(0,0,0,0.35)]";
+  "relative bg-white/[0.03] lg:backdrop-blur-md rounded-3xl border border-white/10 hover:border-purple-400/40 transition-all duration-500 shadow-[0_8px_40px_rgba(0,0,0,0.35)]";
 
 const primaryBtn =
   "inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-pink-500 text-white font-semibold rounded-full shadow-lg shadow-fuchsia-500/25 hover:shadow-fuchsia-500/40 hover:brightness-110 transition-all cursor-pointer";
@@ -238,7 +238,7 @@ const Navbar = () => {
     <>
       <nav
         className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-[#0a0f1a]/60 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+          isScrolled ? "bg-[#0a0f1a]/60 lg:backdrop-blur-md border-b border-white/5" : "bg-transparent"
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -812,7 +812,7 @@ const OrganizationSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-10 sm:mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-xl rounded-3xl p-5 sm:p-6 lg:p-8 border border-white/10"
+          className="mt-10 sm:mt-12 bg-gradient-to-r from-purple-500/10 to-pink-500/10 lg:backdrop-blur-md rounded-3xl p-5 sm:p-6 lg:p-8 border border-white/10"
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-5 sm:mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-500/25 to-pink-500/25 border border-white/10 rounded-xl flex items-center justify-center shrink-0">
@@ -877,7 +877,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true }}
       whileHover={{ y: -6 }}
-      className={`group relative flex flex-col bg-white/[0.04] backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10 hover:border-purple-400/50 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 ${
+      className={`group relative flex flex-col bg-white/[0.04] lg:backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-purple-400/50 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 ${
         project.featured ? "ring-1 ring-fuchsia-500/30" : ""
       }`}
     >
@@ -915,7 +915,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                 <a
                   href={project.liveUrl}
                   {...linkProps}
-                  className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all cursor-pointer"
+                  className="w-12 h-12 bg-white/20 lg:backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all cursor-pointer"
                   title="Live Demo"
                 >
                   <ExternalLink className="w-5 h-5" />
@@ -932,7 +932,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
                 <a
                   href={project.githubUrl}
                   {...linkProps}
-                  className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all cursor-pointer"
+                  className="w-12 h-12 bg-white/20 lg:backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all cursor-pointer"
                   title="View Code"
                 >
                   <Github className="w-5 h-5" />
@@ -1246,7 +1246,7 @@ const CertificateCard = ({ certificate, index }: { certificate: any; index: numb
       transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true }}
       whileHover={{ y: -6 }}
-      className="group relative flex flex-col bg-white/[0.04] backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10 hover:border-purple-400/50 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 h-full"
+      className="group relative flex flex-col bg-white/[0.04] lg:backdrop-blur-md rounded-3xl overflow-hidden border border-white/10 hover:border-purple-400/50 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 h-full"
     >
       <div className="relative h-48 overflow-hidden">
         {certificate.image ? (
@@ -1286,7 +1286,7 @@ const CertificateCard = ({ certificate, index }: { certificate: any; index: numb
               href={certificate.credentialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
+              className="w-12 h-12 bg-white/20 lg:backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
               title="View Credential"
             >
               <ExternalLink className="w-5 h-5" />
@@ -1296,7 +1296,7 @@ const CertificateCard = ({ certificate, index }: { certificate: any; index: numb
               whileTap={{ scale: 0.9 }}
               href={certificate.credentialUrl}
               download
-              className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
+              className="w-12 h-12 bg-white/20 lg:backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all cursor-pointer"
               title="Download Certificate"
             >
               <Download className="w-5 h-5" />
@@ -1886,10 +1886,10 @@ const ContactFormSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="mt-16 bg-gradient-to-br from-purple-600/20 via-fuchsia-500/10 to-pink-500/20 backdrop-blur-xl rounded-[2rem] p-8 sm:p-12 border border-white/10 relative overflow-hidden text-center"
+          className="mt-16 bg-gradient-to-br from-purple-600/20 via-fuchsia-500/10 to-pink-500/20 lg:backdrop-blur-md rounded-[2rem] p-8 sm:p-12 border border-white/10 relative overflow-hidden text-center"
         >
-          <div className="absolute -top-10 -right-10 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl" />
+          <div className="hidden lg:block absolute -top-10 -right-10 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl" />
+          <div className="hidden lg:block absolute -bottom-10 -left-10 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl" />
 
           <div className="relative z-10">
             <div className="w-20 h-20 bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-white/10 rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-6">
@@ -1973,7 +1973,7 @@ const ContactFormSection = () => {
           ].map((item) => (
             <div
               key={item.title}
-              className={`text-center p-6 rounded-3xl border border-white/10 bg-gradient-to-b ${item.tint} backdrop-blur-xl hover:-translate-y-1 hover:border-purple-400/40 transition-all duration-300`}
+              className={`text-center p-6 rounded-3xl border border-white/10 bg-gradient-to-b ${item.tint} lg:backdrop-blur-md hover:-translate-y-1 hover:border-purple-400/40 transition-all duration-300`}
             >
               <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {item.icon}
@@ -2156,7 +2156,7 @@ const SkillsSection = () => {
                 initial={{ opacity: 0, scale: 0.92 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="group relative bg-white/[0.04] backdrop-blur-xl rounded-3xl p-6 border border-white/10 hover:border-purple-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/15 hover:-translate-y-1 overflow-hidden"
+                className="group relative bg-white/[0.04] lg:backdrop-blur-md rounded-3xl p-6 border border-white/10 hover:border-purple-400/50 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/15 hover:-translate-y-1 overflow-hidden"
               >
                 <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <h3 className="relative text-lg font-semibold text-white mb-5 flex items-center gap-3">
@@ -2188,7 +2188,7 @@ const SkillsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-12 bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-xl rounded-3xl p-8 border border-white/10"
+          className="mt-12 bg-gradient-to-br from-purple-500/10 to-pink-500/10 lg:backdrop-blur-md rounded-3xl p-8 border border-white/10"
         >
           <h3 className="text-xl font-bold text-white text-center mb-6 flex items-center justify-center gap-2">
             <ZapIcon className="w-5 h-5 text-purple-400" />
@@ -2242,7 +2242,7 @@ const SkillsSection = () => {
 // FOOTER
 // ============================================================
 const Footer = () => (
-  <footer className="relative z-10 border-t border-white/10 bg-black/20 backdrop-blur-xl">
+  <footer className="relative z-10 border-t border-white/10 bg-black/20 lg:backdrop-blur-md">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
       <p className="text-gray-400 text-sm text-center sm:text-left">
         © {new Date().getFullYear()}{" "}
@@ -2273,6 +2273,7 @@ const Footer = () => (
 export default function PortfolioPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [lanyardReady, setLanyardReady] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
 
@@ -2287,6 +2288,12 @@ export default function PortfolioPage() {
     syncDesktop();
     media.addEventListener("change", syncDesktop);
     return () => media.removeEventListener("change", syncDesktop);
+  }, []);
+
+  // Lanyard (WebGL) dimuat belakangan agar halaman tidak crash di HP / browser in-app
+  useEffect(() => {
+    const t = setTimeout(() => setLanyardReady(true), 1200);
+    return () => clearTimeout(t);
   }, []);
 
   const scrollToProjects = () => {
@@ -2323,52 +2330,21 @@ export default function PortfolioPage() {
             backgroundImage:
               "linear-gradient(to right, #a78bfa 1px, transparent 1px), linear-gradient(to bottom, #a78bfa 1px, transparent 1px)",
             backgroundSize: "56px 56px",
-            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
           }}
         />
-        {/* aurora blobs */}
-        <motion.div
-          className="absolute -top-40 -left-40 w-[560px] h-[560px] rounded-full bg-purple-600/25 blur-[120px]"
-          animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        {/* aurora statis (radial-gradient, tanpa filter blur agar ringan di HP) */}
+        <div
+          className="absolute -top-40 -left-40 w-[620px] h-[620px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(147,51,234,0.28) 0%, transparent 65%)" }}
         />
-        <motion.div
-          className="absolute top-1/3 -right-40 w-[520px] h-[520px] rounded-full bg-pink-600/20 blur-[120px]"
-          animate={{ x: [0, -70, 0], y: [0, 60, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        <div
+          className="absolute top-1/3 -right-40 w-[580px] h-[580px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(219,39,119,0.22) 0%, transparent 65%)" }}
         />
-        <motion.div
-          className="absolute -bottom-40 left-1/4 w-[480px] h-[480px] rounded-full bg-indigo-600/20 blur-[120px]"
-          animate={{ x: [0, 60, 0], y: [0, -50, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        <div
+          className="absolute -bottom-40 left-1/4 w-[540px] h-[540px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(79,70,229,0.22) 0%, transparent 65%)" }}
         />
-        {/* partikel kecil */}
-        {isMounted &&
-          [...Array(12)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-purple-400/30 to-pink-400/30"
-              initial={{
-                x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
-                y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 1000),
-                width: Math.random() * 8 + 3,
-                height: Math.random() * 8 + 3,
-                opacity: 0,
-              }}
-              animate={{
-                y: [null, Math.random() * -120 - 40],
-                opacity: [0, 0.7, 0],
-              }}
-              transition={{
-                duration: Math.random() * 10 + 8,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut",
-                delay: Math.random() * 5,
-              }}
-            />
-          ))}
       </div>
 
       <Navbar />
@@ -2377,8 +2353,7 @@ export default function PortfolioPage() {
       <section id="hero" className="relative w-full z-10 overflow-x-clip lg:min-h-screen">
         {/* ===== LANYARD MOBILE: layar pertama = lanyard, teks ada di bawahnya ===== */}
         <div className="relative w-full h-[100svh] z-20 lg:hidden">
-          <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/30 blur-3xl" />
-          {isMounted && !isDesktop && (
+          {isMounted && lanyardReady && !isDesktop && (
             <>
               <Lanyard gravity={[0, -30, 0]} />
               {/* petunjuk scroll */}
@@ -2417,7 +2392,7 @@ export default function PortfolioPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-                className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md px-5 py-2 rounded-full border border-purple-400/30 shadow-lg shadow-purple-500/10"
+                className="inline-flex items-center gap-2 bg-white/5 lg:backdrop-blur-md px-5 py-2 rounded-full border border-purple-400/30 shadow-lg shadow-purple-500/10"
               >
                 <span className="text-purple-100 text-sm sm:text-base font-medium">
                   👋 Hi, I'm Nirmalasari Rodito Sulnas
@@ -2500,14 +2475,14 @@ export default function PortfolioPage() {
                 Download CV
               </a>
               <button
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm bg-white/5 backdrop-blur-md border border-purple-400/50 text-purple-100 rounded-full font-semibold hover:bg-purple-500/20 hover:text-white transition-all hover:scale-105 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm bg-white/5 lg:backdrop-blur-md border border-purple-400/50 text-purple-100 rounded-full font-semibold hover:bg-purple-500/20 hover:text-white transition-all hover:scale-105 cursor-pointer"
                 onClick={scrollToProjects}
               >
                 Explore My Projects
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm bg-white/5 backdrop-blur-md border border-pink-400/50 text-pink-100 rounded-full font-semibold hover:bg-pink-500/20 hover:text-white transition-all hover:scale-105 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm bg-white/5 lg:backdrop-blur-md border border-pink-400/50 text-pink-100 rounded-full font-semibold hover:bg-pink-500/20 hover:text-white transition-all hover:scale-105 cursor-pointer"
                 onClick={scrollToSkills}
               >
                 View Skills
@@ -2524,7 +2499,7 @@ export default function PortfolioPage() {
               {heroStats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="px-4 sm:px-5 py-3 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-purple-400/40 transition-colors min-w-[84px] text-center"
+                  className="px-4 sm:px-5 py-3 rounded-2xl bg-white/5 lg:backdrop-blur-md border border-white/10 hover:border-purple-400/40 transition-colors min-w-[84px] text-center"
                 >
                   <div className={`text-xl sm:text-2xl font-extrabold ${gradientText}`}>
                     {stat.value}
@@ -2578,7 +2553,7 @@ export default function PortfolioPage() {
               viewport={{ once: true }}
               className="relative flex justify-center lg:justify-start"
             >
-              <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-purple-500/25 to-pink-500/25 blur-3xl" />
+              <div className="hidden lg:block pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-purple-500/25 to-pink-500/25 blur-3xl" />
               <ProfileCard
                 avatarUrl="/avatar.png"
                 miniAvatarUrl="/foto formal.jpeg"
